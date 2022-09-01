@@ -40,6 +40,8 @@ import {
   LOGIN_NEWPASSWORD,
   LOGIN_NEWPASSWORD_COMPLETE,
   LOGIN_NEWPASSWORD_ERROR,
+  GET_JOBREQUESTS_SUCCESS,
+  GET_JOBREQUESTS_BEGIN
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -417,6 +419,23 @@ const reducer = (state, action) => {
   }
 
   /////////
+  if (action.type === GET_JOBREQUESTS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    };
+  }
+
+  if (action.type === GET_JOBREQUESTS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      jobRequests: action.payload.JobRequests,
+      jobRequestsCount: action.payload.JobRequestsCount,
+      jobRequestsPages: action.payload.JobRequestsNumOfPages,
+    };
+  }
 
   throw new Error(`no such action : ${action.type}`);
 };
