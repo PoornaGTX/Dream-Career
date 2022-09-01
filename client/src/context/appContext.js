@@ -31,6 +31,9 @@ import {
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
+  APPLY_JOB_BEGIN,
+  APPLY_JOB_SUCCESS,
+  APPLY_JOB_ERROR,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -48,6 +51,7 @@ const initialState = {
   showSidebar: false,
   isEditing: false,
   editJobId: "",
+  editJobCreateID: "",
   position: "",
   company: "",
   jobLocation: userlocation || "",
@@ -311,6 +315,24 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const applyJob = async (applyJobQ) => {
+    dispatch({ type: APPLY_JOB_BEGIN });
+    try {
+      await authFetch.post("/jobApps", {
+        ...applyJobQ,
+      });
+      dispatch({ type: APPLY_JOB_SUCCESS });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: APPLY_JOB_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -329,6 +351,7 @@ const AppProvider = ({ children }) => {
         setEdit,
         deleteJob,
         editJob,
+        applyJob,
       }}
     >
       {children}
