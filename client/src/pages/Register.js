@@ -65,6 +65,10 @@ const Register = () => {
     console.log(values);
   };
 
+  const passwordRest = () => {
+    navigate("/login/frogetpassword");
+  };
+
   useEffect(() => {
     if (user) {
       setTimeout(() => {
@@ -127,6 +131,10 @@ const Register = () => {
           {values.isMember ? "Not a member yet?" : "Already a member?"}
           <button type="button" onClick={toggleMember} className="member-btn">
             {values.isMember ? "Register" : "Login"}
+          </button>
+
+          <button type="button" className="member-btn" onClick={passwordRest}>
+            Froget password
           </button>
         </p>
       </form>
