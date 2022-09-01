@@ -42,3 +42,12 @@ export const TOGGLE_SIDEBAR = "TOGGLE_SIDEBAR";
 
 //logout
 export const LOGOUT_USER = "LOGOUT_USER";
+
+
+// mewa Thameerage
+export const APPLY_JOB_BEGIN = "APPLY_JOB_BEGIN";
+export const APPLY_JOB_SUCCESS = "APPLY_JOB_SUCCESS";
+export const APPLY_JOB_ERROR = "APPLY_JOB_ERROR";
+
+
+/////////////////////////

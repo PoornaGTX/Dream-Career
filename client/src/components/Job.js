@@ -45,6 +45,13 @@ const Job = ({
             >
               Edit
             </Link>
+            <Link
+              to="/apply-job"
+              className="btn edit-btn"
+              onClick={() => setEdit(_id)}
+            >
+              Apply
+            </Link>
             <button
               type="button"
               className="btn delete-btn"
