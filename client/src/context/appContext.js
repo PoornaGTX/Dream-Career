@@ -36,6 +36,7 @@ import {
   APPLY_JOB_ERROR,
   GET_APPLIED_JOBS_SUCCESS,
   GET_APPLIED_JOBS_BEGIN,
+  CLEAR_FILTERS_APPLIED_JOBS,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -69,6 +70,11 @@ const initialState = {
   AppliedTotalJobs: 0,
   AppliedJobsNumOfPages: 1,
   AppliedJobsPage: 1,
+  appliedJobsSearch: "",
+  appliedJobsSearchType: "all",
+  appliedJobsSearchTypePotions: ["Remote", "On-location", "Hybrid"],
+  appliedJobsSort: "latest",
+  appliedJobsSortOptions: ["latest", "oldest", "a-z", "z-a"],
 };
 
 const AppContext = React.createContext();
@@ -340,9 +346,14 @@ const AppProvider = ({ children }) => {
   };
 
   const getAppliedJobs = async () => {
-    let url = `/jobApps`;
     dispatch({ type: GET_APPLIED_JOBS_BEGIN });
+    const { appliedJobsSearch, appliedJobsSearchType, appliedJobsSort } = state;
+    let url = `/jobApps?jobType=${appliedJobsSearchType}&$sort=${appliedJobsSort}`;
+    if (appliedJobsSearch) {
+      url = url + `&search=${appliedJobsSearch}`;
+    }
 
+    console.log(url);
     try {
       const { data } = await authFetch.get(url);
       const { AppliedJobs, AppliedTotalJobs, AppliedJobsNumOfPages } = data;
@@ -359,6 +370,9 @@ const AppProvider = ({ children }) => {
       console.log(error.response);
     }
     clearAlert();
+  };
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS_APPLIED_JOBS });
   };
 
   return (
@@ -381,6 +395,7 @@ const AppProvider = ({ children }) => {
         editJob,
         applyJob,
         getAppliedJobs,
+        clearFilters,
       }}
     >
       {children}

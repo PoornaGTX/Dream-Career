@@ -33,6 +33,7 @@ import {
   APPLY_JOB_ERROR,
   GET_APPLIED_JOBS_SUCCESS,
   GET_APPLIED_JOBS_BEGIN,
+  CLEAR_FILTERS_APPLIED_JOBS,
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -340,6 +341,15 @@ const reducer = (state, action) => {
       AppliedJobs: action.payload.AppliedJobs,
       AppliedTotalJobs: action.payload.AppliedTotalJobs,
       AppliedJobsNumOfPages: action.payload.AppliedJobsNumOfPages,
+    };
+  }
+
+  if (action.type === CLEAR_FILTERS_APPLIED_JOBS) {
+    return {
+      ...state,
+      appliedJobsSearch: "",
+      appliedJobsSearchType: "all",
+      appliedJobsSort: "latest",
     };
   }
 
