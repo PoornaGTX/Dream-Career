@@ -31,6 +31,9 @@ import {
   APPLY_JOB_BEGIN,
   APPLY_JOB_SUCCESS,
   APPLY_JOB_ERROR,
+  LOGIN_PASSWORDREST,
+  LOGIN_PASSWORDREST_COMPLETE,
+  LOGIN_PASSWORDREST_ERROR,
 } from "./action";
 
 import { initialState } from "./appContext";

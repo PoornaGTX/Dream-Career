@@ -212,12 +212,9 @@ const AppProvider = ({ children }) => {
   const loginUserPasswordRest = async (email) => {
     dispatch({ type: LOGIN_PASSWORDREST });
     try {
-      const response = await axios.post(
-        "https://sbwcnnxsyc.execute-api.us-east-1.amazonaws.com/dev/api/V1/users/login/frogetpassword",
-        {
-          email,
-        }
-      );
+      const response = await axios.post("/api/v1/auth/login/frogetpassword", {
+        email,
+      });
       dispatch({
         type: LOGIN_PASSWORDREST_COMPLETE,
       });

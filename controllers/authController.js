@@ -1,8 +1,8 @@
 import User from "../models/User.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
-var nodemailer = require("nodemailer");
-const jwt = require("jsonwebtoken");
+import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
   const { name, email, password, type } = req.body;
@@ -98,7 +98,7 @@ const frogetPassword = async (req, res) => {
   var mailOptions = {
     from: process.env.EMAIL,
     to: user.email,
-    subject: "ToDo Password Reset",
+    subject: "Dream Career Password Reset",
     text: link,
   };
 
