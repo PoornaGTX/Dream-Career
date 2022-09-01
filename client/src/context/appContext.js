@@ -59,6 +59,10 @@ const initialState = {
   totalJobs: 0,
   numOfPages: 1,
   page: 1,
+  recSearch: '',
+  recSearchType: 'all',
+  recSort: 'latest',
+  recSortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
 };
 
 const AppContext = React.createContext();
@@ -256,21 +260,28 @@ const AppProvider = ({ children }) => {
   };
 
   const getJobs = async () => {
-    let url = `/jobs`;
-    dispatch({ type: GET_JOBS_BEGIN });
+    const { page, recSearch, recSearchType, recSort } = state
 
+    let url = `/jobs?page=${page}&jobType=${recSearchType}&sort=${recSort}`
+    if (recSearch) {
+      url = url + `&search=${recSearch}`
+    }
+    dispatch({ type: GET_JOBS_BEGIN })
     try {
-      const { data } = await authFetch.get(url);
-      const { jobs, totalJobs, numOfPages } = data;
-
+      const { data } = await authFetch(url)
+      const { jobs, totalJobs, numOfPages } = data
       dispatch({
         type: GET_JOBS_SUCCESS,
-        payload: { jobs, totalJobs, numOfPages },
-      });
+        payload: {
+          jobs,
+          totalJobs,
+          numOfPages,
+        },
+      })
     } catch (error) {
-      console.log(error.response);
+      logoutUser()
     }
-    clearAlert();
+    clearAlert()
   };
 
   return (
