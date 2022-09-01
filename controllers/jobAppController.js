@@ -45,8 +45,34 @@ const applyJob = async (req, res) => {
 };
 
 const getAllAppliedJobs = async (req, res) => {
-  const AppliedJobs = await JobApp.find({ appliedBy: req.user.userId });
-  console.log(AppliedJobs);
+  const { search, jobType, sort } = req.query;
+  console.log(jobType, search, sort);
+  const queryObject = {
+    appliedBy: req.user.userId,
+  };
+  if (jobType !== "all") {
+    queryObject.jobType = jobType;
+  }
+  if (search) {
+    queryObject.position = { $regex: search, $options: "i" };
+  }
+  //No AWAIT
+  let result = JobApp.find(queryObject);
+  //chain sort conditions
+  if (sort === "latest") {
+    result = result.sort("-createdAt");
+  }
+  if (sort === "oldest") {
+    result = result.sort("createdAt");
+  }
+  if (sort === "a-z") {
+    result = result.sort("position");
+  }
+  if (sort === "z-a") {
+    result = result.sort("-position");
+  }
+  const AppliedJobs = await result;
+  //Response
   res.status(StatusCodes.OK).json({
     AppliedJobs,
     AppliedTotalJobs: AppliedJobs.length,

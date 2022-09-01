@@ -8,19 +8,19 @@ import AppliedJob from "./AppliedJob";
 
 const AppliedJobsContainer = () => {
   const {
-    getJobs,
-    jobs,
     isLoading,
     page,
     totalJobs,
     AppliedJobs,
     getAppliedJobs,
+    appliedJobsSearch,
+    appliedJobsSearchType,
+    appliedJobsSort,
   } = useAppContext();
 
   useEffect(() => {
     getAppliedJobs();
-    console.log(AppliedJobs);
-  }, []);
+  }, [appliedJobsSearch, appliedJobsSearchType, appliedJobsSort]);
 
   if (isLoading) {
     return <Loading center />;
