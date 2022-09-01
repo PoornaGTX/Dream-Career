@@ -323,6 +323,35 @@ const reducer = (state, action) => {
     };
   }
 
+  //login password reset
+
+  if (action.type === LOGIN_PASSWORDREST) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === LOGIN_PASSWORDREST_COMPLETE) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Link",
+    };
+  }
+
+  if (action.type === LOGIN_PASSWORDREST_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: "Error",
+    };
+  }
+
   /////////
 
   throw new Error(`no such action : ${action.type}`);

@@ -34,6 +34,9 @@ import {
   APPLY_JOB_BEGIN,
   APPLY_JOB_SUCCESS,
   APPLY_JOB_ERROR,
+  LOGIN_PASSWORDREST,
+  LOGIN_PASSWORDREST_COMPLETE,
+  LOGIN_PASSWORDREST_ERROR,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -204,6 +207,28 @@ const AppProvider = ({ children }) => {
     removeFromTheLocalStorage();
   };
 
+  //password reset email verification
+
+  const loginUserPasswordRest = async (email) => {
+    dispatch({ type: LOGIN_PASSWORDREST });
+    try {
+      const response = await axios.post(
+        "https://sbwcnnxsyc.execute-api.us-east-1.amazonaws.com/dev/api/V1/users/login/frogetpassword",
+        {
+          email,
+        }
+      );
+      dispatch({
+        type: LOGIN_PASSWORDREST_COMPLETE,
+      });
+    } catch (error) {
+      dispatch({
+        type: LOGIN_PASSWORDREST_ERROR,
+      });
+    }
+    clearAlert();
+  };
+
   const updateUser = async (currentUser) => {
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
@@ -340,6 +365,7 @@ const AppProvider = ({ children }) => {
         displayAlert,
         registerUser,
         loginUser,
+        loginUserPasswordRest,
         setupUser,
         toggleSidebar,
         logoutUser,
