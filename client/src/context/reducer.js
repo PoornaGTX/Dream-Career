@@ -31,6 +31,8 @@ import {
   APPLY_JOB_BEGIN,
   APPLY_JOB_SUCCESS,
   APPLY_JOB_ERROR,
+  GET_APPLIED_JOBS_SUCCESS,
+  GET_APPLIED_JOBS_BEGIN,
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -320,6 +322,24 @@ const reducer = (state, action) => {
       showAlert: true,
       alertType: "danger",
       alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === GET_APPLIED_JOBS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    };
+  }
+
+  if (action.type === GET_APPLIED_JOBS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      AppliedJobs: action.payload.AppliedJobs,
+      AppliedTotalJobs: action.payload.AppliedTotalJobs,
+      AppliedJobsNumOfPages: action.payload.AppliedJobsNumOfPages,
     };
   }
 

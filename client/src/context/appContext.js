@@ -34,6 +34,8 @@ import {
   APPLY_JOB_BEGIN,
   APPLY_JOB_SUCCESS,
   APPLY_JOB_ERROR,
+  GET_APPLIED_JOBS_SUCCESS,
+  GET_APPLIED_JOBS_BEGIN,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -63,6 +65,10 @@ const initialState = {
   totalJobs: 0,
   numOfPages: 1,
   page: 1,
+  AppliedJobs: [],
+  AppliedTotalJobs: 0,
+  AppliedJobsNumOfPages: 1,
+  AppliedJobsPage: 1,
 };
 
 const AppContext = React.createContext();
@@ -333,6 +339,28 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const getAppliedJobs = async () => {
+    let url = `/jobApps`;
+    dispatch({ type: GET_APPLIED_JOBS_BEGIN });
+
+    try {
+      const { data } = await authFetch.get(url);
+      const { AppliedJobs, AppliedTotalJobs, AppliedJobsNumOfPages } = data;
+
+      dispatch({
+        type: GET_APPLIED_JOBS_SUCCESS,
+        payload: {
+          AppliedJobs,
+          AppliedTotalJobs,
+          AppliedJobsNumOfPages,
+        },
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
+    clearAlert();
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -352,6 +380,7 @@ const AppProvider = ({ children }) => {
         deleteJob,
         editJob,
         applyJob,
+        getAppliedJobs,
       }}
     >
       {children}
