@@ -284,6 +284,32 @@ const AppProvider = ({ children }) => {
     clearAlert()
   };
 
+  const getJobRequets = async ()=>{
+    const { page, recSearch, recSearchType, recSort } = state
+
+    let url = `/jobs?page=${page}&jobType=${recSearchType}&sort=${recSort}`
+    if (recSearch) {
+      url = url + `&search=${recSearch}`
+    }
+    dispatch({ type: GET_JOBS_BEGIN })
+    try {
+      const { data } = await authFetch(url)
+      const { jobs, totalJobs, numOfPages } = data
+      dispatch({
+        type: GET_JOBS_SUCCESS,
+        payload: {
+          jobs,
+          totalJobs,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      logoutUser()
+    }
+    clearAlert()
+  };
+
+
   return (
     <AppContext.Provider
       value={{
@@ -299,6 +325,7 @@ const AppProvider = ({ children }) => {
         clearValues,
         createJob,
         getJobs,
+        getJobRequets
       }}
     >
       {children}
