@@ -6,7 +6,6 @@ import Wrapper from "../../assets/wrappers/DashboardFormPage";
 const AddJob = () => {
   const {
     isLoading,
-    isEditing,
     showAlert,
     displayAlert,
     position,
@@ -14,12 +13,9 @@ const AddJob = () => {
     jobLocation,
     jobType,
     jobTypeOptions,
-    status,
-    statusOptions,
     handleChange,
     clearValues,
     createJob,
-    editJob,
   } = useAppContext();
 
   const handleSubmit = (e) => {
@@ -29,14 +25,7 @@ const AddJob = () => {
       displayAlert();
       return;
     }
-
-    if (isEditing) {
-      editJob();
-      return;
-    }
-
     createJob();
-
     console.log("create job");
   };
 
@@ -49,7 +38,7 @@ const AddJob = () => {
   return (
     <Wrapper>
       <form className="form">
-        <h3>{isEditing ? "edit job" : "add job"}</h3>
+        <h3>add job</h3>
         {showAlert && <Alert />}
         <div className="form-center">
           {/*position*/}
@@ -74,14 +63,6 @@ const AddJob = () => {
             value={jobLocation}
             handleChange={handleJobInput}
           />
-          {/* job status */}
-          <FormRowSelect
-            name="status"
-            value={status}
-            handleChange={handleJobInput}
-            list={statusOptions}
-          />
-
           {/* job type */}
           <FormRowSelect
             name="jobType"
