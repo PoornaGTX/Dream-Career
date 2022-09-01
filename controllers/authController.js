@@ -3,9 +3,9 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, type } = req.body;
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !type) {
     throw new BadRequestError("please provide all values");
   }
 
@@ -15,13 +15,14 @@ const register = async (req, res) => {
     throw new BadRequestError("Email already in use");
   }
 
-  const user = await User.create({ name, email, password });
+  const user = await User.create({ name, email, password, type });
 
   const token = user.createJWT();
 
   res.status(StatusCodes.CREATED).json({
     user: {
       email: user.email,
+      type: user.type,
       lastName: user.lastName,
       location: user.location,
       name: user.name,
