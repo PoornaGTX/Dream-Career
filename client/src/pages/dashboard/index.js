@@ -4,5 +4,6 @@ import Profile from "./Profile";
 import Stats from "./Stats";
 import SharedLayout from "./SharedLayout";
 import ApplyJob from "./ApplyJob";
+import AppliedJobs from "./AppliedJobs";
 
-export { ApplyJob, AddJob, AllJobs, Profile, Stats, SharedLayout };
+export { AppliedJobs, ApplyJob, AddJob, AllJobs, Profile, Stats, SharedLayout };

@@ -15,6 +15,7 @@ const applyJob = async (req, res) => {
     experience,
     jobType,
     editJobCreateID,
+    company,
   } = req.body;
   console.log(req.body);
   if (
@@ -23,7 +24,8 @@ const applyJob = async (req, res) => {
     !location ||
     !experience ||
     !jobType ||
-    !editJobCreateID
+    !editJobCreateID ||
+    !company
   ) {
     throw new BadRequestError("Please provide all values");
   }
@@ -36,9 +38,45 @@ const applyJob = async (req, res) => {
     education,
     position,
     location,
+    company,
   };
   const jobApp = await JobApp.create(jobApplication);
   res.status(StatusCodes.CREATED).json({ jobApp });
 };
 
-export { applyJob };
+const getAllAppliedJobs = async (req, res) => {
+  const { search, jobType, sort } = req.query;
+  console.log(jobType, search, sort);
+  const queryObject = {
+    appliedBy: req.user.userId,
+  };
+  if (jobType !== "all") {
+    queryObject.jobType = jobType;
+  }
+  if (search) {
+    queryObject.position = { $regex: search, $options: "i" };
+  }
+  //No AWAIT
+  let result = JobApp.find(queryObject);
+  //chain sort conditions
+  if (sort === "latest") {
+    result = result.sort("-createdAt");
+  }
+  if (sort === "oldest") {
+    result = result.sort("createdAt");
+  }
+  if (sort === "a-z") {
+    result = result.sort("position");
+  }
+  if (sort === "z-a") {
+    result = result.sort("-position");
+  }
+  const AppliedJobs = await result;
+  //Response
+  res.status(StatusCodes.OK).json({
+    AppliedJobs,
+    AppliedTotalJobs: AppliedJobs.length,
+    AppliedJobsNumOfPages: 1,
+  });
+};
+export { applyJob, getAllAppliedJobs };

@@ -37,6 +37,9 @@ import {
   LOGIN_PASSWORDREST,
   LOGIN_PASSWORDREST_COMPLETE,
   LOGIN_PASSWORDREST_ERROR,
+  GET_APPLIED_JOBS_SUCCESS,
+  GET_APPLIED_JOBS_BEGIN,
+  CLEAR_FILTERS_APPLIED_JOBS,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -66,6 +69,15 @@ const initialState = {
   totalJobs: 0,
   numOfPages: 1,
   page: 1,
+  AppliedJobs: [],
+  AppliedTotalJobs: 0,
+  AppliedJobsNumOfPages: 1,
+  AppliedJobsPage: 1,
+  appliedJobsSearch: "",
+  appliedJobsSearchType: "all",
+  appliedJobsSearchTypePotions: ["Remote", "On-location", "Hybrid"],
+  appliedJobsSort: "latest",
+  appliedJobsSortOptions: ["latest", "oldest", "a-z", "z-a"],
 };
 
 const AppContext = React.createContext();
@@ -355,6 +367,36 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const getAppliedJobs = async () => {
+    dispatch({ type: GET_APPLIED_JOBS_BEGIN });
+    const { appliedJobsSearch, appliedJobsSearchType, appliedJobsSort } = state;
+    let url = `/jobApps?jobType=${appliedJobsSearchType}&$sort=${appliedJobsSort}`;
+    if (appliedJobsSearch) {
+      url = url + `&search=${appliedJobsSearch}`;
+    }
+
+    console.log(url);
+    try {
+      const { data } = await authFetch.get(url);
+      const { AppliedJobs, AppliedTotalJobs, AppliedJobsNumOfPages } = data;
+
+      dispatch({
+        type: GET_APPLIED_JOBS_SUCCESS,
+        payload: {
+          AppliedJobs,
+          AppliedTotalJobs,
+          AppliedJobsNumOfPages,
+        },
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
+    clearAlert();
+  };
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS_APPLIED_JOBS });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -375,6 +417,8 @@ const AppProvider = ({ children }) => {
         deleteJob,
         editJob,
         applyJob,
+        getAppliedJobs,
+        clearFilters,
       }}
     >
       {children}

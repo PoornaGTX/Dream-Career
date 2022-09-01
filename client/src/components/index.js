@@ -7,6 +7,9 @@ import BigSidebar from "./BigSidebar";
 import FormRowSelect from "./FormRowSelect";
 import SearchContainer from "./SearchContainer";
 import JobsContainer from "./JobsContainer";
+import AppliedJobsContainer from "./AppliedJobsContainer";
+import AppliedJob from "./AppliedJob";
+import AppliedJobsSearchContainer from "./AppliedJobsSearchContainer";
 
 export {
   Logo,
@@ -18,4 +21,7 @@ export {
   FormRowSelect,
   SearchContainer,
   JobsContainer,
+  AppliedJobsContainer,
+  AppliedJob,
+  AppliedJobsSearchContainer,
 };

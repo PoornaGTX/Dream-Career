@@ -7,6 +7,11 @@ const JobApplication = new mongoose.Schema(
       required: [true, "Please provide position"],
       maxlength: 50,
     },
+    company: {
+      type: String,
+      required: [true, "Please provide company"],
+      maxlength: 50,
+    },
     location: {
       type: String,
       required: [true, "Please provide location"],
