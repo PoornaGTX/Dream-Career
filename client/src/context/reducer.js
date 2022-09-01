@@ -31,9 +31,15 @@ import {
   APPLY_JOB_BEGIN,
   APPLY_JOB_SUCCESS,
   APPLY_JOB_ERROR,
+  LOGIN_PASSWORDREST,
+  LOGIN_PASSWORDREST_COMPLETE,
+  LOGIN_PASSWORDREST_ERROR,
   GET_APPLIED_JOBS_SUCCESS,
   GET_APPLIED_JOBS_BEGIN,
   CLEAR_FILTERS_APPLIED_JOBS,
+  LOGIN_NEWPASSWORD,
+  LOGIN_NEWPASSWORD_COMPLETE,
+  LOGIN_NEWPASSWORD_ERROR,
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -326,7 +332,6 @@ const reducer = (state, action) => {
     };
   }
 
-
   //login password reset
 
   if (action.type === LOGIN_PASSWORDREST) {
@@ -353,7 +358,9 @@ const reducer = (state, action) => {
       showAlert: true,
       alertType: "danger",
       alertText: "Error",
-      
+    };
+  }
+
   if (action.type === GET_APPLIED_JOBS_BEGIN) {
     return {
       ...state,
@@ -369,7 +376,6 @@ const reducer = (state, action) => {
       AppliedJobs: action.payload.AppliedJobs,
       AppliedTotalJobs: action.payload.AppliedTotalJobs,
       AppliedJobsNumOfPages: action.payload.AppliedJobsNumOfPages,
-
     };
   }
 
@@ -379,6 +385,32 @@ const reducer = (state, action) => {
       appliedJobsSearch: "",
       appliedJobsSearchType: "all",
       appliedJobsSort: "latest",
+    };
+  }
+
+  //new password after reset
+
+  if (action.type === LOGIN_NEWPASSWORD) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === LOGIN_NEWPASSWORD_COMPLETE) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === LOGIN_NEWPASSWORD_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: "Error",
     };
   }
 

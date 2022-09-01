@@ -1,8 +1,8 @@
 import User from "../models/User.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
-var nodemailer = require("nodemailer");
-const jwt = require("jsonwebtoken");
+import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
   const { name, email, password, type } = req.body;
@@ -98,7 +98,7 @@ const frogetPassword = async (req, res) => {
   var mailOptions = {
     from: process.env.EMAIL,
     to: user.email,
-    subject: "ToDo Password Reset",
+    subject: "Dream Career Password Reset",
     text: link,
   };
 
@@ -109,6 +109,41 @@ const frogetPassword = async (req, res) => {
       console.log("Email sent: " + info.response);
     }
   });
+};
+
+//create new password
+
+const newPassword = async (req, res) => {
+  const { id, token } = req.params;
+  const { newPassword } = req.body;
+
+  //get user data
+  const user = await User.findOne({ _id: id });
+
+  //check the user is exsisit
+  if (!user) {
+    throw new UnAuthenticatedError("invalid Credentials");
+  }
+
+  try {
+    //verify token
+    const secret = process.env.JWT_SECRET + user.password;
+    const payload = jwt.verify(token, secret);
+
+    //check the user email with payload email
+    if (user.email !== payload.email) {
+      throw new UnAuthenticatedError("invalid token");
+    }
+  } catch (error) {
+    throw new UnAuthenticatedError("Authentication Invalid");
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: "password has been reset please re-login" });
 };
 
 const updateUser = async (req, res) => {
@@ -131,4 +166,4 @@ const updateUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token, location: user.location });
 };
 
-export { register, login, updateUser, frogetPassword };
+export { register, login, updateUser, frogetPassword, newPassword };
