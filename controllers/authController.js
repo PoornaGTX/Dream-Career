@@ -111,6 +111,41 @@ const frogetPassword = async (req, res) => {
   });
 };
 
+//create new password
+
+const newPassword = async (req, res) => {
+  const { id, token } = req.params;
+  const { newPassword } = req.body;
+
+  //get user data
+  const user = await User.findOne({ _id: id });
+
+  //check the user is exsisit
+  if (!user) {
+    throw new UnAuthenticatedError("invalid Credentials");
+  }
+
+  try {
+    //verify token
+    const secret = process.env.JWT_SECRET + user.password;
+    const payload = jwt.verify(token, secret);
+
+    //check the user email with payload email
+    if (user.email !== payload.email) {
+      throw new UnAuthenticatedError("invalid token");
+    }
+  } catch (error) {
+    throw new UnAuthenticatedError("Authentication Invalid");
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: "password has been reset please re-login" });
+};
+
 const updateUser = async (req, res) => {
   const { email, name, lastName, location } = req.body;
 
@@ -131,4 +166,4 @@ const updateUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token, location: user.location });
 };
 
-export { register, login, updateUser, frogetPassword };
+export { register, login, updateUser, frogetPassword, newPassword };

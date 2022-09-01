@@ -40,6 +40,9 @@ import {
   GET_APPLIED_JOBS_SUCCESS,
   GET_APPLIED_JOBS_BEGIN,
   CLEAR_FILTERS_APPLIED_JOBS,
+  LOGIN_NEWPASSWORD,
+  LOGIN_NEWPASSWORD_COMPLETE,
+  LOGIN_NEWPASSWORD_ERROR,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -238,6 +241,28 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  //new password
+
+  const loginUserNewPassword = async (password, id, token) => {
+    dispatch({ type: LOGIN_NEWPASSWORD });
+    const newPassword = password;
+    try {
+      const response = await axios.post(
+        `/api/v1/auth/login/newpassword/${id}/${token}`,
+        { newPassword }
+      );
+      dispatch({
+        type: LOGIN_NEWPASSWORD_COMPLETE,
+        payload: { msg: response.data.msg },
+      });
+    } catch (error) {
+      dispatch({
+        type: LOGIN_NEWPASSWORD_ERROR,
+      });
+    }
+    clearAlert();
+  };
+
   const updateUser = async (currentUser) => {
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
@@ -405,6 +430,7 @@ const AppProvider = ({ children }) => {
         registerUser,
         loginUser,
         loginUserPasswordRest,
+        loginUserNewPassword,
         setupUser,
         toggleSidebar,
         logoutUser,

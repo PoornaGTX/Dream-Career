@@ -37,6 +37,9 @@ import {
   GET_APPLIED_JOBS_SUCCESS,
   GET_APPLIED_JOBS_BEGIN,
   CLEAR_FILTERS_APPLIED_JOBS,
+  LOGIN_NEWPASSWORD,
+  LOGIN_NEWPASSWORD_COMPLETE,
+  LOGIN_NEWPASSWORD_ERROR,
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -382,6 +385,32 @@ const reducer = (state, action) => {
       appliedJobsSearch: "",
       appliedJobsSearchType: "all",
       appliedJobsSort: "latest",
+    };
+  }
+
+  //new password after reset
+
+  if (action.type === LOGIN_NEWPASSWORD) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === LOGIN_NEWPASSWORD_COMPLETE) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === LOGIN_NEWPASSWORD_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: "Error",
     };
   }
 

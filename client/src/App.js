@@ -5,6 +5,7 @@ import {
   Register,
   FrogetPassword,
   ProtectedRoute,
+  PasswordRest,
 } from "./pages"; //this is export from index.js in pages
 import {
   AddJob,
@@ -39,6 +40,7 @@ function App() {
         <Route path="/landing" element={<Landing />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login/frogetpassword" element={<FrogetPassword />} />
+        <Route path="/reset-password/:id/:token" element={<PasswordRest />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
