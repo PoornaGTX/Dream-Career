@@ -2,7 +2,7 @@ import React from "react";
 import Wrapper from "../assets/wrappers/BigSidebar";
 import { useAppContext } from "../context/appContext";
 import NavLinks from "./NavLinks";
-import Logo from "../components/logo";
+import Logo from "../components/LogoHome";
 
 const BigSidebar = () => {
   const { showSidebar, toggleSidebar } = useAppContext();
