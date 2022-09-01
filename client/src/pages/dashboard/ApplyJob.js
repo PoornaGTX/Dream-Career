@@ -12,7 +12,7 @@ const ApplyJob = () => {
     updateUser,
     isLoading,
     applyJob,
-    editJobCreateID,
+    editJobCreateID,company
   } = useAppContext();
 
   const [position, setPosition] = useState("");
@@ -27,7 +27,7 @@ const ApplyJob = () => {
       displayAlert();
       return;
     } else {
-      applyJob({ position, education, location, experience, jobType ,editJobCreateID});
+      applyJob({ position, education, location, experience, jobType ,editJobCreateID,company});
     }
   };
 

@@ -15,6 +15,7 @@ const applyJob = async (req, res) => {
     experience,
     jobType,
     editJobCreateID,
+    company,
   } = req.body;
   console.log(req.body);
   if (
@@ -23,7 +24,8 @@ const applyJob = async (req, res) => {
     !location ||
     !experience ||
     !jobType ||
-    !editJobCreateID
+    !editJobCreateID ||
+    !company
   ) {
     throw new BadRequestError("Please provide all values");
   }
@@ -36,9 +38,19 @@ const applyJob = async (req, res) => {
     education,
     position,
     location,
+    company,
   };
   const jobApp = await JobApp.create(jobApplication);
   res.status(StatusCodes.CREATED).json({ jobApp });
 };
 
-export { applyJob };
+const getAllAppliedJobs = async (req, res) => {
+  const AppliedJobs = await JobApp.find({ appliedBy: req.user.userId });
+  console.log(AppliedJobs);
+  res.status(StatusCodes.OK).json({
+    AppliedJobs,
+    AppliedTotalJobs: AppliedJobs.length,
+    AppliedJobsNumOfPages: 1,
+  });
+};
+export { applyJob, getAllAppliedJobs };
