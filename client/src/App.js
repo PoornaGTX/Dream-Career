@@ -13,6 +13,7 @@ import {
   Stats,
   SharedLayout,
   ApplyJob,
+  AppliedJobs,
 } from "./pages/dashboard";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="add-job" element={<AddJob />} />
           <Route path="profile" element={<Profile />} />
           <Route path="apply-job" element={<ApplyJob />} />
+          <Route path="applied-jobs" element={<AppliedJobs />} />
         </Route>
 
         <Route path="/landing" element={<Landing />} />
