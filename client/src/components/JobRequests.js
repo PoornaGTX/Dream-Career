@@ -48,14 +48,14 @@ const JobRequests = ({
                 className="btn edit-btn"
                 //   onClick={() => setEdit(_id)}
               >
-                Edit
+                Accept
               </Link>
               <button
                 type="button"
                 className="btn delete-btn"
                 //   onClick={() => deleteJob(_id)}
               >
-                Delete
+                Reject
               </button>
             </div>
           </footer>

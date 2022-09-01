@@ -28,6 +28,20 @@ import {
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
+  APPLY_JOB_BEGIN,
+  APPLY_JOB_SUCCESS,
+  APPLY_JOB_ERROR,
+  LOGIN_PASSWORDREST,
+  LOGIN_PASSWORDREST_COMPLETE,
+  LOGIN_PASSWORDREST_ERROR,
+  GET_APPLIED_JOBS_SUCCESS,
+  GET_APPLIED_JOBS_BEGIN,
+  CLEAR_FILTERS_APPLIED_JOBS,
+  LOGIN_NEWPASSWORD,
+  LOGIN_NEWPASSWORD_COMPLETE,
+  LOGIN_NEWPASSWORD_ERROR,
+  GET_JOBREQUESTS_SUCCESS,
+  GET_JOBREQUESTS_BEGIN
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -87,6 +101,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
+      PasswordRestStatus: false,
       token: action.payload.token,
       user: action.payload.user,
       userLocation: action.payload.location,
@@ -145,6 +160,7 @@ const reducer = (state, action) => {
   if (action.type === LOGOUT_USER) {
     return {
       ...initialState,
+      PasswordRestStatus: true,
       user: null,
       token: null,
       jobLocation: "",
@@ -248,11 +264,13 @@ const reducer = (state, action) => {
 
   if (action.type === SET_EDIT_JOB) {
     const job = state.jobs.find((job) => job._id === action.payload.id);
-    const { _id, position, company, jobLocation, jobType, status } = job;
+    const { _id, position, company, jobLocation, jobType, status, createdBy } =
+      job;
     return {
       ...state,
       isEditing: true,
       editJobId: _id,
+      editJobCreateID: createdBy,
       position,
       company,
       jobLocation,
@@ -289,6 +307,133 @@ const reducer = (state, action) => {
       showAlert: true,
       alertType: "danger",
       alertText: action.payload.msg,
+    };
+  }
+
+  ///meka Thameerage
+
+  if (action.type === APPLY_JOB_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === APPLY_JOB_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Submit the Application.",
+    };
+  }
+
+  if (action.type === APPLY_JOB_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
+
+  //login password reset
+
+  if (action.type === LOGIN_PASSWORDREST) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === LOGIN_PASSWORDREST_COMPLETE) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Link",
+    };
+  }
+
+  if (action.type === LOGIN_PASSWORDREST_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: "Error",
+    };
+  }
+
+  if (action.type === GET_APPLIED_JOBS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    };
+  }
+
+  if (action.type === GET_APPLIED_JOBS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      AppliedJobs: action.payload.AppliedJobs,
+      AppliedTotalJobs: action.payload.AppliedTotalJobs,
+      AppliedJobsNumOfPages: action.payload.AppliedJobsNumOfPages,
+    };
+  }
+
+  if (action.type === CLEAR_FILTERS_APPLIED_JOBS) {
+    return {
+      ...state,
+      appliedJobsSearch: "",
+      appliedJobsSearchType: "all",
+      appliedJobsSort: "latest",
+    };
+  }
+
+  //new password after reset
+
+  if (action.type === LOGIN_NEWPASSWORD) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === LOGIN_NEWPASSWORD_COMPLETE) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === LOGIN_NEWPASSWORD_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: "Error",
+    };
+  }
+
+  /////////
+  if (action.type === GET_JOBREQUESTS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    };
+  }
+
+  if (action.type === GET_JOBREQUESTS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      jobRequests: action.payload.JobRequests,
+      jobRequestsCount: action.payload.JobRequestsCount,
+      jobRequestsPages: action.payload.JobRequestsNumOfPages,
     };
   }
 

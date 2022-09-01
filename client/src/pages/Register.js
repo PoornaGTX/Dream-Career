@@ -9,6 +9,7 @@ const initialState = {
   name: "",
   email: "",
   password: "",
+  type: "Applicant",
   isMember: true,
 };
 
@@ -38,20 +39,22 @@ const Register = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, isMember } = values;
+    const { name, email, password, type, isMember } = values;
     if (!email || !password || (!isMember && !name)) {
       displayAlert();
       return;
     }
-    const currentUser = { name, email, password };
 
     if (isMember) {
+      const currentUser = { name, email, password };
+
       setupUser({
         currentUser,
         endPoint: "login",
         alertText: "Login Successful! Redirecting",
       });
     } else {
+      const currentUser = { name, email, password, type };
       setupUser({
         currentUser,
         endPoint: "register",
@@ -60,6 +63,10 @@ const Register = () => {
     }
 
     console.log(values);
+  };
+
+  const passwordRest = () => {
+    navigate("/login/frogetpassword");
   };
 
   useEffect(() => {
@@ -79,12 +86,29 @@ const Register = () => {
         {showAlert && <Alert />}
         {/* name input from component */}
         {!values.isMember && (
-          <FormRow
-            type="text"
-            name="name"
-            value={values.name}
-            handleChange={handleChange}
-          />
+          <>
+            <FormRow
+              type="text"
+              name="name"
+              value={values.name}
+              handleChange={handleChange}
+            />
+
+            <div className="form-row">
+              <label htmlFor="type" className="form-label">
+                Type
+              </label>
+              <select
+                name="type"
+                value={values.type}
+                onChange={handleChange}
+                className="form-input"
+              >
+                <option value="Applicant">Applicant</option>
+                <option value="Recruiter">Recruiter</option>
+              </select>
+            </div>
+          </>
         )}
         {/* email input from component */}
         <FormRow
@@ -107,6 +131,10 @@ const Register = () => {
           {values.isMember ? "Not a member yet?" : "Already a member?"}
           <button type="button" onClick={toggleMember} className="member-btn">
             {values.isMember ? "Register" : "Login"}
+          </button>
+
+          <button type="button" className="member-btn" onClick={passwordRest}>
+            Froget password
           </button>
         </p>
       </form>

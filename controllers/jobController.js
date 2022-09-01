@@ -1,4 +1,5 @@
 import Job from "../models/Job.js";
+import JobApp from "../models/JobApplication.js";
 import { StatusCodes } from "http-status-codes";
 import {
   BadRequestError,
@@ -65,4 +66,41 @@ const getAllJobs = async (req, res) => {
   res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages })
 };
 
-export { createJob, getAllJobs };
+const getAllJobRequests = async (req, res) => {
+  const { search, jobType, sort } = req.query;
+
+  const queryObject = {
+    recruiterID: req.user.userId,
+  };
+  if (jobType !== "all") {
+    queryObject.jobType = jobType;
+  }
+  if (search) {
+    queryObject.position = { $regex: search, $options: "i" };
+  }
+  //No AWAIT
+  let result = JobApp.find(queryObject);
+  //chain sort conditions
+  if (sort === "latest") {
+    result = result.sort("-createdAt");
+  }
+  if (sort === "oldest") {
+    result = result.sort("createdAt");
+  }
+  if (sort === "a-z") {
+    result = result.sort("position");
+  }
+  if (sort === "z-a") {
+    result = result.sort("-position");
+  }
+  const JobRequests = await result;
+  //Response
+  res.status(StatusCodes.OK).json({
+    JobRequests,
+    JobRequestsCount: JobRequests.length,
+    JobRequestsNumOfPages: 1,
+  });
+};
+
+
+export { createJob, getAllJobs, getAllJobRequests };

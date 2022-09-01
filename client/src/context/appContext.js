@@ -31,6 +31,20 @@ import {
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
+  APPLY_JOB_BEGIN,
+  APPLY_JOB_SUCCESS,
+  APPLY_JOB_ERROR,
+  LOGIN_PASSWORDREST,
+  LOGIN_PASSWORDREST_COMPLETE,
+  LOGIN_PASSWORDREST_ERROR,
+  GET_APPLIED_JOBS_SUCCESS,
+  GET_APPLIED_JOBS_BEGIN,
+  CLEAR_FILTERS_APPLIED_JOBS,
+  LOGIN_NEWPASSWORD,
+  LOGIN_NEWPASSWORD_COMPLETE,
+  LOGIN_NEWPASSWORD_ERROR,
+  GET_JOBREQUESTS_SUCCESS,
+  GET_JOBREQUESTS_BEGIN
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -48,6 +62,7 @@ const initialState = {
   showSidebar: false,
   isEditing: false,
   editJobId: "",
+  editJobCreateID: "",
   position: "",
   company: "",
   jobLocation: userlocation || "",
@@ -56,6 +71,9 @@ const initialState = {
   statusOptions: ["interview", "declined", "pending"],
   status: "pending",
   jobs: [],
+  jobRequests:[],
+  jobRequestsCount:0,
+  jobRequestsPages:1,
   totalJobs: 0,
   numOfPages: 1,
   page: 1,
@@ -63,6 +81,16 @@ const initialState = {
   recSearchType: 'all',
   recSort: 'latest',
   recSortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+  AppliedJobs: [],
+  AppliedTotalJobs: 0,
+  AppliedJobsNumOfPages: 1,
+  AppliedJobsPage: 1,
+  appliedJobsSearch: "",
+  appliedJobsSearchType: "all",
+  appliedJobsSearchTypePotions: ["Remote", "On-location", "Hybrid"],
+  appliedJobsSort: "latest",
+  appliedJobsSortOptions: ["latest", "oldest", "a-z", "z-a"],
+  PasswordRestStatus: false,
 };
 
 const AppContext = React.createContext();
@@ -204,6 +232,47 @@ const AppProvider = ({ children }) => {
     removeFromTheLocalStorage();
   };
 
+  //password reset email verification
+
+  const loginUserPasswordRest = async (email) => {
+    dispatch({ type: LOGIN_PASSWORDREST });
+    try {
+      const response = await axios.post("/api/v1/auth/login/frogetpassword", {
+        email,
+      });
+      dispatch({
+        type: LOGIN_PASSWORDREST_COMPLETE,
+      });
+    } catch (error) {
+      dispatch({
+        type: LOGIN_PASSWORDREST_ERROR,
+      });
+    }
+    clearAlert();
+  };
+
+  //new password
+
+  const loginUserNewPassword = async (password, id, token) => {
+    dispatch({ type: LOGIN_NEWPASSWORD });
+    const newPassword = password;
+    try {
+      const response = await axios.post(
+        `/api/v1/auth/login/newpassword/${id}/${token}`,
+        { newPassword }
+      );
+      dispatch({
+        type: LOGIN_NEWPASSWORD_COMPLETE,
+        payload: { msg: response.data.msg },
+      });
+    } catch (error) {
+      dispatch({
+        type: LOGIN_NEWPASSWORD_ERROR,
+      });
+    }
+    clearAlert();
+  };
+
   const updateUser = async (currentUser) => {
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
@@ -285,30 +354,76 @@ const AppProvider = ({ children }) => {
   };
 
   const getJobRequets = async ()=>{
+    dispatch({ type: GET_JOBREQUESTS_BEGIN });
     const { page, recSearch, recSearchType, recSort } = state
-
-    let url = `/jobs?page=${page}&jobType=${recSearchType}&sort=${recSort}`
+    let url = `/jobs/job-requests?page=${page}&jobType=${recSearchType}&$sort=${recSort}`;
     if (recSearch) {
-      url = url + `&search=${recSearch}`
+      url = url + `&search=${recSearch}`;
     }
-    dispatch({ type: GET_JOBS_BEGIN })
     try {
-      const { data } = await authFetch(url)
-      const { jobs, totalJobs, numOfPages } = data
+      const { data } = await authFetch.get(url);
+      const { JobRequests, JobRequestsCount, JobRequestsNumOfPages } = data;
       dispatch({
-        type: GET_JOBS_SUCCESS,
+        type: GET_JOBREQUESTS_SUCCESS,
         payload: {
-          jobs,
-          totalJobs,
-          numOfPages,
+          JobRequests,
+          JobRequestsCount,
+          JobRequestsNumOfPages,
         },
-      })
+      });
     } catch (error) {
-      logoutUser()
+      console.log(error.response);
     }
-    clearAlert()
+    clearAlert();
   };
 
+  const applyJob = async (applyJobQ) => {
+    dispatch({ type: APPLY_JOB_BEGIN });
+    try {
+      await authFetch.post("/jobApps", {
+        ...applyJobQ,
+      });
+      dispatch({ type: APPLY_JOB_SUCCESS });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: APPLY_JOB_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  const getAppliedJobs = async () => {
+    dispatch({ type: GET_APPLIED_JOBS_BEGIN });
+    const { appliedJobsSearch, appliedJobsSearchType, appliedJobsSort } = state;
+    let url = `/jobApps?jobType=${appliedJobsSearchType}&$sort=${appliedJobsSort}`;
+    if (appliedJobsSearch) {
+      url = url + `&search=${appliedJobsSearch}`;
+    }
+
+    console.log(url);
+    try {
+      const { data } = await authFetch.get(url);
+      const { AppliedJobs, AppliedTotalJobs, AppliedJobsNumOfPages } = data;
+
+      dispatch({
+        type: GET_APPLIED_JOBS_SUCCESS,
+        payload: {
+          AppliedJobs,
+          AppliedTotalJobs,
+          AppliedJobsNumOfPages,
+        },
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
+    clearAlert();
+  };
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS_APPLIED_JOBS });
+  };
 
   return (
     <AppContext.Provider
@@ -317,6 +432,8 @@ const AppProvider = ({ children }) => {
         displayAlert,
         registerUser,
         loginUser,
+        loginUserPasswordRest,
+        loginUserNewPassword,
         setupUser,
         toggleSidebar,
         logoutUser,
@@ -325,7 +442,10 @@ const AppProvider = ({ children }) => {
         clearValues,
         createJob,
         getJobs,
-        getJobRequets
+        getJobRequets,
+        applyJob,
+        getAppliedJobs,
+        clearFilters,
       }}
     >
       {children}

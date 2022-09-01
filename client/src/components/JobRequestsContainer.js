@@ -8,16 +8,16 @@ import JobRequests from "./JobRequests";
 const JobRequestsContainer = () => {
     const {  
         getJobRequets,
-        jobs,
         isLoading,
-        page,
-        totalJobs,
-        recSearch,
-        recSearchType,
-        recSort,
-        numOfPages,
+        jobRequests,
+        recSearch, 
+        recSearchType, 
+        recSort
      } = useAppContext();
     
+
+     console.log(jobRequests);
+
       useEffect(() => {
         getJobRequets();
       }, [recSearch, recSearchType, recSort]);
@@ -26,7 +26,7 @@ const JobRequestsContainer = () => {
         return <Loading center />;
       }
     
-      if (jobs.length === 0) {
+      if (jobRequests.length === 0) {
         return (
           <Wrapper>
             <h2>No Jobs to display...</h2>
@@ -36,11 +36,8 @@ const JobRequestsContainer = () => {
     
       return (
         <Wrapper>
-          <h5>
-            {totalJobs} job{jobs.length > 1 && "s"} found
-          </h5>
           <div className="jobs">
-            {jobs.map((job) => {
+            {jobRequests.map((job) => {
               return <JobRequests key={job._id} {...job} />;
             })}
           </div>

@@ -1,12 +1,15 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FormRow, Alert } from "../../components";
 import { useAppContext } from "../../context/appContext";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
 
 const Profile = () => {
-  const { user, showAlert, displayAlert, updateUser, isLoading } =
+  const { user, showAlert, displayAlert, updateUser, isLoading, logoutUser } =
     useAppContext();
+
+  const navigate = useNavigate();
 
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
@@ -20,6 +23,12 @@ const Profile = () => {
     //   return;
     // }
     updateUser({ name, email, lastName, location });
+  };
+
+  //event handler for change password
+  const changePassword = () => {
+    navigate("/login/frogetpassword");
+    logoutUser();
   };
 
   return (
@@ -53,6 +62,16 @@ const Profile = () => {
             value={location}
             handleChange={(e) => setLocation(e.target.value)}
           />
+
+          <button
+            className="btn btn-block"
+            type="submit"
+            disabled={isLoading}
+            onClick={changePassword}
+          >
+            {isLoading ? "Please Wait.." : "Change Password"}
+          </button>
+
           <button className="btn btn-block" type="submit" disabled={isLoading}>
             {isLoading ? "Please Wait.." : "Save and Changes"}
           </button>
