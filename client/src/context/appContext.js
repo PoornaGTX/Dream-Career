@@ -81,6 +81,7 @@ const initialState = {
   appliedJobsSearchTypePotions: ["Remote", "On-location", "Hybrid"],
   appliedJobsSort: "latest",
   appliedJobsSortOptions: ["latest", "oldest", "a-z", "z-a"],
+  PasswordRestStatus: false,
 };
 
 const AppContext = React.createContext();

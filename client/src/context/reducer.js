@@ -99,6 +99,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
+      PasswordRestStatus: false,
       token: action.payload.token,
       user: action.payload.user,
       userLocation: action.payload.location,
@@ -157,6 +158,7 @@ const reducer = (state, action) => {
   if (action.type === LOGOUT_USER) {
     return {
       ...initialState,
+      PasswordRestStatus: true,
       user: null,
       token: null,
       jobLocation: "",
