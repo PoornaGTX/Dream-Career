@@ -32,6 +32,11 @@ const UserSchema = new mongoose.Schema({
     maxlength: 20,
     default: "lastName",
   },
+  type: {
+    type: String,
+    required: [true, "please provide account type."],
+    trim: true,
+  },
   location: {
     type: String,
     trim: true,

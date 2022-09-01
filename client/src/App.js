@@ -1,5 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Landing, Error, Register, ProtectedRoute } from "./pages"; //this is export from index.js in pages
+import {
+  Landing,
+  Error,
+  Register,
+  FrogetPassword,
+  ProtectedRoute,
+} from "./pages"; //this is export from index.js in pages
 import {
   AddJob,
   AllJobs,
@@ -32,6 +38,7 @@ function App() {
 
         <Route path="/landing" element={<Landing />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login/frogetpassword" element={<FrogetPassword />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>

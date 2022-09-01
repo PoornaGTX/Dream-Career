@@ -1,11 +1,13 @@
 import User from "../models/User.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
+var nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, type } = req.body;
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !type) {
     throw new BadRequestError("please provide all values");
   }
 
@@ -15,13 +17,14 @@ const register = async (req, res) => {
     throw new BadRequestError("Email already in use");
   }
 
-  const user = await User.create({ name, email, password });
+  const user = await User.create({ name, email, password, type });
 
   const token = user.createJWT();
 
   res.status(StatusCodes.CREATED).json({
     user: {
       email: user.email,
+      type: user.type,
       lastName: user.lastName,
       location: user.location,
       name: user.name,
@@ -54,6 +57,60 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token, location: user.location });
 };
 
+//froget pasword from login
+
+const frogetPassword = async (req, res) => {
+  const { email } = req.body;
+  console.log(email);
+
+  //get the user data
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new UnAuthenticatedError("invalid Credentials");
+  }
+
+  //create one time link unique
+  const secret = process.env.JWT_SECRET + user.password;
+
+  const payload = {
+    email: user.email,
+    id: user.id,
+  };
+
+  //token
+  const token = jwt.sign(payload, secret, { expiresIn: "15m" });
+
+  //email link
+  console.log(token);
+  const link = `http://localhost:3000/reset-password/${user.id}/${token}`;
+
+  //email
+
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
+    },
+  });
+
+  var mailOptions = {
+    from: process.env.EMAIL,
+    to: user.email,
+    subject: "ToDo Password Reset",
+    text: link,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
 const updateUser = async (req, res) => {
   const { email, name, lastName, location } = req.body;
 
@@ -74,4 +131,4 @@ const updateUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token, location: user.location });
 };
 
-export { register, login, updateUser };
+export { register, login, updateUser, frogetPassword };

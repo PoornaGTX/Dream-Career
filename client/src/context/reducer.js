@@ -326,6 +326,34 @@ const reducer = (state, action) => {
     };
   }
 
+
+  //login password reset
+
+  if (action.type === LOGIN_PASSWORDREST) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === LOGIN_PASSWORDREST_COMPLETE) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Link",
+    };
+  }
+
+  if (action.type === LOGIN_PASSWORDREST_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: "Error",
+      
   if (action.type === GET_APPLIED_JOBS_BEGIN) {
     return {
       ...state,
@@ -341,6 +369,7 @@ const reducer = (state, action) => {
       AppliedJobs: action.payload.AppliedJobs,
       AppliedTotalJobs: action.payload.AppliedTotalJobs,
       AppliedJobsNumOfPages: action.payload.AppliedJobsNumOfPages,
+
     };
   }
 
