@@ -7,6 +7,8 @@ import BigSidebar from "./BigSidebar";
 import FormRowSelect from "./FormRowSelect";
 import SearchContainer from "./SearchContainer";
 import JobsContainer from "./JobsContainer";
+import JobRequests from "./JobRequests";
+import JobRequestsContainer from "./JobRequestsContainer";
 import AppliedJobsContainer from "./AppliedJobsContainer";
 import AppliedJob from "./AppliedJob";
 import AppliedJobsSearchContainer from "./AppliedJobsSearchContainer";
@@ -21,6 +23,8 @@ export {
   FormRowSelect,
   SearchContainer,
   JobsContainer,
+  JobRequests,
+  JobRequestsContainer,
   AppliedJobsContainer,
   AppliedJob,
   AppliedJobsSearchContainer,
