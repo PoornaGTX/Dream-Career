@@ -41,7 +41,9 @@ import {
   LOGIN_NEWPASSWORD_COMPLETE,
   LOGIN_NEWPASSWORD_ERROR,
   GET_JOBREQUESTS_SUCCESS,
-  GET_JOBREQUESTS_BEGIN
+  GET_JOBREQUESTS_BEGIN,
+  GET_ALL_USERS_BEGIN,
+  GET_ALL_USERS_SUCCESS,
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -434,6 +436,24 @@ const reducer = (state, action) => {
       jobRequests: action.payload.JobRequests,
       jobRequestsCount: action.payload.JobRequestsCount,
       jobRequestsPages: action.payload.JobRequestsNumOfPages,
+    };
+  }
+
+  //admin get all users
+  if (action.type === GET_ALL_USERS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    };
+  }
+  if (action.type === GET_ALL_USERS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      users: action.payload.users,
+      totalUsers: action.payload.totalUsers,
+      numOfPages: action.payload.numOfPages,
     };
   }
 

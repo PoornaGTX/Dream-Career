@@ -44,7 +44,9 @@ import {
   LOGIN_NEWPASSWORD_COMPLETE,
   LOGIN_NEWPASSWORD_ERROR,
   GET_JOBREQUESTS_SUCCESS,
-  GET_JOBREQUESTS_BEGIN
+  GET_JOBREQUESTS_BEGIN,
+  GET_ALL_USERS_BEGIN,
+  GET_ALL_USERS_SUCCESS,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -71,16 +73,16 @@ const initialState = {
   statusOptions: ["interview", "declined", "pending"],
   status: "pending",
   jobs: [],
-  jobRequests:[],
-  jobRequestsCount:0,
-  jobRequestsPages:1,
+  jobRequests: [],
+  jobRequestsCount: 0,
+  jobRequestsPages: 1,
   totalJobs: 0,
   numOfPages: 1,
   page: 1,
-  recSearch: '',
-  recSearchType: 'all',
-  recSort: 'latest',
-  recSortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+  recSearch: "",
+  recSearchType: "all",
+  recSort: "latest",
+  recSortOptions: ["latest", "oldest", "a-z", "z-a"],
   AppliedJobs: [],
   AppliedTotalJobs: 0,
   AppliedJobsNumOfPages: 1,
@@ -91,6 +93,17 @@ const initialState = {
   appliedJobsSort: "latest",
   appliedJobsSortOptions: ["latest", "oldest", "a-z", "z-a"],
   PasswordRestStatus: false,
+  users: [],
+  totalUsers: 0,
+  numOfPages: 1,
+  page: 1,
+
+  //admin
+  search: "",
+  searchType: "all",
+  searchTypeOptions: ["Admin", "Applicant", "Recruiter"],
+  sort: "latest",
+  sortOptions: ["latest", "oldest", "a-z", "z-a"],
 };
 
 const AppContext = React.createContext();
@@ -328,17 +341,41 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  const getJobs = async () => {
-    const { page, recSearch, recSearchType, recSort } = state
+  //get all users
+  const getUsers = async () => {
+    const { sort, search, searchType } = state;
+    let url = `/users?sort=${sort}&type=${searchType}`;
 
-    let url = `/jobs?page=${page}&jobType=${recSearchType}&sort=${recSort}`
-    if (recSearch) {
-      url = url + `&search=${recSearch}`
+    if (search) {
+      url = url + `&search=${search}`;
     }
-    dispatch({ type: GET_JOBS_BEGIN })
+
+    dispatch({ type: GET_ALL_USERS_BEGIN });
     try {
-      const { data } = await authFetch(url)
-      const { jobs, totalJobs, numOfPages } = data
+      const { data } = await authFetch.get(url);
+      const { users, totalUsers, numOfPages } = data;
+      dispatch({
+        type: GET_ALL_USERS_SUCCESS,
+        payload: { users, totalUsers, numOfPages },
+      });
+    } catch (error) {
+      console.log(error);
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  const getJobs = async () => {
+    const { page, recSearch, recSearchType, recSort } = state;
+
+    let url = `/jobs?page=${page}&jobType=${recSearchType}&sort=${recSort}`;
+    if (recSearch) {
+      url = url + `&search=${recSearch}`;
+    }
+    dispatch({ type: GET_JOBS_BEGIN });
+    try {
+      const { data } = await authFetch(url);
+      const { jobs, totalJobs, numOfPages } = data;
       dispatch({
         type: GET_JOBS_SUCCESS,
         payload: {
@@ -346,16 +383,16 @@ const AppProvider = ({ children }) => {
           totalJobs,
           numOfPages,
         },
-      })
+      });
     } catch (error) {
-      logoutUser()
+      logoutUser();
     }
-    clearAlert()
+    clearAlert();
   };
 
-  const getJobRequets = async ()=>{
+  const getJobRequets = async () => {
     dispatch({ type: GET_JOBREQUESTS_BEGIN });
-    const { page, recSearch, recSearchType, recSort } = state
+    const { page, recSearch, recSearchType, recSort } = state;
     let url = `/jobs/job-requests?page=${page}&jobType=${recSearchType}&$sort=${recSort}`;
     if (recSearch) {
       url = url + `&search=${recSearch}`;
@@ -446,6 +483,7 @@ const AppProvider = ({ children }) => {
         applyJob,
         getAppliedJobs,
         clearFilters,
+        getUsers,
       }}
     >
       {children}

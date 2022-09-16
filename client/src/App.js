@@ -16,6 +16,7 @@ import {
   ApplyJob,
   AppliedJobs,
   JobRequests,
+  AllUsers,
 } from "./pages/dashboard";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="apply-job" element={<ApplyJob />} />
           <Route path="applied-jobs" element={<AppliedJobs />} />
           <Route path="job-requests" element={<JobRequests />} />
+          <Route path="all-users" element={<AllUsers />} />
         </Route>
 
         <Route path="/landing" element={<Landing />} />
