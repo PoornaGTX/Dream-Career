@@ -465,7 +465,7 @@ const reducer = (state, action) => {
     };
   }
 
-  //set update user
+  // admin set update user
   if (action.type === SET_UPDATE_USER) {
     const user = state.users.find((user) => user._id === action.payload.id);
     const { _id, firstName, email, lastName, type, location } = user;
@@ -505,6 +505,8 @@ const reducer = (state, action) => {
       alertText: action.payload.msg,
     };
   }
+
+  // admin set delete user
   if (action.type === SET_DELETE_USER) {
     const user = state.users.find((user) => user._id === action.payload.id);
     const { _id, firstName, email, lastName, type, location } = user;
@@ -521,6 +523,8 @@ const reducer = (state, action) => {
       email,
     };
   }
+
+  // admin delete user
   if (action.type === DELETE_USER) {
     return {
       ...state,
@@ -528,6 +532,25 @@ const reducer = (state, action) => {
       showAlert: true,
       alertType: "success",
       alertText: "User delete success fully",
+    };
+  }
+
+  // admin stats
+  if (action.type === SHOW_STATS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    };
+  }
+
+  // admin stats
+  if (action.type === SHOW_STATS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      adminStats: action.payload.adStats,
+      monthelUserCreations: action.payload.admonthelUserCreations,
     };
   }
 

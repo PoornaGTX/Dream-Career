@@ -96,7 +96,17 @@ const showStats = async (req, res) => {
     Recruiter: stats.Recruiter || 0,
   };
 
-  let monthelUserCreations = [];
+  let monthelUserCreations = await User.aggregate([
+    { $match: {} },
+    {
+      $group: {
+        _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { "_id.year": -1, "_id.month": -1 } },
+    { $limit: 6 },
+  ]);
 
   res.status(StatusCodes.OK).json({ defaultStats, monthelUserCreations });
 };

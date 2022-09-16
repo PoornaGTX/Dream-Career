@@ -3,47 +3,50 @@ import validator from "validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const UserSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: [true, "Please provide name"],
-    minlength: 3,
-    maxlength: 20,
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: [true, "Please provide email"],
-    validate: {
-      validator: validator.isEmail,
-      message: "Please provide valid email",
+const UserSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: [true, "Please provide name"],
+      minlength: 3,
+      maxlength: 20,
+      trim: true,
     },
-    unique: true,
+    email: {
+      type: String,
+      required: [true, "Please provide email"],
+      validate: {
+        validator: validator.isEmail,
+        message: "Please provide valid email",
+      },
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: [true, "Please provide password"],
+      minlength: 6,
+      select: false,
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      maxlength: 20,
+      default: "lastName",
+    },
+    type: {
+      type: String,
+      required: [true, "please provide account type."],
+      trim: true,
+    },
+    location: {
+      type: String,
+      trim: true,
+      maxlength: 20,
+      default: "my city",
+    },
   },
-  password: {
-    type: String,
-    required: [true, "Please provide password"],
-    minlength: 6,
-    select: false,
-  },
-  lastName: {
-    type: String,
-    trim: true,
-    maxlength: 20,
-    default: "lastName",
-  },
-  type: {
-    type: String,
-    required: [true, "please provide account type."],
-    trim: true,
-  },
-  location: {
-    type: String,
-    trim: true,
-    maxlength: 20,
-    default: "my city",
-  },
-});
+  { timestamps: true }
+);
 
 //password hashing
 //.pre mean before save the document we want run a function
