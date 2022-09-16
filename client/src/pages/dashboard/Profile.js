@@ -9,9 +9,10 @@ const Profile = () => {
   const { user, showAlert, displayAlert, updateUser, isLoading, logoutUser } =
     useAppContext();
 
+  console.log(user);
   const navigate = useNavigate();
 
-  const [name, setName] = useState(user?.name);
+  const [firstName, setName] = useState(user?.firstName);
   const [email, setEmail] = useState(user?.email);
   const [lastName, setLastName] = useState(user?.lastName);
   const [location, setLocation] = useState(user?.location);
@@ -22,7 +23,8 @@ const Profile = () => {
     //   displayAlert();
     //   return;
     // }
-    updateUser({ name, email, lastName, location });
+    console.log(firstName, email, lastName, location);
+    updateUser({ firstName, email, lastName, location });
   };
 
   //event handler for change password
@@ -39,8 +41,10 @@ const Profile = () => {
         <div className="form-center">
           <FormRow
             type="text"
-            name="name"
-            value={name}
+            labelText="First Name"
+            name="firstName"
+            value={firstName}
+            inputPattern={true}
             handleChange={(e) => setName(e.target.value)}
           />
           <FormRow
@@ -48,6 +52,7 @@ const Profile = () => {
             labelText="Last Name"
             name="lastName"
             value={lastName}
+            inputPattern={true}
             handleChange={(e) => setLastName(e.target.value)}
           />
           <FormRow

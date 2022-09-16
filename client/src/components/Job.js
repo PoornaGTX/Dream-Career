@@ -13,8 +13,8 @@ const Job = ({
   jobType,
   createdAt,
   status,
+  setEdit,
 }) => {
-
   let date = moment(createdAt);
   date = date.format("MMM Do, YYYY");
   return (
@@ -39,7 +39,7 @@ const Job = ({
             <Link
               to="/add-job"
               className="btn edit-btn"
-              onClick={()=>alert(`edit job ${_id}`)}
+              onClick={() => alert(`edit job ${_id}`)}
             >
               Edit
             </Link>
@@ -53,7 +53,7 @@ const Job = ({
             <button
               type="button"
               className="btn delete-btn"
-              onClick={()=>alert(`delete job ${_id}`)}
+              onClick={() => alert(`delete job ${_id}`)}
             >
               Delete
             </button>
