@@ -54,6 +54,8 @@ import {
   UPDATE_USER_ADMIN_ERROR,
   SET_DELETE_USER,
   DELETE_USER,
+  SHOW_STATS_BEGIN,
+  SHOW_STATS_SUCCESS,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -115,6 +117,8 @@ const initialState = {
   deleteUserId: "",
   isUpdate: false,
   isDelete: false,
+  adminStats: {},
+  monthelUserCreations: [],
 };
 
 const AppContext = React.createContext();
@@ -425,6 +429,22 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const adminShowStats = async () => {
+    dispatch({ type: SHOW_STATS_BEGIN });
+
+    try {
+      const { data } = await authFetch("/users/stats");
+      dispatch({
+        type: SHOW_STATS_SUCCESS,
+        payload: {
+          adminStats: data.defaultStats,
+          monthelUserCreations: data.monthelUserCreations,
+        },
+      });
+    } catch (error) {}
+  };
+
+  ////////////////////////////////////////////////////////////////////////////////
   const getJobs = async () => {
     const { page, recSearch, recSearchType, recSort } = state;
 
@@ -548,6 +568,7 @@ const AppProvider = ({ children }) => {
         setDeleteUser,
         updateUserAdmin,
         deleteUser,
+        adminShowStats,
       }}
     >
       {children}

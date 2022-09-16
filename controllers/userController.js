@@ -6,6 +6,8 @@ import {
   NotFoundError,
 } from "../errors/index.js";
 
+import mongoose from "mongoose";
+
 const getAllUsers = async (req, res) => {
   const { type, search, sort } = req.query;
   const queryObject = {};
@@ -75,4 +77,28 @@ const deleteUser = async (req, res) => {
   return res.status(StatusCodes.OK).send({ msg: "Success! User Removed" });
 };
 
-export { getAllUsers, UpdateUser, deleteUser };
+const showStats = async (req, res) => {
+  let stats = await User.aggregate([
+    { $match: {} },
+    { $group: { _id: "$type", count: { $sum: 1 } } },
+  ]);
+
+  stats = stats.reduce((acc, curr) => {
+    //cuur => current item
+    const { _id: title, count } = curr;
+    acc[title] = count;
+    return acc;
+  }, {});
+
+  const defaultStats = {
+    Admin: stats.Admin || 0,
+    Applicant: stats.Applicant || 0,
+    Recruiter: stats.Recruiter || 0,
+  };
+
+  let monthelUserCreations = [];
+
+  res.status(StatusCodes.OK).json({ defaultStats, monthelUserCreations });
+};
+
+export { getAllUsers, UpdateUser, deleteUser, showStats };

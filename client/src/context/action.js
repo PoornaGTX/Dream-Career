@@ -85,3 +85,7 @@ export const SET_DELETE_USER = "SET_DELETE_USER";
 
 //delete user
 export const DELETE_USER = "DELETE_USER";
+
+//admin stats
+export const SHOW_STATS_BEGIN = "SHOW_STATS_BEGIN ";
+export const SHOW_STATS_SUCCESS = "SHOW_STATS_SUCCESS";
