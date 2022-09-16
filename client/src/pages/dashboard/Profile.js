@@ -10,6 +10,8 @@ const Profile = () => {
     useAppContext();
 
   console.log(user);
+
+  console.log(user);
   const navigate = useNavigate();
 
   const [firstName, setName] = useState(user?.firstName);

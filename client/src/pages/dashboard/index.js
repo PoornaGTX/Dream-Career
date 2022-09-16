@@ -7,6 +7,7 @@ import ApplyJob from "./ApplyJob";
 import AppliedJobs from "./AppliedJobs";
 import JobRequests from "./JobRequests";
 import AllUsers from "./AdminAllusers";
+import AdminUpdateUser from "./AdminUpdateUser";
 
 export {
   AppliedJobs,
@@ -18,4 +19,5 @@ export {
   SharedLayout,
   JobRequests,
   AllUsers,
+  AdminUpdateUser,
 };

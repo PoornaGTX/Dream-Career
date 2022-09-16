@@ -1,6 +1,7 @@
 import React, { useReducer, useContext, useEffect } from "react";
 import reducer from "./reducer";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
@@ -47,6 +48,12 @@ import {
   GET_JOBREQUESTS_BEGIN,
   GET_ALL_USERS_BEGIN,
   GET_ALL_USERS_SUCCESS,
+  SET_UPDATE_USER,
+  UPDATE_USER_ADMIN_BEGIN,
+  UPDATE_USER_ADMIN_SUCCESS,
+  UPDATE_USER_ADMIN_ERROR,
+  SET_DELETE_USER,
+  DELETE_USER,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -104,6 +111,10 @@ const initialState = {
   searchTypeOptions: ["Admin", "Applicant", "Recruiter"],
   sort: "latest",
   sortOptions: ["latest", "oldest", "a-z", "z-a"],
+  updateUserId: "",
+  deleteUserId: "",
+  isUpdate: false,
+  isDelete: false,
 };
 
 const AppContext = React.createContext();
@@ -365,6 +376,55 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  //set update user
+  const setUpdateUser = (id) => {
+    dispatch({ type: SET_UPDATE_USER, payload: { id } });
+  };
+
+  //delete user
+  const setDeleteUser = (id) => {
+    dispatch({ type: SET_DELETE_USER, payload: { id } });
+  };
+
+  const updateUserAdmin = async ({
+    UPname,
+    UPlname,
+    UPtype,
+    UPemail,
+    UPlocation,
+  }) => {
+    dispatch({ type: UPDATE_USER_ADMIN_BEGIN });
+    try {
+      await authFetch.patch(`/users/${state.updateUserId}`, {
+        email: UPemail,
+        firstName: UPname,
+        type: UPtype,
+        location: UPlocation,
+        lastName: UPlname,
+      });
+      dispatch({ type: UPDATE_USER_ADMIN_SUCCESS });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: UPDATE_USER_ADMIN_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  //delete user
+  const deleteUser = async () => {
+    const id = state.deleteUserId;
+    dispatch({ type: DELETE_USER });
+    try {
+      await authFetch.delete(`/users/${id}`);
+      getUsers();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
   const getJobs = async () => {
     const { page, recSearch, recSearchType, recSort } = state;
 
@@ -484,6 +544,10 @@ const AppProvider = ({ children }) => {
         getAppliedJobs,
         clearFilters,
         getUsers,
+        setUpdateUser,
+        setDeleteUser,
+        updateUserAdmin,
+        deleteUser,
       }}
     >
       {children}

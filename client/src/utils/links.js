@@ -10,7 +10,7 @@ const links = [
   { id: 4, text: "profile", path: "profile", icon: <ImProfile /> },
   // { id: 4, text: "Applied jobs", path: "applied-jobs", icon: <FaWpforms /> },
   { id: 6, text: "Job requests", path: "job-requests", icon: <MdQueryStats /> },
-  { id: 6, text: "All users", path: "all-users", icon: <MdQueryStats /> },
+  { id: 7, text: "All users", path: "all-users", icon: <MdQueryStats /> },
 ];
 
 export default links;

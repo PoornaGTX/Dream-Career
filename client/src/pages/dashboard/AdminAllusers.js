@@ -8,12 +8,12 @@ const AllUsers = () => {
   const navigator = useNavigate();
   const { user } = useAppContext();
 
-  //   useEffect(() => {
-  //     // console.log(user.type);
-  //     if (user.type !== "Admin") {
-  //       navigator("/");
-  //     }
-  //   });
+  useEffect(() => {
+    // console.log(user.type);
+    if (user.type !== "Admin") {
+      navigator("/");
+    }
+  });
 
   return (
     <>

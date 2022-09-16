@@ -71,3 +71,17 @@ export const GET_JOBREQUESTS_SUCCESS = "GET_JOBREQUESTS_SUCCESS";
 
 export const GET_ALL_USERS_BEGIN = "GET_ALL_USERS_BEGIN";
 export const GET_ALL_USERS_SUCCESS = "GET_ALL_USERS_SUCCESS";
+
+//set update user
+export const SET_UPDATE_USER = "SET_UPDATE_USER";
+
+//update user admin
+export const UPDATE_USER_ADMIN_BEGIN = "UPDATE_USER_ADMIN_BEGIN";
+export const UPDATE_USER_ADMIN_SUCCESS = "UPDATE_USER_ADMIN_SUCCESS";
+export const UPDATE_USER_ADMIN_ERROR = "UPDATE_USER_ADMIN_ERROR";
+
+//set delete user
+export const SET_DELETE_USER = "SET_DELETE_USER";
+
+//delete user
+export const DELETE_USER = "DELETE_USER";

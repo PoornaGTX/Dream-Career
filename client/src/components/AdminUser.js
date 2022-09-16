@@ -7,9 +7,10 @@ import AdminUserInfo from "./AdminUserInfo";
 import { MdEmail, MdUpdate } from "react-icons/md";
 import { IoPerson, IoTime } from "react-icons/io5";
 import { BsFillBagCheckFill } from "react-icons/bs";
-import { GrValidate } from "react-icons/gr";
+import { AiTwotoneEnvironment } from "react-icons/ai";
 
 const AdminUser = ({ _id, firstName, email, lastName, type, location }) => {
+  const { setDeleteUser, setUpdateUser } = useAppContext();
   return (
     <Wrapper>
       <header>
@@ -25,24 +26,25 @@ const AdminUser = ({ _id, firstName, email, lastName, type, location }) => {
             icon={<IoPerson />}
             text={`${firstName} ${lastName}`}
           />
-          <AdminUserInfo icon={<FaCalendarAlt />} text={lastName} />
-          <AdminUserInfo icon={<FaBriefcase />} text={type} />
+          <AdminUserInfo icon={<AiTwotoneEnvironment />} text={location} />
+          <AdminUserInfo icon={<MdEmail />} text={email} />
+
           {/* <div className={`status ${status}`}>{status}</div> */}
         </div>
 
         <footer>
           <div className="actions">
             <Link
-              to="/add-job"
+              to="/admin-update"
               className="btn edit-btn"
-              // onClick={() => setEdit(_id)}
+              onClick={() => setUpdateUser(_id)}
             >
-              Edit
+              Hello edit
             </Link>
             <button
               type="button"
               className="btn delete-btn"
-              // onClick={() => deleteJob(_id)}
+              onClick={() => setDeleteUser(_id)}
             >
               Delete
             </button>

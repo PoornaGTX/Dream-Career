@@ -42,11 +42,13 @@ const getAllUsers = async (req, res) => {
 };
 
 const UpdateUser = async (req, res) => {
+  console.log("hello");
   const { id: uId } = req.params;
-  console.log(uId);
-  const { name, email, type } = req.body;
-  console.log(req.body);
-  if (!name || !email || !type) {
+  console.log(`${uId} hello`);
+
+  const { firstName, email, lastName, location, type } = req.body;
+
+  if (!email || !type || !firstName || !lastName || !location) {
     throw new BadRequestError("Please Provide all values.");
   }
   const user = await User.findOne({ _id: uId });
@@ -60,6 +62,7 @@ const UpdateUser = async (req, res) => {
 
   res.status(StatusCodes.OK).send({ updateUser });
 };
+
 const deleteUser = async (req, res) => {
   const { id: dId } = req.params;
   const user = await User.findOne({ _id: dId });

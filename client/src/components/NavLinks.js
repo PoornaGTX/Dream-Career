@@ -1,8 +1,45 @@
 import React from "react";
 import links from "../utils/links";
-import { NavLink } from "react-router-dom";
+import { useAppContext } from "../context/appContext";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const NavLinks = ({ toggleSidebar }) => {
+  const { user } = useAppContext();
+
+  let NewLinks = links;
+
+  if (user.type === "Recruiter" || user.type === "Applicant") {
+    NewLinks = NewLinks.filter((link) => {
+      if (
+        link.path !== "all-users" &&
+        link.path !== "all-jobs" &&
+        link.path !== "profile"
+      ) {
+        return link;
+      }
+    });
+  }
+
+  //Recruiter
+
+  if (user.type === "Admin" || user.type === "Applicant") {
+    NewLinks = NewLinks.filter((link) => {
+      if (link.path !== "job-requests" && link.path !== "add-job") {
+        return link;
+      }
+    });
+  }
+
+  // //Applicant
+
+  // // if (user.type === "Admin" || user.type === "Recruiter") {
+  // //   NewLinks = NewLinks.filter((link) => {
+  // //     if (link.path !== "job-requests" && link.path !== "add-job") {
+  // //       return link;
+  // //     }
+  // //   });
+  // }
+
   return (
     <div className="nav-links">
       {links.map((link) => {

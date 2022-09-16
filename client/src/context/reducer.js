@@ -44,6 +44,12 @@ import {
   GET_JOBREQUESTS_BEGIN,
   GET_ALL_USERS_BEGIN,
   GET_ALL_USERS_SUCCESS,
+  SET_UPDATE_USER,
+  UPDATE_USER_ADMIN_BEGIN,
+  UPDATE_USER_ADMIN_SUCCESS,
+  UPDATE_USER_ADMIN_ERROR,
+  SET_DELETE_USER,
+  DELETE_USER,
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -454,6 +460,69 @@ const reducer = (state, action) => {
       users: action.payload.users,
       totalUsers: action.payload.totalUsers,
       numOfPages: action.payload.numOfPages,
+    };
+  }
+
+  //set update user
+  if (action.type === SET_UPDATE_USER) {
+    const user = state.users.find((user) => user._id === action.payload.id);
+    const { _id, firstName, email, lastName, type, location } = user;
+    return {
+      ...state,
+      isUpdate: true,
+      isDelete: false,
+      updateUserId: _id,
+      firstName,
+      lastName,
+      location,
+      type,
+      email,
+    };
+  }
+  if (action.type === UPDATE_USER_ADMIN_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === UPDATE_USER_ADMIN_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "User Updated",
+    };
+  }
+  if (action.type === UPDATE_USER_ADMIN_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      alertType: "danger",
+      showAlert: true,
+      alertText: action.payload.msg,
+    };
+  }
+  if (action.type === SET_DELETE_USER) {
+    const user = state.users.find((user) => user._id === action.payload.id);
+    const { _id, firstName, email, lastName, type, location } = user;
+    console.log(user);
+    return {
+      ...state,
+      isDelete: true,
+      isUpdate: false,
+      deleteUserId: _id,
+      firstName,
+      lastName,
+      location,
+      type,
+      email,
+    };
+  }
+  if (action.type === DELETE_USER) {
+    return {
+      ...state,
+      isLoading: true,
     };
   }
 
