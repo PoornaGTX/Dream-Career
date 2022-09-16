@@ -434,11 +434,12 @@ const AppProvider = ({ children }) => {
 
     try {
       const { data } = await authFetch("/users/stats");
+      console.log(data.defaultStats);
       dispatch({
         type: SHOW_STATS_SUCCESS,
         payload: {
-          adminStats: data.defaultStats,
-          monthelUserCreations: data.monthelUserCreations,
+          adStats: data.defaultStats,
+          admonthelUserCreations: data.monthelUserCreations,
         },
       });
     } catch (error) {}
