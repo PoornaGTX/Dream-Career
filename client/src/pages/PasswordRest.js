@@ -30,7 +30,7 @@ const PasswordRest = () => {
 
     if (password !== confirmPassword) {
       console.log(password, confirmPassword);
-      alert("password is not match");
+      alert("Password is mismatch");
       return;
     }
 

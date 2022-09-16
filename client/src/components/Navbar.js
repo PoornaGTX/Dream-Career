@@ -29,7 +29,7 @@ export const Navbar = () => {
             onClick={() => setShowLogout(!showLogout)}
           >
             <FaUserCircle />
-            {user?.name}{" "}
+            {user?.firstName}
             {/*user kenek hitiyoth eyage name eka ganna.  uda thiyana useAppContext() eken user gaththe  */}
             <FaCaretDown />
           </button>
