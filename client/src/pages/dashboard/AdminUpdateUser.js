@@ -62,7 +62,7 @@ const AdminUpdateUser = () => {
   return (
     <Wrapper>
       <form className="form">
-        {<h3>Update User</h3>}
+        {isUpdate && <h3>Update User</h3>}
         {isDelete && <h3>Delete User</h3>}
 
         {showAlert && <Alert />}
