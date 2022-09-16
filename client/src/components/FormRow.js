@@ -8,6 +8,7 @@ const FormRow = ({
   labelText,
   inputPattern,
   placeHolderText,
+  isReadOnly,
 }) => {
   return (
     <div className="form-row">
@@ -22,6 +23,7 @@ const FormRow = ({
         placeholder={placeHolderText}
         onChange={handleChange}
         className="form-input"
+        readOnly={isReadOnly}
       />
     </div>
   );

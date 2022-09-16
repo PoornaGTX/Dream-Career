@@ -523,6 +523,9 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: true,
+      showAlert: true,
+      alertType: "success",
+      alertText: "User delete success fully",
     };
   }
 

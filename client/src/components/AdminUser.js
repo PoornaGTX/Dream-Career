@@ -39,15 +39,15 @@ const AdminUser = ({ _id, firstName, email, lastName, type, location }) => {
               className="btn edit-btn"
               onClick={() => setUpdateUser(_id)}
             >
-              Hello edit
+              edit
             </Link>
-            <button
-              type="button"
+            <Link
+              to="/admin-update"
               className="btn delete-btn"
               onClick={() => setDeleteUser(_id)}
             >
               Delete
-            </button>
+            </Link>
           </div>
         </footer>
       </div>
