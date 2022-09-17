@@ -44,7 +44,10 @@ import {
   LOGIN_NEWPASSWORD_COMPLETE,
   LOGIN_NEWPASSWORD_ERROR,
   GET_JOBREQUESTS_SUCCESS,
-  GET_JOBREQUESTS_BEGIN
+  GET_JOBREQUESTS_BEGIN,
+  CLEAR_REC_FILTERS,
+  SHOW_REC_STATS_SUCCESS,
+  SHOW_REC_STATS_BEGIN
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -91,6 +94,9 @@ const initialState = {
   appliedJobsSort: "latest",
   appliedJobsSortOptions: ["latest", "oldest", "a-z", "z-a"],
   PasswordRestStatus: false,
+  recStats:{},
+  recMonthlyApplications:[]
+
 };
 
 const AppContext = React.createContext();
@@ -425,6 +431,27 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLEAR_FILTERS_APPLIED_JOBS });
   };
 
+  const clearRecFilters = () => {
+    dispatch({ type: CLEAR_REC_FILTERS });
+  };
+
+  const showRecStats = async () => {
+    dispatch({ type: SHOW_REC_STATS_BEGIN })
+    try {
+      const { data } = await authFetch('/jobs/stats')
+      dispatch({
+        type: SHOW_REC_STATS_SUCCESS,
+        payload: {
+          stats: data.defaultStats,
+          monthlyApplications: data.monthlyApplications,
+        },
+      })
+    } catch (error) {
+      logoutUser()
+    }
+    clearAlert()
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -446,6 +473,8 @@ const AppProvider = ({ children }) => {
         applyJob,
         getAppliedJobs,
         clearFilters,
+        clearRecFilters,
+        showRecStats
       }}
     >
       {children}

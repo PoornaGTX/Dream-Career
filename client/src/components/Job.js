@@ -13,6 +13,7 @@ const Job = ({
   jobType,
   createdAt,
   status,
+  setEdit
 }) => {
 
   let date = moment(createdAt);
@@ -28,9 +29,9 @@ const Job = ({
       </header>
       <div className="content">
         <div className="content-center">
-          <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
-          <JobInfo icon={<FaCalendarAlt />} text={date} />
-          <JobInfo icon={<FaBriefcase />} text={jobType} />
+          <JobInfo icon={<FaLocationArrow />} text={jobLocation} title='Job Location' />
+          <JobInfo icon={<FaCalendarAlt />} text={date} title='Date'/>
+          <JobInfo icon={<FaBriefcase />} text={jobType} title='Job Type'/>
           <div className={`status ${status}`}>{status}</div>
         </div>
 
@@ -43,13 +44,13 @@ const Job = ({
             >
               Edit
             </Link>
-            <Link
+            {/* <Link
               to="/apply-job"
               className="btn edit-btn"
               onClick={() => setEdit(_id)}
             >
               Apply
-            </Link>
+            </Link> */}
             <button
               type="button"
               className="btn delete-btn"

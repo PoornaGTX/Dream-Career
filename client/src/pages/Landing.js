@@ -19,9 +19,7 @@ export const Landing = () => {
           </h1>
 
           <p>
-            I'm baby you probably haven't heard of them pug chambray, knausgaard
-            af kombucha next level hashtag portland tumblr selfies quinoa
-            pitchfork affogato. Literally mixtape disrupt ramps lo-fi man braid.
+          Dream Career is a platform for posting and finding jobs. By using this system job recruiters can post their job vacancies and job applicants can find and apply for the jobs they are interested in. As well as applicants can add their qualifications and maintain their portfolio in the system.
           </p>
 
           <Link to="/register" className="btn btn-hero">

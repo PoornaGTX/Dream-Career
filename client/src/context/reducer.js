@@ -41,7 +41,10 @@ import {
   LOGIN_NEWPASSWORD_COMPLETE,
   LOGIN_NEWPASSWORD_ERROR,
   GET_JOBREQUESTS_SUCCESS,
-  GET_JOBREQUESTS_BEGIN
+  GET_JOBREQUESTS_BEGIN,
+  CLEAR_REC_FILTERS,
+  SHOW_REC_STATS_SUCCESS,
+  SHOW_REC_STATS_BEGIN
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -436,6 +439,43 @@ const reducer = (state, action) => {
       jobRequestsPages: action.payload.JobRequestsNumOfPages,
     };
   }
+
+  if (action.type === GET_JOBREQUESTS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      jobRequests: action.payload.JobRequests,
+      jobRequestsCount: action.payload.JobRequestsCount,
+      jobRequestsPages: action.payload.JobRequestsNumOfPages,
+    };
+  }
+  
+  if (action.type === CLEAR_REC_FILTERS) {
+    return {
+      ...state,
+      recSearch: '',
+      recSearchType: 'all',
+      recSort: 'latest',
+    };
+  }
+
+  if (action.type === SHOW_REC_STATS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    }
+  }
+  if (action.type === SHOW_REC_STATS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      recStats: action.payload.stats,
+      recMonthlyApplications: action.payload.monthlyApplications,
+    }
+  }
+
+
 
   throw new Error(`no such action : ${action.type}`);
 };

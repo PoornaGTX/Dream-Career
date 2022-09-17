@@ -81,7 +81,7 @@ const Register = () => {
     <Wrapper className="full-page">
       <form className="form" onSubmit={onSubmit}>
         <Logo />
-        <h3>{values.isMember ? "Loging" : "Register"}</h3>
+        <h3>{values.isMember ? "Login" : "Register"}</h3>
         {/* values.isMember ? true nam loggin false nam register */}
         {showAlert && <Alert />}
         {/* name input from component */}
@@ -134,7 +134,7 @@ const Register = () => {
           </button>
 
           <button type="button" className="member-btn" onClick={passwordRest}>
-            Froget password
+            Forgot password ?
           </button>
         </p>
       </form>

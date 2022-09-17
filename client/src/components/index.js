@@ -12,6 +12,10 @@ import JobRequestsContainer from "./JobRequestsContainer";
 import AppliedJobsContainer from "./AppliedJobsContainer";
 import AppliedJob from "./AppliedJob";
 import AppliedJobsSearchContainer from "./AppliedJobsSearchContainer";
+import RecStatsContainer from "./RecStatsContainer";
+import RecChartsContainer from "./RecChartsContainer";
+import Loading from "./Loading";
+
 
 export {
   Logo,
@@ -28,4 +32,7 @@ export {
   AppliedJobsContainer,
   AppliedJob,
   AppliedJobsSearchContainer,
+  RecStatsContainer,
+  RecChartsContainer,
+  Loading
 };

@@ -47,6 +47,8 @@ const AddJob = () => {
             name="position"
             value={position}
             handleChange={handleJobInput}
+            pattern={true}
+            placeholder='Job position'
           />
           {/*company*/}
           <FormRow
@@ -54,6 +56,8 @@ const AddJob = () => {
             name="company"
             value={company}
             handleChange={handleJobInput}
+            pattern={true}
+            placeholder='Your company name'
           />
           {/*location*/}
           <FormRow
@@ -62,6 +66,8 @@ const AddJob = () => {
             name="jobLocation"
             value={jobLocation}
             handleChange={handleJobInput}
+            pattern={true}
+            placeholder='Your company location'
           />
           {/* job type */}
           <FormRowSelect
