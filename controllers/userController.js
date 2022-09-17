@@ -7,6 +7,7 @@ import {
 } from "../errors/index.js";
 
 import mongoose from "mongoose";
+import moment from "moment";
 
 const getAllUsers = async (req, res) => {
   const { type, search, sort } = req.query;
@@ -105,8 +106,23 @@ const showStats = async (req, res) => {
       },
     },
     { $sort: { "_id.year": -1, "_id.month": -1 } },
-    { $limit: 6 },
+    { $limit: 6 }, //limit is use to get latest 6 month data
   ]);
+
+  monthelUserCreations = monthelUserCreations
+    .map((item) => {
+      const {
+        _id: { year, month },
+        count,
+      } = item;
+
+      const date = moment()
+        .month(month - 1)
+        .year(year)
+        .format("MMM Y");
+      return { date, count };
+    })
+    .reverse();
 
   res.status(StatusCodes.OK).json({ defaultStats, monthelUserCreations });
 };
