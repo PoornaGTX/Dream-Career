@@ -106,7 +106,7 @@ const showStats = async (req, res) => {
       },
     },
     { $sort: { "_id.year": -1, "_id.month": -1 } },
-    { $limit: 6 }, //limit is use to get latest 6 month data
+    { $limit: 8 }, //limit is use to get latest 6 month data
   ]);
 
   monthelUserCreations = monthelUserCreations

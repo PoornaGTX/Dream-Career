@@ -43,7 +43,7 @@ const AdminStatItem = ({
       body: userData,
     });
 
-    doc.save("table.pdf");
+    doc.save(`${tableName}.pdf`);
   };
 
   return (
