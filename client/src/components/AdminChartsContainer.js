@@ -18,7 +18,7 @@ const AdminChartsContainer = () => {
 
   const pdfGenStats = () => {
     const doc = new JsPDF();
-    doc.text("User Creations", 20, 10);
+    doc.text("User Creations details", 20, 10);
 
     doc.autoTable({
       theme: "grid",
@@ -26,7 +26,7 @@ const AdminChartsContainer = () => {
       body: data,
     });
 
-    doc.save("table.pdf");
+    doc.save("User_Stats.pdf");
   };
 
   return (
