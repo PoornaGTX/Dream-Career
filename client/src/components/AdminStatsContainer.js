@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AdminStatItem from "./AdminStatItem";
 import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 import Wrapper from "../assets/wrappers/StatsContainer";
 import { useAppContext } from "../context/appContext";
 
 const AdminStatsContainer = () => {
-  const { adminStats } = useAppContext();
+  const { adminStats, users } = useAppContext();
+
+  const Applicants = users.filter((user) => user.type === "Applicant");
+  const Recruiters = users.filter((user) => user.type === "Recruiter");
+  const Admin = users.filter((user) => user.type === "Admin");
 
   const defaultStats = [
     {
@@ -14,6 +18,8 @@ const AdminStatsContainer = () => {
       icon: <FaLocationArrow />,
       color: "#e9b949",
       bcg: "#fcefc7",
+      userData: Applicants,
+      dateType: "Applicants",
     },
     {
       title: "Total Recruiters",
@@ -21,6 +27,8 @@ const AdminStatsContainer = () => {
       icon: <FaLocationArrow />,
       color: "#647acb",
       bcg: "#e0e8f9",
+      userData: Recruiters,
+      dateType: "Recruiters",
     },
     {
       title: "Total Admins",
@@ -28,6 +36,8 @@ const AdminStatsContainer = () => {
       icon: <FaLocationArrow />,
       color: "#e9b949",
       bcg: "#fcefc7",
+      userData: Admin,
+      dateType: "Admin",
     },
   ];
 
