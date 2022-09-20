@@ -7,10 +7,12 @@ import {
 } from "../../components";
 
 const Stats = () => {
-  const { adminShowStats, isLoading, monthelUserCreations } = useAppContext();
+  const { adminShowStats, isLoading, monthelUserCreations, getUsers } =
+    useAppContext();
 
   useEffect(() => {
     adminShowStats();
+    getUsers();
   }, []);
 
   if (isLoading) {
