@@ -10,11 +10,7 @@ const NavLinks = ({ toggleSidebar }) => {
 
   if (user.type === "Recruiter" || user.type === "Applicant") {
     NewLinks = NewLinks.filter((link) => {
-      if (
-        link.path !== "all-users" &&
-        link.path !== "all-jobs" &&
-        link.path !== "profile"
-      ) {
+      if (link.path !== "all-users" && link.path !== "all-jobs") {
         return link;
       }
     });
@@ -42,7 +38,7 @@ const NavLinks = ({ toggleSidebar }) => {
 
   return (
     <div className="nav-links">
-      {links.map((link) => {
+      {NewLinks.map((link) => {
         const { text, path, id, icon } = link;
         return (
           <NavLink

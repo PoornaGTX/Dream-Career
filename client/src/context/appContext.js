@@ -56,6 +56,7 @@ import {
   DELETE_USER,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
+  CLEAR_VALUES_ADMIN,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -104,15 +105,16 @@ const initialState = {
   PasswordRestStatus: false,
   users: [],
   totalUsers: 0,
+  numOfPagesAdmin: 1,
   numOfPages: 1,
   page: 1,
 
   //admin
-  search: "",
-  searchType: "all",
-  searchTypeOptions: ["Admin", "Applicant", "Recruiter"],
-  sort: "latest",
-  sortOptions: ["latest", "oldest", "a-z", "z-a"],
+  searchAdmin: "",
+  searchTypeAdmin: "all",
+  searchTypeOptionsAdmin: ["Admin", "Applicant", "Recruiter"],
+  sortAdmin: "latest",
+  sortOptionsAdmin: ["latest", "oldest", "a-z", "z-a"],
   updateUserId: "",
   deleteUserId: "",
   isUpdate: false,
@@ -328,6 +330,10 @@ const AppProvider = ({ children }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
   };
 
+  const clearValuesAdmin = () => {
+    dispatch({ type: CLEAR_VALUES_ADMIN });
+  };
+
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
   };
@@ -358,20 +364,20 @@ const AppProvider = ({ children }) => {
 
   //get all users
   const getUsers = async () => {
-    const { sort, search, searchType } = state;
-    let url = `/users?sort=${sort}&type=${searchType}`;
+    const { sortAdmin, searchAdmin, searchTypeAdmin } = state;
+    let url = `/users?sort=${sortAdmin}&type=${searchTypeAdmin}`;
 
-    if (search) {
-      url = url + `&search=${search}`;
+    if (searchAdmin) {
+      url = url + `&search=${searchAdmin}`;
     }
 
     dispatch({ type: GET_ALL_USERS_BEGIN });
     try {
       const { data } = await authFetch.get(url);
-      const { users, totalUsers, numOfPages } = data;
+      const { users, totalUsers, numOfPagesAdmin } = data;
       dispatch({
         type: GET_ALL_USERS_SUCCESS,
-        payload: { users, totalUsers, numOfPages },
+        payload: { users, totalUsers, numOfPagesAdmin },
       });
     } catch (error) {
       console.log(error);
@@ -570,6 +576,7 @@ const AppProvider = ({ children }) => {
         updateUserAdmin,
         deleteUser,
         adminShowStats,
+        clearValuesAdmin,
       }}
     >
       {children}

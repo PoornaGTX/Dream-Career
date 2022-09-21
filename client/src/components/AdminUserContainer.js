@@ -6,11 +6,20 @@ import AdminUser from "./AdminUser";
 import Wrapper from "../assets/wrappers/JobsContainer";
 
 const AdminUserContainer = () => {
-  const { getUsers, users, isLoading, page, totalUsers } = useAppContext();
+  const {
+    getUsers,
+    users,
+    isLoading,
+    page,
+    totalUsers,
+    searchAdmin,
+    sortAdmin,
+    searchTypeAdmin,
+  } = useAppContext();
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [searchAdmin, sortAdmin, searchTypeAdmin]);
 
   if (isLoading) {
     return <Loading center />;

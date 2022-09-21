@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import SearchContainer from "../../components/SearchContainer";
+import AdminSearchContainer from "../../components/AdminSearchContainer";
 import AdminUserContainer from "../../components/AdminUserContainer";
 import { useAppContext } from "../../context/appContext";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ const AllUsers = () => {
 
   return (
     <>
-      <SearchContainer />
+      <AdminSearchContainer />
       <AdminUserContainer />
     </>
   );
