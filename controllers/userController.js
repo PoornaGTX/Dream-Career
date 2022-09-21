@@ -6,7 +6,6 @@ import {
   NotFoundError,
 } from "../errors/index.js";
 
-import mongoose from "mongoose";
 import moment from "moment";
 
 const getAllUsers = async (req, res) => {
@@ -18,7 +17,7 @@ const getAllUsers = async (req, res) => {
     queryObject.type = type;
   }
   if (search) {
-    queryObject.name = { $regex: search, $options: "i" };
+    queryObject.firstName = { $regex: search, $options: "i" };
     console.log(search);
   }
 
@@ -37,11 +36,20 @@ const getAllUsers = async (req, res) => {
   if (sort === "z-a") {
     result = result.sort("-name");
   }
+
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  result = result.skip(skip).limit(limit);
+
   const users = await result;
+  const totalUsers = await User.countDocuments(queryObject);
+  const numOfPagesAdmin = Math.ceil(totalUsers / limit);
 
   return res
     .status(StatusCodes.OK)
-    .send({ users, totalUsers: users.length, numOfPages: 1 });
+    .send({ users, totalUsers, numOfPagesAdmin });
 };
 
 const UpdateUser = async (req, res) => {

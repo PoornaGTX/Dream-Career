@@ -52,6 +52,7 @@ import {
   DELETE_USER,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
+  CLEAR_VALUES_ADMIN,
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -210,6 +211,17 @@ const reducer = (state, action) => {
     return {
       ...state,
       [action.payload.name]: action.payload.value,
+    };
+  }
+
+  //clear values admin
+
+  if (action.type === CLEAR_VALUES_ADMIN) {
+    return {
+      ...state,
+      sortAdmin: "latest",
+      searchAdmin: "",
+      searchTypeAdmin: "all",
     };
   }
 
@@ -461,7 +473,7 @@ const reducer = (state, action) => {
       isLoading: false,
       users: action.payload.users,
       totalUsers: action.payload.totalUsers,
-      numOfPages: action.payload.numOfPages,
+      numOfPagesAdmin: action.payload.numOfPagesAdmin,
     };
   }
 

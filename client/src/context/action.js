@@ -89,3 +89,6 @@ export const DELETE_USER = "DELETE_USER";
 //admin stats
 export const SHOW_STATS_BEGIN = "SHOW_STATS_BEGIN ";
 export const SHOW_STATS_SUCCESS = "SHOW_STATS_SUCCESS";
+
+//admin clear values
+export const CLEAR_VALUES_ADMIN = "CLEAR_VALUES_ADMIN";
