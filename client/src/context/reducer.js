@@ -53,6 +53,7 @@ import {
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   CLEAR_VALUES_ADMIN,
+  CHANGE_VLAUES,
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -210,6 +211,7 @@ const reducer = (state, action) => {
   if (action.type === HANDLE_CHANGE) {
     return {
       ...state,
+      pageAdmin: 1,
       [action.payload.name]: action.payload.value,
     };
   }
@@ -563,6 +565,14 @@ const reducer = (state, action) => {
       isLoading: false,
       adminStats: action.payload.adStats,
       monthelUserCreations: action.payload.admonthelUserCreations,
+    };
+  }
+
+  // admin pagination
+  if (action.type === CHANGE_VLAUES) {
+    return {
+      ...state,
+      pageAdmin: action.payload.page,
     };
   }
 

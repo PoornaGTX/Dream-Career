@@ -92,3 +92,6 @@ export const SHOW_STATS_SUCCESS = "SHOW_STATS_SUCCESS";
 
 //admin clear values
 export const CLEAR_VALUES_ADMIN = "CLEAR_VALUES_ADMIN";
+
+//admin pagination
+export const CHANGE_VLAUES = " CHANGE_VLAUES";

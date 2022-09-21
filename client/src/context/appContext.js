@@ -57,6 +57,7 @@ import {
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   CLEAR_VALUES_ADMIN,
+  CHANGE_VLAUES,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -106,6 +107,7 @@ const initialState = {
   users: [],
   totalUsers: 0,
   numOfPagesAdmin: 1,
+  pageAdmin: 1,
   numOfPages: 1,
   page: 1,
 
@@ -364,8 +366,8 @@ const AppProvider = ({ children }) => {
 
   //get all users
   const getUsers = async () => {
-    const { sortAdmin, searchAdmin, searchTypeAdmin } = state;
-    let url = `/users?sort=${sortAdmin}&type=${searchTypeAdmin}`;
+    const { pageAdmin, sortAdmin, searchAdmin, searchTypeAdmin } = state;
+    let url = `/users?page=${pageAdmin}&sort=${sortAdmin}&type=${searchTypeAdmin}`;
 
     if (searchAdmin) {
       url = url + `&search=${searchAdmin}`;
@@ -449,6 +451,10 @@ const AppProvider = ({ children }) => {
         },
       });
     } catch (error) {}
+  };
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_VLAUES, payload: { page } });
   };
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -577,6 +583,7 @@ const AppProvider = ({ children }) => {
         deleteUser,
         adminShowStats,
         clearValuesAdmin,
+        changePage,
       }}
     >
       {children}
