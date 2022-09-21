@@ -4,22 +4,24 @@ import { useEffect } from "react";
 import Loading from "./Loading";
 import AdminUser from "./AdminUser";
 import Wrapper from "../assets/wrappers/JobsContainer";
+import AdminPageBtnContainer from "./AdminPageBtnContainer";
 
 const AdminUserContainer = () => {
   const {
     getUsers,
     users,
     isLoading,
-    page,
     totalUsers,
     searchAdmin,
     sortAdmin,
     searchTypeAdmin,
+    numOfPagesAdmin,
+    pageAdmin,
   } = useAppContext();
 
   useEffect(() => {
     getUsers();
-  }, [searchAdmin, sortAdmin, searchTypeAdmin]);
+  }, [pageAdmin, searchAdmin, sortAdmin, searchTypeAdmin]);
 
   if (isLoading) {
     return <Loading center />;
@@ -43,6 +45,7 @@ const AdminUserContainer = () => {
           return <AdminUser key={user._id} {...user} />;
         })}
       </div>
+      {numOfPagesAdmin > 1 && <AdminPageBtnContainer />}
     </Wrapper>
   );
 };
