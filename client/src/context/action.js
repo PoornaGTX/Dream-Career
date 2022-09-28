@@ -94,4 +94,8 @@ export const SHOW_STATS_SUCCESS = "SHOW_STATS_SUCCESS";
 export const CLEAR_VALUES_ADMIN = "CLEAR_VALUES_ADMIN";
 
 //admin pagination
-export const CHANGE_VLAUES = " CHANGE_VLAUES";
+export const CHANGE_VLAUES = "CHANGE_VLAUES";
+
+//admin stats pdf
+export const GET_ALL_USERS_BEGIN_PDF = "GET_ALL_USERS_BEGIN_PDF";
+export const GET_ALL_USERS_SUCCESS_PDF = "GET_ALL_USERS_SUCCESS_PDF";

@@ -58,6 +58,8 @@ import {
   SHOW_STATS_SUCCESS,
   CLEAR_VALUES_ADMIN,
   CHANGE_VLAUES,
+  GET_ALL_USERS_BEGIN_PDF,
+  GET_ALL_USERS_SUCCESS_PDF,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -123,6 +125,7 @@ const initialState = {
   isDelete: false,
   adminStats: {},
   monthelUserCreations: [],
+  allusersAdmin: [],
 };
 
 const AppContext = React.createContext();
@@ -442,7 +445,7 @@ const AppProvider = ({ children }) => {
 
     try {
       const { data } = await authFetch("/users/stats");
-      console.log(data.defaultStats);
+
       dispatch({
         type: SHOW_STATS_SUCCESS,
         payload: {
@@ -451,6 +454,25 @@ const AppProvider = ({ children }) => {
         },
       });
     } catch (error) {}
+  };
+
+  //stats pdf admin
+
+  const getUsersPDF = async () => {
+    dispatch({ type: GET_ALL_USERS_BEGIN_PDF });
+    try {
+      const { data } = await authFetch.get("/users/allusers");
+      const { allusers } = data;
+      console.log(allusers);
+      dispatch({
+        type: GET_ALL_USERS_SUCCESS_PDF,
+        payload: { allusers },
+      });
+    } catch (error) {
+      console.log(error);
+      logoutUser();
+    }
+    clearAlert();
   };
 
   const changePage = (page) => {
@@ -584,6 +606,7 @@ const AppProvider = ({ children }) => {
         adminShowStats,
         clearValuesAdmin,
         changePage,
+        getUsersPDF,
       }}
     >
       {children}

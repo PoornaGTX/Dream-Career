@@ -54,6 +54,8 @@ import {
   SHOW_STATS_SUCCESS,
   CLEAR_VALUES_ADMIN,
   CHANGE_VLAUES,
+  GET_ALL_USERS_BEGIN_PDF,
+  GET_ALL_USERS_SUCCESS_PDF,
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -476,6 +478,22 @@ const reducer = (state, action) => {
       users: action.payload.users,
       totalUsers: action.payload.totalUsers,
       numOfPagesAdmin: action.payload.numOfPagesAdmin,
+    };
+  }
+
+  //admin get all users for stats
+  if (action.type === GET_ALL_USERS_BEGIN_PDF) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    };
+  }
+  if (action.type === GET_ALL_USERS_SUCCESS_PDF) {
+    return {
+      ...state,
+      isLoading: false,
+      allusersAdmin: action.payload.allusers,
     };
   }
 
