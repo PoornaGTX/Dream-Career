@@ -6,13 +6,20 @@ import {
   AdminChartsContainer,
 } from "../../components";
 
-const Stats = () => {
-  const { adminShowStats, isLoading, monthelUserCreations, getUsers } =
-    useAppContext();
+const AdminStats = () => {
+  const {
+    adminShowStats,
+    isLoading,
+    monthelUserCreations,
+    getUsers,
+    getUsersPDF,
+    allusersAdmin,
+  } = useAppContext();
 
   useEffect(() => {
     adminShowStats();
-    getUsers();
+    // getUsers();
+    getUsersPDF();
   }, []);
 
   if (isLoading) {
@@ -26,4 +33,4 @@ const Stats = () => {
   );
 };
 
-export default Stats;
+export default AdminStats;

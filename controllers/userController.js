@@ -52,6 +52,11 @@ const getAllUsers = async (req, res) => {
     .send({ users, totalUsers, numOfPagesAdmin });
 };
 
+const getAllUsersForPDF = async (req, res) => {
+  const allusers = await User.find({});
+  res.status(StatusCodes.OK).send({ allusers });
+};
+
 const UpdateUser = async (req, res) => {
   console.log("hello");
   const { id: uId } = req.params;
@@ -135,4 +140,4 @@ const showStats = async (req, res) => {
   res.status(StatusCodes.OK).json({ defaultStats, monthelUserCreations });
 };
 
-export { getAllUsers, UpdateUser, deleteUser, showStats };
+export { getAllUsers, UpdateUser, deleteUser, showStats, getAllUsersForPDF };

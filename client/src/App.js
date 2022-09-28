@@ -11,7 +11,7 @@ import {
   AddJob,
   AllJobs,
   Profile,
-  Stats,
+  AdminStats,
   SharedLayout,
   ApplyJob,
   AppliedJobs,
@@ -32,7 +32,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Stats />} />
+          <Route index element={<AdminStats />} />
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="add-job" element={<AddJob />} />
           <Route path="profile" element={<Profile />} />

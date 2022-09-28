@@ -5,11 +5,13 @@ import Wrapper from "../assets/wrappers/StatsContainer";
 import { useAppContext } from "../context/appContext";
 
 const AdminStatsContainer = () => {
-  const { adminStats, users } = useAppContext();
+  const { adminStats, allusersAdmin } = useAppContext();
 
-  const Applicants = users.filter((user) => user.type === "Applicant");
-  const Recruiters = users.filter((user) => user.type === "Recruiter");
-  const Admin = users.filter((user) => user.type === "Admin");
+  console.log(allusersAdmin);
+
+  const Applicants = allusersAdmin.filter((user) => user.type === "Applicant");
+  const Recruiters = allusersAdmin.filter((user) => user.type === "Recruiter");
+  const Admin = allusersAdmin.filter((user) => user.type === "Admin");
 
   const defaultStats = [
     {
