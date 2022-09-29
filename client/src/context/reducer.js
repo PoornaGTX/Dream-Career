@@ -578,8 +578,8 @@ const reducer = (state, action) => {
       showAlert: true,
       alertType: "success",
       alertText: "User Updated",
-};
-}
+    };
+  }
   if (action.type === EDIT_JOB_APP_ERROR) {
     return {
       ...state,
@@ -589,8 +589,7 @@ const reducer = (state, action) => {
       alertText: action.payload.msg,
     };
   }
-  
-   
+
   if (action.type === UPDATE_USER_ADMIN_ERROR) {
     return {
       ...state,
@@ -626,7 +625,7 @@ const reducer = (state, action) => {
       isLoading: true,
       showAlert: true,
       alertType: "success",
-      alertText: "User delete success fully",
+      alertText: "User delete success",
     };
   }
 
