@@ -53,6 +53,11 @@ const JobApplication = new mongoose.Schema(
       maxlength: 20,
       trim: true,
     },
+    Status: {
+      type: String,
+      enum: ["Accept", "Pending", "Rejected"],
+      default: "Pending",
+    },
     email: {
       type: String,
       required: [true, "Please provide email"],

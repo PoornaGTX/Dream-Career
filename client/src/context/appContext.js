@@ -1,6 +1,7 @@
 import React, { useReducer, useContext, useEffect } from "react";
 import reducer from "./reducer";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
@@ -52,6 +53,20 @@ import {
   EDIT_JOB_APP_BEGIN,
   EDIT_JOB_APP_ERROR,
   EDIT_JOB_APP_SUCCESS,
+  GET_ALL_USERS_BEGIN,
+  GET_ALL_USERS_SUCCESS,
+  SET_UPDATE_USER,
+  UPDATE_USER_ADMIN_BEGIN,
+  UPDATE_USER_ADMIN_SUCCESS,
+  UPDATE_USER_ADMIN_ERROR,
+  SET_DELETE_USER,
+  DELETE_USER,
+  SHOW_STATS_BEGIN,
+  SHOW_STATS_SUCCESS,
+  CLEAR_VALUES_ADMIN,
+  CHANGE_VLAUES,
+  GET_ALL_USERS_BEGIN_PDF,
+  GET_ALL_USERS_SUCCESS_PDF,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -105,6 +120,26 @@ const initialState = {
   jobAppPosition: "",
   jobAppEducation: "",
   monthlyJobAppApplications: [],
+  users: [],
+  totalUsers: 0,
+  numOfPagesAdmin: 1,
+  pageAdmin: 1,
+  numOfPages: 1,
+  page: 1,
+
+  //admin
+  searchAdmin: "",
+  searchTypeAdmin: "all",
+  searchTypeOptionsAdmin: ["Admin", "Applicant", "Recruiter"],
+  sortAdmin: "latest",
+  sortOptionsAdmin: ["latest", "oldest", "a-z", "z-a"],
+  updateUserId: "",
+  deleteUserId: "",
+  isUpdate: false,
+  isDelete: false,
+  adminStats: {},
+  monthelUserCreations: [],
+  allusersAdmin: [],
 };
 
 const AppContext = React.createContext();
@@ -314,6 +349,10 @@ const AppProvider = ({ children }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
   };
 
+  const clearValuesAdmin = () => {
+    dispatch({ type: CLEAR_VALUES_ADMIN });
+  };
+
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
   };
@@ -342,6 +381,119 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  //get all users
+  const getUsers = async () => {
+    const { pageAdmin, sortAdmin, searchAdmin, searchTypeAdmin } = state;
+    let url = `/users?page=${pageAdmin}&sort=${sortAdmin}&type=${searchTypeAdmin}`;
+
+    if (searchAdmin) {
+      url = url + `&search=${searchAdmin}`;
+    }
+
+    dispatch({ type: GET_ALL_USERS_BEGIN });
+    try {
+      const { data } = await authFetch.get(url);
+      const { users, totalUsers, numOfPagesAdmin } = data;
+      dispatch({
+        type: GET_ALL_USERS_SUCCESS,
+        payload: { users, totalUsers, numOfPagesAdmin },
+      });
+    } catch (error) {
+      console.log(error);
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  //set update user
+  const setUpdateUser = (id) => {
+    dispatch({ type: SET_UPDATE_USER, payload: { id } });
+  };
+
+  //delete user
+  const setDeleteUser = (id) => {
+    dispatch({ type: SET_DELETE_USER, payload: { id } });
+  };
+
+  const updateUserAdmin = async ({
+    UPname,
+    UPlname,
+    UPtype,
+    UPemail,
+    UPlocation,
+  }) => {
+    dispatch({ type: UPDATE_USER_ADMIN_BEGIN });
+    try {
+      await authFetch.patch(`/users/${state.updateUserId}`, {
+        email: UPemail,
+        firstName: UPname,
+        type: UPtype,
+        location: UPlocation,
+        lastName: UPlname,
+      });
+      dispatch({ type: UPDATE_USER_ADMIN_SUCCESS });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: UPDATE_USER_ADMIN_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  //delete user
+  const deleteUser = async () => {
+    const id = state.deleteUserId;
+    dispatch({ type: DELETE_USER });
+    try {
+      await authFetch.delete(`/users/${id}`);
+      getUsers();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
+  const adminShowStats = async () => {
+    dispatch({ type: SHOW_STATS_BEGIN });
+
+    try {
+      const { data } = await authFetch("/users/stats");
+
+      dispatch({
+        type: SHOW_STATS_SUCCESS,
+        payload: {
+          adStats: data.defaultStats,
+          admonthelUserCreations: data.monthelUserCreations,
+        },
+      });
+    } catch (error) {}
+  };
+
+  //stats pdf admin
+
+  const getUsersPDF = async () => {
+    dispatch({ type: GET_ALL_USERS_BEGIN_PDF });
+    try {
+      const { data } = await authFetch.get("/users/allusers");
+      const { allusers } = data;
+      console.log(allusers);
+      dispatch({
+        type: GET_ALL_USERS_SUCCESS_PDF,
+        payload: { allusers },
+      });
+    } catch (error) {
+      console.log(error);
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_VLAUES, payload: { page } });
+  };
+
+  ////////////////////////////////////////////////////////////////////////////////
   const getJobs = async () => {
     const { page, recSearch, recSearchType, recSort } = state;
 
@@ -528,6 +680,15 @@ const AppProvider = ({ children }) => {
         deleteJobApp,
         editJobAPP,
         setEditJobApp,
+        getUsers,
+        setUpdateUser,
+        setDeleteUser,
+        updateUserAdmin,
+        deleteUser,
+        adminShowStats,
+        clearValuesAdmin,
+        changePage,
+        getUsersPDF,
       }}
     >
       {children}

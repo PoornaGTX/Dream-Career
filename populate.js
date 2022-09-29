@@ -1,24 +1,22 @@
 import { readFile } from "fs/promises";
-
 import dotenv from "dotenv";
+
 dotenv.config();
 
 import connectDB from "./db/connect.js";
-import JobApplication from "./models/JobApplication.js";
+import User from "./models/User.js";
 
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URL);
-    await JobApplication.deleteMany();
-
-    const jsonProducts = JSON.parse(
-      await readFile(new URL("./mock-data.json", import.meta.url))
+    const jsonUsers = JSON.parse(
+      await readFile(new URL("./MOCK_DATA_USERS.json", import.meta.url))
     );
-    await JobApplication.create(jsonProducts);
-    console.log("Success!!!!");
+    await User.create(jsonUsers);
+    console.log("Success");
     process.exit(0);
   } catch (error) {
-    console.log(error);
+    console.log("Error");
     process.exit(1);
   }
 };

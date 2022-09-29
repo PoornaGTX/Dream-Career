@@ -6,7 +6,8 @@ import { useAppContext } from "../context/appContext";
 import { useNavigate } from "react-router-dom";
 
 const initialState = {
-  name: "",
+  firstName: "",
+  lastName: "",
   email: "",
   password: "",
   type: "Applicant",
@@ -39,14 +40,14 @@ const Register = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, type, isMember } = values;
-    if (!email || !password || (!isMember && !name)) {
+    const { firstName, lastName, email, password, type, isMember } = values;
+    if (!email || !password || (!isMember && !firstName)) {
       displayAlert();
       return;
     }
 
     if (isMember) {
-      const currentUser = { name, email, password };
+      const currentUser = { firstName, lastName, email, password };
 
       setupUser({
         currentUser,
@@ -54,7 +55,7 @@ const Register = () => {
         alertText: "Login Successful! Redirecting",
       });
     } else {
-      const currentUser = { name, email, password, type };
+      const currentUser = { firstName, lastName, email, password, type };
       setupUser({
         currentUser,
         endPoint: "register",
@@ -81,7 +82,7 @@ const Register = () => {
     <Wrapper className="full-page">
       <form className="form" onSubmit={onSubmit}>
         <Logo />
-        <h3>{values.isMember ? "Loging" : "Register"}</h3>
+        <h3>{values.isMember ? "Login" : "Register"}</h3>
         {/* values.isMember ? true nam loggin false nam register */}
         {showAlert && <Alert />}
         {/* name input from component */}
@@ -89,8 +90,21 @@ const Register = () => {
           <>
             <FormRow
               type="text"
-              name="name"
-              value={values.name}
+              labelText="First name"
+              name="firstName"
+              value={values.firstName}
+              inputPattern={true}
+              placeHolderText={"Enter your first name"}
+              handleChange={handleChange}
+            />
+
+            <FormRow
+              type="text"
+              labelText="Last Name"
+              name="lastName"
+              value={values.lastName}
+              inputPattern={true}
+              placeHolderText={"Enter your last name"}
               handleChange={handleChange}
             />
 
@@ -115,6 +129,7 @@ const Register = () => {
           type="email"
           name="email"
           value={values.email}
+          placeHolderText={"Enter your email"}
           handleChange={handleChange}
         />
         {/* password input from component */}
@@ -122,6 +137,7 @@ const Register = () => {
           type="password"
           name="password"
           value={values.password}
+          placeHolderText={"Enter your password"}
           handleChange={handleChange}
         />
         <button type="submit" className="btn btn-block" disabled={isLoading}>
@@ -134,7 +150,7 @@ const Register = () => {
           </button>
 
           <button type="button" className="member-btn" onClick={passwordRest}>
-            Froget password
+            Forgot password
           </button>
         </p>
       </form>

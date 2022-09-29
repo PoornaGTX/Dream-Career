@@ -80,3 +80,35 @@ export const SET_EDIT_APP_JOB = "SET_EDIT_APP_JOB";
 export const EDIT_JOB_APP_BEGIN = "EDIT_JOB_APP_BEGIN";
 export const EDIT_JOB_APP_SUCCESS = "EDIT_JOB_APP_SUCCESS";
 export const EDIT_JOB_APP_ERROR = "EDIT_JOB_APP_ERROR";
+//admin get all users
+
+export const GET_ALL_USERS_BEGIN = "GET_ALL_USERS_BEGIN";
+export const GET_ALL_USERS_SUCCESS = "GET_ALL_USERS_SUCCESS";
+
+//set update user
+export const SET_UPDATE_USER = "SET_UPDATE_USER";
+
+//update user admin
+export const UPDATE_USER_ADMIN_BEGIN = "UPDATE_USER_ADMIN_BEGIN";
+export const UPDATE_USER_ADMIN_SUCCESS = "UPDATE_USER_ADMIN_SUCCESS";
+export const UPDATE_USER_ADMIN_ERROR = "UPDATE_USER_ADMIN_ERROR";
+
+//set delete user
+export const SET_DELETE_USER = "SET_DELETE_USER";
+
+//delete user
+export const DELETE_USER = "DELETE_USER";
+
+//admin stats
+export const SHOW_STATS_BEGIN = "SHOW_STATS_BEGIN ";
+export const SHOW_STATS_SUCCESS = "SHOW_STATS_SUCCESS";
+
+//admin clear values
+export const CLEAR_VALUES_ADMIN = "CLEAR_VALUES_ADMIN";
+
+//admin pagination
+export const CHANGE_VLAUES = "CHANGE_VLAUES";
+
+//admin stats pdf
+export const GET_ALL_USERS_BEGIN_PDF = "GET_ALL_USERS_BEGIN_PDF";
+export const GET_ALL_USERS_SUCCESS_PDF = "GET_ALL_USERS_SUCCESS_PDF";

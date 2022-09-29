@@ -15,6 +15,7 @@ import connectDB from "./db/connect.js";
 import authRouter from "./routes/authRoutes.js";
 import jobsRouter from "./routes/jobsRouter.js";
 import jobAppRouter from "./routes/jobAppRoutes.js";
+import userRouter from "./routes/userRouter.js";
 
 // middleware
 import errorHandlerMiddleware from "./middleware/error-handler.js";
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use("/api/v1/jobApps", authenticateUser, jobAppRouter);
+app.use("/api/v1/users", userRouter);
 
 //udathiyana route walin ekakwath newei nam notFoundMiddleware eka hit wenawa
 app.use(notFoundMiddleware);

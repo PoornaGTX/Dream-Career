@@ -14,9 +14,9 @@ const Job = ({
   jobType,
   createdAt,
   status,
+  setEdit,
 }) => {
   const { setEdit, deleteJob } = useAppContext();
-
   let date = moment(createdAt);
   date = date.format("MMM Do, YYYY");
   return (

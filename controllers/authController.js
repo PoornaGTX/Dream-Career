@@ -5,9 +5,10 @@ import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
-  const { name, email, password, type } = req.body;
+  const { firstName, lastName, email, password, type } = req.body;
+  console.log(firstName, lastName, email, password, type);
 
-  if (!name || !email || !password || !type) {
+  if (!firstName || !lastName || !email || !password || !type) {
     throw new BadRequestError("please provide all values");
   }
 
@@ -17,7 +18,13 @@ const register = async (req, res) => {
     throw new BadRequestError("Email already in use");
   }
 
-  const user = await User.create({ name, email, password, type });
+  const user = await User.create({
+    firstName,
+    email,
+    password,
+    lastName,
+    type,
+  });
 
   const token = user.createJWT();
 
@@ -27,7 +34,7 @@ const register = async (req, res) => {
       type: user.type,
       lastName: user.lastName,
       location: user.location,
-      name: user.name,
+      firstName: user.firstName,
     },
     token,
   });
@@ -147,16 +154,16 @@ const newPassword = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { email, name, lastName, location } = req.body;
-
-  if (!email || !name || !lastName || !location) {
+  const { email, firstName, lastName, location } = req.body;
+  console.log(email, firstName, lastName, location);
+  if (!email || !firstName || !lastName || !location) {
     throw new BadRequestError("Please provide all values");
   }
 
   const user = await User.findOne({ _id: req.user.userId });
 
   user.email = email;
-  user.name = name;
+  user.firstName = firstName;
   user.lastName = lastName;
   user.location = location;
 

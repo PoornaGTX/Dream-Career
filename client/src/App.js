@@ -11,12 +11,14 @@ import {
   AddJob,
   AllJobs,
   Profile,
-  Stats,
+  AdminStats,
   SharedLayout,
   ApplyJob,
   AppliedJobs,
   JobRequests,
   EditJobApp,
+  AllUsers,
+  AdminUpdateUser,
 } from "./pages/dashboard";
 
 function App() {
@@ -31,7 +33,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Stats />} />
+          <Route index element={<AdminStats />} />
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="add-job" element={<AddJob />} />
           <Route path="/edit-app-job" element={<EditJobApp />} />
@@ -39,6 +41,8 @@ function App() {
           <Route path="apply-job" element={<ApplyJob />} />
           <Route path="applied-jobs" element={<AppliedJobs />} />
           <Route path="job-requests" element={<JobRequests />} />
+          <Route path="all-users" element={<AllUsers />} />
+          <Route path="admin-update" element={<AdminUpdateUser />} />
         </Route>
 
         <Route path="/landing" element={<Landing />} />
