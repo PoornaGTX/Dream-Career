@@ -19,6 +19,7 @@ import {
   ApplyJob,
   AppliedJobs,
   JobRequests,
+  RecStats,
   EditJobApp,
   AllUsers,
   AdminUpdateUser,
@@ -40,9 +41,7 @@ function App() {
         >
           {user?.type === "Applicant" && <Route index element={<Stats />} />}
           {user?.type === "Admin" && <Route index element={<AdminStats />} />}
-          {user?.type === "Recruiter" && (
-            <Route index element={<AdminStats />} />
-          )}
+          {user?.type === "Recruiter" && (<Route index element={<RecStats />} />)}
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="add-job" element={<AddJob />} />
           <Route path="/edit-app-job" element={<EditJobApp />} />

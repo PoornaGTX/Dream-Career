@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
+import { FaLocationArrow, FaBriefcase, FaCalendarAlt, FaRegEnvelopeOpen, FaRegUser, FaUniversity } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
 import Wrapper from "../assets/wrappers/Job";
@@ -10,6 +10,8 @@ const JobRequests = ({
     _id,
   appliedBy,
   recruiterID,
+  name,
+  email,
   experience,
   jobType,
   education,
@@ -18,7 +20,8 @@ const JobRequests = ({
   company,
   createdAt,
 }) => {
-    const { setEdit, deleteJob } = useAppContext();
+    const { acceptJobRequest,
+      rejectJobRequest } = useAppContext();
 
     let date = moment(createdAt);
     date = date.format("MMM Do, YYYY");
@@ -33,27 +36,29 @@ const JobRequests = ({
         </header>
         <div className="content">
           <div className="content-center">
-            <JobInfo icon={<FaLocationArrow />} text={location} />
-            <JobInfo icon={<FaLocationArrow />} text={experience} />
-            <JobInfo icon={<FaLocationArrow />} text={education} />
-            <JobInfo icon={<FaCalendarAlt />} text={date} />
-            <JobInfo icon={<FaBriefcase />} text={jobType} />
+            <JobInfo icon={<FaRegUser />} text={name} title='Name'/>
+            <JobInfo icon={<FaRegEnvelopeOpen />} text={email} title='Email'/>
+            {/* <JobInfo icon={<FaLocationArrow />} text={location} title='Location'/> */}
+            <JobInfo icon={<FaLocationArrow />} text={experience} title='Experience' />
+            <JobInfo icon={<FaUniversity />} text={education} title='Education'/>
+            <JobInfo icon={<FaCalendarAlt />} text={date} title='Date'/>
+            {/* <JobInfo icon={<FaBriefcase />} text={jobType} title='JobType'/> */}
             {/* <div className={`status ${status}`}>{status}</div> */}
           </div>
   
           <footer>
             <div className="actions">
-              <Link
-                to="/add-job"
+              <button
+                type="button"
                 className="btn edit-btn"
-                //   onClick={() => setEdit(_id)}
+                onClick={() => acceptJobRequest(_id)}
               >
                 Accept
-              </Link>
+              </button>
               <button
                 type="button"
                 className="btn delete-btn"
-                //   onClick={() => deleteJob(_id)}
+                onClick={() => rejectJobRequest(_id)}
               >
                 Reject
               </button>

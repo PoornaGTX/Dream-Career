@@ -31,8 +31,6 @@ const NavLinks = ({ toggleSidebar }) => {
   if (user.type === "Admin" || user.type === "Recruiter") {
     NewLinks = NewLinks.filter((link) => {
       if (
-        link.path !== "job-requests" &&
-        link.path !== "add-job" &&
         link.path !== "applied-jobs"
       ) {
         return link;

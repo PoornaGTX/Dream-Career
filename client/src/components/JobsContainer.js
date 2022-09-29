@@ -2,8 +2,8 @@ import React from "react";
 import { useAppContext } from "../context/appContext";
 import { useEffect } from "react";
 import Loading from "./Loading";
-import Job from "./Job";
 import Wrapper from "../assets/wrappers/JobsContainer";
+import RecJob from "./RecJob";
 
 const JobsContainer = () => {
   const {
@@ -41,7 +41,7 @@ const JobsContainer = () => {
       </h5>
       <div className="jobs">
         {jobs.map((job) => {
-          return <Job key={job._id} {...job} />;
+          return <RecJob key={job._id} {...job} />;
         })}
       </div>
     </Wrapper>

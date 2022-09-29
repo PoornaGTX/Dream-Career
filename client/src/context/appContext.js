@@ -46,6 +46,15 @@ import {
   LOGIN_NEWPASSWORD_ERROR,
   GET_JOBREQUESTS_SUCCESS,
   GET_JOBREQUESTS_BEGIN,
+  CLEAR_REC_FILTERS,
+  SHOW_REC_STATS_SUCCESS,
+  SHOW_REC_STATS_BEGIN,
+  ACCEPT_JOB_REQ_BEGIN,
+  ACCEPT_JOB_REQ_SUCCESS,
+  ACCEPT_JOB_REQ_ERROR,
+  REJECT_JOB_REQ_BEGIN,
+  REJECT_JOB_REQ_SUCCESS,
+  REJECT_JOB_REQ_ERROR,
   SHOW_JOB_APP_STATS_BEGIN,
   SHOW_JOB_APP_STATS_SUCCESS,
   DELETE_JOB_APP_BEGIN,
@@ -113,6 +122,8 @@ const initialState = {
   appliedJobsSort: "latest",
   appliedJobsSortOptions: ["latest", "oldest", "a-z", "z-a"],
   PasswordRestStatus: false,
+  recStats: {},
+  recMonthlyApplications: [],
   jobAppStats: {},
   jobAppType: "",
   jobAppLocation: "",
@@ -519,6 +530,42 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const setEditJob = (id) => {
+    dispatch({ type: SET_EDIT_JOB, payload: { id } });
+  };
+  const editJob = async () => {
+    dispatch({ type: EDIT_JOB_BEGIN });
+
+    try {
+      const { position, company, jobLocation, jobType, status } = state;
+      await authFetch.patch(`/jobs/${state.editJobId}`, {
+        company,
+        position,
+        jobLocation,
+        jobType,
+        status,
+      });
+      dispatch({ type: EDIT_JOB_SUCCESS });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_JOB_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+  const deleteJob = async (jobId) => {
+    dispatch({ type: DELETE_JOB_BEGIN });
+    try {
+      await authFetch.delete(`/jobs/${jobId}`);
+      getJobs();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
   const getJobRequets = async () => {
     dispatch({ type: GET_JOBREQUESTS_BEGIN });
     const { page, recSearch, recSearchType, recSort } = state;
@@ -541,6 +588,26 @@ const AppProvider = ({ children }) => {
       console.log(error.response);
     }
     clearAlert();
+  };
+
+  const acceptJobRequest = async (jobId) => {
+    dispatch({ type: ACCEPT_JOB_REQ_BEGIN });
+    try {
+      await authFetch.patch(`/jobs/job-requests/${jobId}`,{Status:'Accepted'});
+      getJobRequets();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
+  const rejectJobRequest = async (jobId) => {
+    dispatch({ type: REJECT_JOB_REQ_BEGIN });
+    try {
+      await authFetch.patch(`/jobs/job-requests/${jobId}`,{Status:'Rejected'});
+      getJobRequets();
+    } catch (error) {
+      logoutUser();
+    }
   };
 
   const applyJob = async (applyJobQ) => {
@@ -654,6 +721,27 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const clearRecFilters = () => {
+    dispatch({ type: CLEAR_REC_FILTERS });
+  };
+
+  const showRecStats = async () => {
+    dispatch({ type: SHOW_REC_STATS_BEGIN });
+    try {
+      const { data } = await authFetch("/jobs/stats");
+      dispatch({
+        type: SHOW_REC_STATS_SUCCESS,
+        payload: {
+          stats: data.defaultStats,
+          monthlyApplications: data.monthlyApplications,
+        },
+      });
+    } catch (error) {
+      logoutUser();
+    }
+    clearAlert();
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -675,6 +763,13 @@ const AppProvider = ({ children }) => {
         applyJob,
         getAppliedJobs,
         clearFilters,
+        clearRecFilters,
+        showRecStats,
+        setEditJob,
+        deleteJob,
+        editJob,
+        acceptJobRequest,
+        rejectJobRequest,
         setEdit,
         showJobAppStats,
         deleteJobApp,
