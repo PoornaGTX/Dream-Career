@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import AdminStatItem from "./AdminStatItem";
-import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
+import {
+  FaLocationArrow,
+  FaUserShield,
+  FaUserPlus,
+  FaUserTie,
+} from "react-icons/fa";
+import { GrUserAdmin } from "react-icons/gr";
 import Wrapper from "../assets/wrappers/StatsContainer";
 import { useAppContext } from "../context/appContext";
 
@@ -17,7 +23,7 @@ const AdminStatsContainer = () => {
     {
       title: "Total Applicents",
       count: adminStats.Applicant,
-      icon: <FaLocationArrow />,
+      icon: <FaUserPlus />,
       color: "#e9b949",
       bcg: "#fcefc7",
       userData: Applicants,
@@ -26,7 +32,7 @@ const AdminStatsContainer = () => {
     {
       title: "Total Recruiters",
       count: adminStats.Recruiter,
-      icon: <FaLocationArrow />,
+      icon: <FaUserTie />,
       color: "#647acb",
       bcg: "#e0e8f9",
       userData: Recruiters,
@@ -35,9 +41,9 @@ const AdminStatsContainer = () => {
     {
       title: "Total Admins",
       count: adminStats.Admin,
-      icon: <FaLocationArrow />,
-      color: "#e9b949",
-      bcg: "#fcefc7",
+      icon: <FaUserShield />,
+      color: "#d66a6a",
+      bcg: "#ffeeee",
       userData: Admin,
       dateType: "Admin",
     },
