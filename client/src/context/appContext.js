@@ -46,6 +46,13 @@ import {
   LOGIN_NEWPASSWORD_ERROR,
   GET_JOBREQUESTS_SUCCESS,
   GET_JOBREQUESTS_BEGIN,
+  SHOW_JOB_APP_STATS_BEGIN,
+  SHOW_JOB_APP_STATS_SUCCESS,
+  DELETE_JOB_APP_BEGIN,
+  SET_EDIT_APP_JOB,
+  EDIT_JOB_APP_BEGIN,
+  EDIT_JOB_APP_ERROR,
+  EDIT_JOB_APP_SUCCESS,
   GET_ALL_USERS_BEGIN,
   GET_ALL_USERS_SUCCESS,
   SET_UPDATE_USER,
@@ -106,6 +113,13 @@ const initialState = {
   appliedJobsSort: "latest",
   appliedJobsSortOptions: ["latest", "oldest", "a-z", "z-a"],
   PasswordRestStatus: false,
+  jobAppStats: {},
+  jobAppType: "",
+  jobAppLocation: "",
+  jobAppCompany: "",
+  jobAppPosition: "",
+  jobAppEducation: "",
+  monthlyJobAppApplications: [],
   users: [],
   totalUsers: 0,
   numOfPagesAdmin: 1,
@@ -531,9 +545,12 @@ const AppProvider = ({ children }) => {
 
   const applyJob = async (applyJobQ) => {
     dispatch({ type: APPLY_JOB_BEGIN });
+    const { name, email } = state.user;
     try {
       await authFetch.post("/jobApps", {
         ...applyJobQ,
+        name,
+        email,
       });
       dispatch({ type: APPLY_JOB_SUCCESS });
       dispatch({ type: CLEAR_VALUES });
@@ -576,6 +593,66 @@ const AppProvider = ({ children }) => {
   const clearFilters = () => {
     dispatch({ type: CLEAR_FILTERS_APPLIED_JOBS });
   };
+  const setEdit = (id) => {
+    dispatch({ type: SET_EDIT_JOB, payload: { id } });
+  };
+
+  const showJobAppStats = async () => {
+    dispatch({ type: SHOW_JOB_APP_STATS_BEGIN });
+    try {
+      const { data } = await authFetch("/jobApps/job-App-stats");
+      dispatch({
+        type: SHOW_JOB_APP_STATS_SUCCESS,
+        payload: {
+          jobAppStats: data.stats,
+          monthlyJobAppApplications: data.monthlyApplications,
+        },
+      });
+    } catch (error) {
+      console.log(error.response);
+      // logoutUser()
+    }
+
+    clearAlert();
+  };
+
+  const deleteJobApp = async (jobId) => {
+    console.log(jobId);
+    console.log("delete Job App");
+    dispatch({ type: DELETE_JOB_APP_BEGIN });
+    try {
+      await authFetch.delete(`/jobApps/${jobId}`);
+      getAppliedJobs();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
+  const setEditJobApp = (id) => {
+    dispatch({ type: SET_EDIT_APP_JOB, payload: { id } });
+  };
+
+  const editJobAPP = async () => {
+    dispatch({ type: EDIT_JOB_APP_BEGIN });
+    try {
+      const { jobAppEducation } = state;
+
+      await authFetch.patch(`/jobApps/${state.editJobId}`, {
+        education: jobAppEducation,
+      });
+      dispatch({
+        type: EDIT_JOB_APP_SUCCESS,
+      });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_JOB_APP_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
 
   return (
     <AppContext.Provider
@@ -598,6 +675,11 @@ const AppProvider = ({ children }) => {
         applyJob,
         getAppliedJobs,
         clearFilters,
+        setEdit,
+        showJobAppStats,
+        deleteJobApp,
+        editJobAPP,
+        setEditJobApp,
         getUsers,
         setUpdateUser,
         setDeleteUser,

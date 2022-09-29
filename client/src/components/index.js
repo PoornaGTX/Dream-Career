@@ -12,8 +12,11 @@ import JobRequestsContainer from "./JobRequestsContainer";
 import AppliedJobsContainer from "./AppliedJobsContainer";
 import AppliedJob from "./AppliedJob";
 import AppliedJobsSearchContainer from "./AppliedJobsSearchContainer";
+import StatsJobAppContainer from "./StatsJobAppContainer";
+import ChartsJobAppContainer from "./ChartsJobAppContainer";
 import AdminChartsContainer from "./AdminChartsContainer";
 import AdminStatsContainer from "./AdminStatsContainer";
+
 import Loading from "./Loading";
 
 export {
@@ -31,6 +34,8 @@ export {
   AppliedJobsContainer,
   AppliedJob,
   AppliedJobsSearchContainer,
+  StatsJobAppContainer,
+  ChartsJobAppContainer,
   AdminStatsContainer,
   AdminChartsContainer,
   Loading,

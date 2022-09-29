@@ -7,6 +7,7 @@ const FormRow = ({
   handleChange,
   labelText,
   inputPattern,
+  pcText,
   placeHolderText,
   isReadOnly,
 }) => {
@@ -20,7 +21,7 @@ const FormRow = ({
         value={value}
         name={name}
         pattern={inputPattern && "[a-zA-Z]*"}
-        placeholder={placeHolderText}
+        placeholder={placeHolderText || pcText}
         onChange={handleChange}
         className="form-input"
         readOnly={isReadOnly}

@@ -6,8 +6,10 @@ import SharedLayout from "./SharedLayout";
 import ApplyJob from "./ApplyJob";
 import AppliedJobs from "./AppliedJobs";
 import JobRequests from "./JobRequests";
+import EditJobApp from "./EditJobApp";
 import AllUsers from "./AdminAllusers";
 import AdminUpdateUser from "./AdminUpdateUser";
+import Stats from "./Stats";
 
 export {
   AppliedJobs,
@@ -15,9 +17,11 @@ export {
   AddJob,
   AllJobs,
   Profile,
-  AdminStats,
+  Stats,
   SharedLayout,
   JobRequests,
+  EditJobApp,
+  AdminStats,
   AllUsers,
   AdminUpdateUser,
 };

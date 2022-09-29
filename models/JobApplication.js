@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import validator from "validator";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const JobApplication = new mongoose.Schema(
   {
@@ -42,6 +45,26 @@ const JobApplication = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
       required: [true, "Please provide recruiter."],
+    },
+    name: {
+      type: String,
+      required: [true, "Please provide name"],
+      minlength: 3,
+      maxlength: 20,
+      trim: true,
+    },
+    Status: {
+      type: String,
+      enum: ["Accepted", "Pending", "Rejected"],
+      default: "Pending",
+    },
+    email: {
+      type: String,
+      required: [true, "Please provide email"],
+      validate: {
+        validator: validator.isEmail,
+        message: "Please provide valid email",
+      },
     },
   },
   { timestamps: true }

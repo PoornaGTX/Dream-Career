@@ -1,4 +1,7 @@
+import e from "cors";
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useAppContext } from "./context/appContext";
 import {
   Landing,
   Error,
@@ -16,11 +19,14 @@ import {
   ApplyJob,
   AppliedJobs,
   JobRequests,
+  EditJobApp,
   AllUsers,
   AdminUpdateUser,
+  Stats,
 } from "./pages/dashboard";
-
 function App() {
+  const { user } = useAppContext();
+
   return (
     <BrowserRouter>
       <Routes>
@@ -32,9 +38,14 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<AdminStats />} />
+          {user?.type === "Applicant" && <Route index element={<Stats />} />}
+          {user?.type === "Admin" && <Route index element={<AdminStats />} />}
+          {user?.type === "Recruiter" && (
+            <Route index element={<AdminStats />} />
+          )}
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="add-job" element={<AddJob />} />
+          <Route path="/edit-app-job" element={<EditJobApp />} />
           <Route path="profile" element={<Profile />} />
           <Route path="apply-job" element={<ApplyJob />} />
           <Route path="applied-jobs" element={<AppliedJobs />} />
