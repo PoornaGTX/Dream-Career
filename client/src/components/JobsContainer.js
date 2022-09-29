@@ -6,7 +6,7 @@ import Job from "./Job";
 import Wrapper from "../assets/wrappers/JobsContainer";
 
 const JobsContainer = () => {
-  const {  
+  const {
     getJobs,
     jobs,
     isLoading,
@@ -15,8 +15,8 @@ const JobsContainer = () => {
     recSearch,
     recSearchType,
     recSort,
-    numOfPages, } = useAppContext();
-
+    numOfPages,
+  } = useAppContext();
 
   useEffect(() => {
     getJobs();
@@ -37,7 +37,7 @@ const JobsContainer = () => {
   return (
     <Wrapper>
       <h5>
-        {totalJobs} job{jobs.length > 1 && "s"} found
+        {jobs.length} job{jobs.length > 1 && "s"} found
       </h5>
       <div className="jobs">
         {jobs.map((job) => {

@@ -1,6 +1,6 @@
-import { FormRow, FormRowSelect } from '.'
-import { useAppContext } from '../context/appContext'
-import Wrapper from '../assets/wrappers/SearchContainer'
+import { FormRow, FormRowSelect } from ".";
+import { useAppContext } from "../context/appContext";
+import Wrapper from "../assets/wrappers/SearchContainer";
 
 const RecruiterSearchContainer = () => {
   const {
@@ -12,45 +12,47 @@ const RecruiterSearchContainer = () => {
     handleChange,
     clearFilters,
     jobTypeOptions,
-  } = useAppContext()
+  } = useAppContext();
   const handleSearch = (e) => {
-    if (isLoading) return
-    handleChange({ name: e.target.name, value: e.target.value })
-  }
+    if (isLoading) return;
+    handleChange({ name: e.target.name, value: e.target.value });
+  };
   const handleSubmit = (e) => {
-    e.preventDefault()
-    clearFilters()
-  }
+    e.preventDefault();
+    clearFilters();
+  };
   return (
     <Wrapper>
-      <form className='form'>
+      <form className="form">
         <h4>search form</h4>
-        <div className='form-center'>
+        <div className="form-center">
           {/* search position */}
 
           <FormRow
-            type='text'
-            name='recSearch'
+            type="text"
+            name="recSearch"
+            labelText="Search"
             value={recSearch}
             handleChange={handleSearch}
-          />  
+          />
           {/* search by type */}
           <FormRowSelect
-            labelText='type'
-            name='recSearchType'
+            labelText="type"
+            name="recSearchType"
             value={recSearchType}
             handleChange={handleSearch}
-            list={['all', ...jobTypeOptions]}
+            list={["all", ...jobTypeOptions]}
           />
           {/* recSort */}
           <FormRowSelect
-            name='recSort'
+            name="recSort"
+            labelText="Sort"
             value={recSort}
             handleChange={handleSearch}
             list={recSortOptions}
           />
           <button
-            className='btn btn-block btn-danger'
+            className="btn btn-block btn-danger"
             disabled={isLoading}
             onClick={handleSubmit}
           >
@@ -59,7 +61,7 @@ const RecruiterSearchContainer = () => {
         </div>
       </form>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default RecruiterSearchContainer
+export default RecruiterSearchContainer;

@@ -12,11 +12,13 @@ const ApplyJob = () => {
     updateUser,
     isLoading,
     applyJob,
-    editJobCreateID,company
+    editJobCreateID,
+    company,
+    position: AppliedPosition,
   } = useAppContext();
 
-  const [position, setPosition] = useState("");
-  const [education, setEducation] = useState("undergraduate");
+  const [position, setPosition] = useState(AppliedPosition);
+  const [education, setEducation] = useState("Undergraduate");
   const [location, setLocation] = useState("");
   const [experience, setExperience] = useState("");
   const [jobType, setJobType] = useState("Remote");
@@ -27,7 +29,15 @@ const ApplyJob = () => {
       displayAlert();
       return;
     } else {
-      applyJob({ position, education, location, experience, jobType ,editJobCreateID,company});
+      applyJob({
+        position,
+        education,
+        location,
+        experience,
+        jobType,
+        editJobCreateID,
+        company,
+      });
     }
   };
 
@@ -42,6 +52,8 @@ const ApplyJob = () => {
             name="Position"
             value={position}
             handleChange={(e) => setPosition(e.target.value)}
+            // inputPattern={true}
+            pcText="add position"
           />
           <FormRowSelect
             name="Education"
@@ -53,11 +65,14 @@ const ApplyJob = () => {
             type="text"
             name="Location"
             value={location}
+            pcText="add location"
             handleChange={(e) => setLocation(e.target.value)}
+            inputPattern={true}
           />
           <FormRow
             type="text"
             name="Experience"
+            pcText="add experience"
             value={experience}
             handleChange={(e) => setExperience(e.target.value)}
           />

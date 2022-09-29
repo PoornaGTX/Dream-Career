@@ -6,5 +6,16 @@ import SharedLayout from "./SharedLayout";
 import ApplyJob from "./ApplyJob";
 import AppliedJobs from "./AppliedJobs";
 import JobRequests from "./JobRequests";
+import EditJobApp from "./EditJobApp";
 
-export { AppliedJobs, ApplyJob, AddJob, AllJobs, Profile, Stats, SharedLayout,JobRequests };
+export {
+  AppliedJobs,
+  ApplyJob,
+  AddJob,
+  AllJobs,
+  Profile,
+  Stats,
+  SharedLayout,
+  JobRequests,
+  EditJobApp,
+};

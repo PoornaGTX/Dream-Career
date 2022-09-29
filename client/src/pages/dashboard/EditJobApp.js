@@ -3,7 +3,7 @@ import { FormRow, FormRowSelect, Alert } from "../../components";
 import { useAppContext } from "../../context/appContext";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
 
-const AddJob = () => {
+const EditJobApp = () => {
   const {
     isLoading,
     showAlert,
@@ -18,17 +18,25 @@ const AddJob = () => {
     createJob,
     isEditing,
     editJobAPP,
+    editJobId,
+    jobAppType,
+    jobAppLocation,
+    jobAppCompany,
+    jobAppPosition,
+    jobAppEducation,
   } = useAppContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!position || !company || !jobLocation) {
+    if (!jobAppEducation) {
       displayAlert();
       return;
     }
-    createJob();
-    console.log("create job");
+    if (isEditing) {
+      editJobAPP();
+      return;
+    }
   };
 
   const handleJobInput = (e) => {
@@ -40,38 +48,48 @@ const AddJob = () => {
   return (
     <Wrapper>
       <form className="form">
-        <h3>add job</h3>
+        <h3>Edit Applied job</h3>
         {showAlert && <Alert />}
         <div className="form-center">
           {/*position*/}
           <FormRow
             type="text"
-            name="position"
-            value={position}
+            name="jobAppPosition"
+            value={jobAppPosition}
             handleChange={handleJobInput}
+            isReadOnly={true}
           />
           {/*company*/}
           <FormRow
             type="text"
-            name="company"
-            value={company}
+            name="jobAppCompany"
+            value={jobAppCompany}
+            isReadOnly={true}
             handleChange={handleJobInput}
           />
           {/*location*/}
           <FormRow
             type="text"
             labelText="job location"
-            name="jobLocation"
-            value={jobLocation}
+            name="jobAppLocation"
+            value={jobAppLocation}
+            isReadOnly={true}
             handleChange={handleJobInput}
           />
-          {/* job type */}
           <FormRowSelect
-            name="jobType"
-            labelText="job type"
-            value={jobType}
+            name="jobAppEducation"
+            labelText="Qualification"
+            value={jobAppEducation}
             handleChange={handleJobInput}
-            list={jobTypeOptions}
+            list={["Undergraduate", "Graduate", "Masters", "Phd"]}
+          />
+          {/* job type */}
+          <FormRow
+            name="jobAppType"
+            labelText="job type"
+            value={jobAppType}
+            isReadOnly={true}
+            handleChange={handleJobInput}
           />
 
           <div className="btn-container">
@@ -99,4 +117,4 @@ const AddJob = () => {
   );
 };
 
-export default AddJob;
+export default EditJobApp;

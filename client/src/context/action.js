@@ -66,3 +66,17 @@ export const LOGIN_NEWPASSWORD_ERROR = "LOGIN_NEWPASSWORD_ERROR";
 /////////////////////////
 export const GET_JOBREQUESTS_BEGIN = "GET_JOBREQUESTS_BEGIN";
 export const GET_JOBREQUESTS_SUCCESS = "GET_JOBREQUESTS_SUCCESS";
+
+//job app stats
+export const SHOW_JOB_APP_STATS_BEGIN = "SHOW_JOB_APP_STATS_BEGIN";
+export const SHOW_JOB_APP_STATS_SUCCESS = "SHOW_JOB_APP_STATS_SUCCESS";
+
+//delete applied jobs
+
+export const DELETE_JOB_APP_BEGIN = "DELETE_JOB_APP_BEGIN";
+
+//update applied jobs
+export const SET_EDIT_APP_JOB = "SET_EDIT_APP_JOB";
+export const EDIT_JOB_APP_BEGIN = "EDIT_JOB_APP_BEGIN";
+export const EDIT_JOB_APP_SUCCESS = "EDIT_JOB_APP_SUCCESS";
+export const EDIT_JOB_APP_ERROR = "EDIT_JOB_APP_ERROR";

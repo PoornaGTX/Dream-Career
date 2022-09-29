@@ -44,7 +44,14 @@ import {
   LOGIN_NEWPASSWORD_COMPLETE,
   LOGIN_NEWPASSWORD_ERROR,
   GET_JOBREQUESTS_SUCCESS,
-  GET_JOBREQUESTS_BEGIN
+  GET_JOBREQUESTS_BEGIN,
+  SHOW_JOB_APP_STATS_BEGIN,
+  SHOW_JOB_APP_STATS_SUCCESS,
+  DELETE_JOB_APP_BEGIN,
+  SET_EDIT_APP_JOB,
+  EDIT_JOB_APP_BEGIN,
+  EDIT_JOB_APP_ERROR,
+  EDIT_JOB_APP_SUCCESS,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -71,16 +78,16 @@ const initialState = {
   statusOptions: ["interview", "declined", "pending"],
   status: "pending",
   jobs: [],
-  jobRequests:[],
-  jobRequestsCount:0,
-  jobRequestsPages:1,
+  jobRequests: [],
+  jobRequestsCount: 0,
+  jobRequestsPages: 1,
   totalJobs: 0,
   numOfPages: 1,
   page: 1,
-  recSearch: '',
-  recSearchType: 'all',
-  recSort: 'latest',
-  recSortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+  recSearch: "",
+  recSearchType: "all",
+  recSort: "latest",
+  recSortOptions: ["latest", "oldest", "a-z", "z-a"],
   AppliedJobs: [],
   AppliedTotalJobs: 0,
   AppliedJobsNumOfPages: 1,
@@ -91,6 +98,13 @@ const initialState = {
   appliedJobsSort: "latest",
   appliedJobsSortOptions: ["latest", "oldest", "a-z", "z-a"],
   PasswordRestStatus: false,
+  jobAppStats: {},
+  jobAppType: "",
+  jobAppLocation: "",
+  jobAppCompany: "",
+  jobAppPosition: "",
+  jobAppEducation: "",
+  monthlyJobAppApplications: [],
 };
 
 const AppContext = React.createContext();
@@ -329,16 +343,16 @@ const AppProvider = ({ children }) => {
   };
 
   const getJobs = async () => {
-    const { page, recSearch, recSearchType, recSort } = state
+    const { page, recSearch, recSearchType, recSort } = state;
 
-    let url = `/jobs?page=${page}&jobType=${recSearchType}&sort=${recSort}`
+    let url = `/jobs?page=${page}&jobType=${recSearchType}&sort=${recSort}`;
     if (recSearch) {
-      url = url + `&search=${recSearch}`
+      url = url + `&search=${recSearch}`;
     }
-    dispatch({ type: GET_JOBS_BEGIN })
+    dispatch({ type: GET_JOBS_BEGIN });
     try {
-      const { data } = await authFetch(url)
-      const { jobs, totalJobs, numOfPages } = data
+      const { data } = await authFetch(url);
+      const { jobs, totalJobs, numOfPages } = data;
       dispatch({
         type: GET_JOBS_SUCCESS,
         payload: {
@@ -346,16 +360,16 @@ const AppProvider = ({ children }) => {
           totalJobs,
           numOfPages,
         },
-      })
+      });
     } catch (error) {
-      logoutUser()
+      logoutUser();
     }
-    clearAlert()
+    clearAlert();
   };
 
-  const getJobRequets = async ()=>{
+  const getJobRequets = async () => {
     dispatch({ type: GET_JOBREQUESTS_BEGIN });
-    const { page, recSearch, recSearchType, recSort } = state
+    const { page, recSearch, recSearchType, recSort } = state;
     let url = `/jobs/job-requests?page=${page}&jobType=${recSearchType}&$sort=${recSort}`;
     if (recSearch) {
       url = url + `&search=${recSearch}`;
@@ -379,9 +393,12 @@ const AppProvider = ({ children }) => {
 
   const applyJob = async (applyJobQ) => {
     dispatch({ type: APPLY_JOB_BEGIN });
+    const { name, email } = state.user;
     try {
       await authFetch.post("/jobApps", {
         ...applyJobQ,
+        name,
+        email,
       });
       dispatch({ type: APPLY_JOB_SUCCESS });
       dispatch({ type: CLEAR_VALUES });
@@ -424,6 +441,66 @@ const AppProvider = ({ children }) => {
   const clearFilters = () => {
     dispatch({ type: CLEAR_FILTERS_APPLIED_JOBS });
   };
+  const setEdit = (id) => {
+    dispatch({ type: SET_EDIT_JOB, payload: { id } });
+  };
+
+  const showJobAppStats = async () => {
+    dispatch({ type: SHOW_JOB_APP_STATS_BEGIN });
+    try {
+      const { data } = await authFetch("/jobApps/job-App-stats");
+      dispatch({
+        type: SHOW_JOB_APP_STATS_SUCCESS,
+        payload: {
+          jobAppStats: data.stats,
+          monthlyJobAppApplications: data.monthlyApplications,
+        },
+      });
+    } catch (error) {
+      console.log(error.response);
+      // logoutUser()
+    }
+
+    clearAlert();
+  };
+
+  const deleteJobApp = async (jobId) => {
+    console.log(jobId);
+    console.log("delete Job App");
+    dispatch({ type: DELETE_JOB_APP_BEGIN });
+    try {
+      await authFetch.delete(`/jobApps/${jobId}`);
+      getAppliedJobs();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
+  const setEditJobApp = (id) => {
+    dispatch({ type: SET_EDIT_APP_JOB, payload: { id } });
+  };
+
+  const editJobAPP = async () => {
+    dispatch({ type: EDIT_JOB_APP_BEGIN });
+    try {
+      const { jobAppEducation } = state;
+
+      await authFetch.patch(`/jobApps/${state.editJobId}`, {
+        education: jobAppEducation,
+      });
+      dispatch({
+        type: EDIT_JOB_APP_SUCCESS,
+      });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_JOB_APP_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
 
   return (
     <AppContext.Provider
@@ -446,6 +523,11 @@ const AppProvider = ({ children }) => {
         applyJob,
         getAppliedJobs,
         clearFilters,
+        setEdit,
+        showJobAppStats,
+        deleteJobApp,
+        editJobAPP,
+        setEditJobApp,
       }}
     >
       {children}
