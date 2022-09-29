@@ -9,6 +9,7 @@ import JobRequests from "./JobRequests";
 import EditJobApp from "./EditJobApp";
 import AllUsers from "./AdminAllusers";
 import AdminUpdateUser from "./AdminUpdateUser";
+import Stats from "./Stats";
 
 export {
   AppliedJobs,
@@ -21,8 +22,6 @@ export {
   JobRequests,
   EditJobApp,
   AdminStats,
-  SharedLayout,
-  JobRequests,
   AllUsers,
   AdminUpdateUser,
 };

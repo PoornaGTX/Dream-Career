@@ -10,7 +10,7 @@ const NavLinks = ({ toggleSidebar }) => {
 
   if (user.type === "Recruiter" || user.type === "Applicant") {
     NewLinks = NewLinks.filter((link) => {
-      if (link.path !== "all-users" && link.path !== "all-jobs") {
+      if (link.path !== "all-users") {
         return link;
       }
     });
@@ -28,13 +28,17 @@ const NavLinks = ({ toggleSidebar }) => {
 
   // //Applicant
 
-  // // if (user.type === "Admin" || user.type === "Recruiter") {
-  // //   NewLinks = NewLinks.filter((link) => {
-  // //     if (link.path !== "job-requests" && link.path !== "add-job") {
-  // //       return link;
-  // //     }
-  // //   });
-  // }
+  if (user.type === "Admin" || user.type === "Recruiter") {
+    NewLinks = NewLinks.filter((link) => {
+      if (
+        link.path !== "job-requests" &&
+        link.path !== "add-job" &&
+        link.path !== "applied-jobs"
+      ) {
+        return link;
+      }
+    });
+  }
 
   return (
     <div className="nav-links">
