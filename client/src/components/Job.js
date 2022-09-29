@@ -4,6 +4,7 @@ import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Wrapper from "../assets/wrappers/Job";
 import JobInfo from "./JobInfo";
+import { useAppContext } from '../context/appContext'
 
 const Job = ({
   _id,
@@ -15,6 +16,8 @@ const Job = ({
   status,
   setEdit
 }) => {
+
+  const { setEditJob, deleteJob } = useAppContext()
 
   let date = moment(createdAt);
   date = date.format("MMM Do, YYYY");
@@ -40,7 +43,7 @@ const Job = ({
             <Link
               to="/add-job"
               className="btn edit-btn"
-              onClick={()=>alert(`edit job ${_id}`)}
+              onClick={() => setEditJob(_id)}
             >
               Edit
             </Link>
@@ -54,7 +57,7 @@ const Job = ({
             <button
               type="button"
               className="btn delete-btn"
-              onClick={()=>alert(`delete job ${_id}`)}
+              onClick={() => deleteJob(_id)}
             >
               Delete
             </button>

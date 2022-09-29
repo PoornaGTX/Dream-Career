@@ -44,7 +44,13 @@ import {
   GET_JOBREQUESTS_BEGIN,
   CLEAR_REC_FILTERS,
   SHOW_REC_STATS_SUCCESS,
-  SHOW_REC_STATS_BEGIN
+  SHOW_REC_STATS_BEGIN,
+  ACCEPT_JOB_REQ_BEGIN,
+  ACCEPT_JOB_REQ_SUCCESS,
+  ACCEPT_JOB_REQ_ERROR,
+  REJECT_JOB_REQ_BEGIN,
+  REJECT_JOB_REQ_SUCCESS,
+  REJECT_JOB_REQ_ERROR,
 } from "./action";
 
 import { initialState } from "./appContext";
@@ -475,6 +481,46 @@ const reducer = (state, action) => {
     }
   }
 
+  if (action.type === SET_EDIT_JOB) {
+    const job = state.jobs.find((job) => job._id === action.payload.id)
+    const { _id, position, company, jobLocation, jobType, status } = job
+    return {
+      ...state,
+      isEditing: true,
+      editJobId: _id,
+      position,
+      company,
+      jobLocation,
+      jobType,
+    }
+  }
+  if (action.type === DELETE_JOB_BEGIN) {
+    return { ...state, isLoading: true }
+  }
+  if (action.type === EDIT_JOB_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    }
+  }
+  if (action.type === EDIT_JOB_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'Job Updated!',
+    }
+  }
+  if (action.type === EDIT_JOB_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg,
+    }
+  }
 
 
   throw new Error(`no such action : ${action.type}`);

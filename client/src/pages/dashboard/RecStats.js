@@ -7,7 +7,6 @@ const RecStats = () => {
 
   useEffect(() => {
     showRecStats()
-    // eslint-disable-next-line
   }, [])
   if (isLoading) {
     return <Loading center />

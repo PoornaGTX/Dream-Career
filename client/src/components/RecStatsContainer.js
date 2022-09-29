@@ -4,7 +4,10 @@ import { FaSuitcaseRolling, FaCalendarCheck, FaBug } from 'react-icons/fa'
 import Wrapper from '../assets/wrappers/StatsContainer'
 
 const RecStatsContainer = () => {
-  const { recStats } = useAppContext()
+  const { recStats, jobs } = useAppContext()
+  
+  const Internships = jobs.filter((job) => job.jobType === "internship");
+  const Remote = jobs.filter((job) => job.jobType === "remote");
 
   const defaultStats = [
     {
@@ -13,6 +16,7 @@ const RecStatsContainer = () => {
       icon: <FaSuitcaseRolling />,
       color: '#e9b949',
       bcg: '#fcefc7',
+      jobData: Remote
     },
     {
       title: 'Internships',
@@ -20,6 +24,7 @@ const RecStatsContainer = () => {
       icon: <FaCalendarCheck />,
       color: '#647acb',
       bcg: '#e0e8f9',
+      jobData: Internships
     },
   ]
 

@@ -16,6 +16,8 @@ const AddJob = () => {
     handleChange,
     clearValues,
     createJob,
+    isEditing,
+    editJob
   } = useAppContext();
 
   const handleSubmit = (e) => {
@@ -24,6 +26,10 @@ const AddJob = () => {
     if (!position || !company || !jobLocation) {
       displayAlert();
       return;
+    }
+    if (isEditing) {
+      editJob()
+      return
     }
     createJob();
     console.log("create job");
@@ -38,7 +44,7 @@ const AddJob = () => {
   return (
     <Wrapper>
       <form className="form">
-        <h3>add job</h3>
+        <h3>{isEditing ? 'edit job' : 'add job'}</h3>
         {showAlert && <Alert />}
         <div className="form-center">
           {/*position*/}

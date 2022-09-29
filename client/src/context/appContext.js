@@ -47,7 +47,13 @@ import {
   GET_JOBREQUESTS_BEGIN,
   CLEAR_REC_FILTERS,
   SHOW_REC_STATS_SUCCESS,
-  SHOW_REC_STATS_BEGIN
+  SHOW_REC_STATS_BEGIN,
+  ACCEPT_JOB_REQ_BEGIN,
+  ACCEPT_JOB_REQ_SUCCESS,
+  ACCEPT_JOB_REQ_ERROR,
+  REJECT_JOB_REQ_BEGIN,
+  REJECT_JOB_REQ_SUCCESS,
+  REJECT_JOB_REQ_ERROR,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -74,16 +80,16 @@ const initialState = {
   statusOptions: ["interview", "declined", "pending"],
   status: "pending",
   jobs: [],
-  jobRequests:[],
-  jobRequestsCount:0,
-  jobRequestsPages:1,
+  jobRequests: [],
+  jobRequestsCount: 0,
+  jobRequestsPages: 1,
   totalJobs: 0,
   numOfPages: 1,
   page: 1,
-  recSearch: '',
-  recSearchType: 'all',
-  recSort: 'latest',
-  recSortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+  recSearch: "",
+  recSearchType: "all",
+  recSort: "latest",
+  recSortOptions: ["latest", "oldest", "a-z", "z-a"],
   AppliedJobs: [],
   AppliedTotalJobs: 0,
   AppliedJobsNumOfPages: 1,
@@ -94,9 +100,8 @@ const initialState = {
   appliedJobsSort: "latest",
   appliedJobsSortOptions: ["latest", "oldest", "a-z", "z-a"],
   PasswordRestStatus: false,
-  recStats:{},
-  recMonthlyApplications:[]
-
+  recStats: {},
+  recMonthlyApplications: [],
 };
 
 const AppContext = React.createContext();
@@ -335,16 +340,16 @@ const AppProvider = ({ children }) => {
   };
 
   const getJobs = async () => {
-    const { page, recSearch, recSearchType, recSort } = state
+    const { page, recSearch, recSearchType, recSort } = state;
 
-    let url = `/jobs?page=${page}&jobType=${recSearchType}&sort=${recSort}`
+    let url = `/jobs?page=${page}&jobType=${recSearchType}&sort=${recSort}`;
     if (recSearch) {
-      url = url + `&search=${recSearch}`
+      url = url + `&search=${recSearch}`;
     }
-    dispatch({ type: GET_JOBS_BEGIN })
+    dispatch({ type: GET_JOBS_BEGIN });
     try {
-      const { data } = await authFetch(url)
-      const { jobs, totalJobs, numOfPages } = data
+      const { data } = await authFetch(url);
+      const { jobs, totalJobs, numOfPages } = data;
       dispatch({
         type: GET_JOBS_SUCCESS,
         payload: {
@@ -352,16 +357,52 @@ const AppProvider = ({ children }) => {
           totalJobs,
           numOfPages,
         },
-      })
+      });
     } catch (error) {
-      logoutUser()
+      logoutUser();
     }
-    clearAlert()
+    clearAlert();
   };
 
-  const getJobRequets = async ()=>{
+  const setEditJob = (id) => {
+    dispatch({ type: SET_EDIT_JOB, payload: { id } });
+  };
+  const editJob = async () => {
+    dispatch({ type: EDIT_JOB_BEGIN });
+
+    try {
+      const { position, company, jobLocation, jobType, status } = state;
+      await authFetch.patch(`/jobs/${state.editJobId}`, {
+        company,
+        position,
+        jobLocation,
+        jobType,
+        status,
+      });
+      dispatch({ type: EDIT_JOB_SUCCESS });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_JOB_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+  const deleteJob = async (jobId) => {
+    dispatch({ type: DELETE_JOB_BEGIN });
+    try {
+      await authFetch.delete(`/jobs/${jobId}`);
+      getJobs();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
+  const getJobRequets = async () => {
     dispatch({ type: GET_JOBREQUESTS_BEGIN });
-    const { page, recSearch, recSearchType, recSort } = state
+    const { page, recSearch, recSearchType, recSort } = state;
     let url = `/jobs/job-requests?page=${page}&jobType=${recSearchType}&$sort=${recSort}`;
     if (recSearch) {
       url = url + `&search=${recSearch}`;
@@ -381,6 +422,26 @@ const AppProvider = ({ children }) => {
       console.log(error.response);
     }
     clearAlert();
+  };
+
+  const acceptJobRequest = async (jobId) => {
+    dispatch({ type: ACCEPT_JOB_REQ_BEGIN });
+    try {
+      await authFetch.patch(`/jobs/job-requests/${jobId}`,{status:'Accepted'});
+      getJobRequets();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
+  const rejectJobRequest = async (jobId) => {
+    dispatch({ type: REJECT_JOB_REQ_BEGIN });
+    try {
+      await authFetch.patch(`/jobs/job-requests/${jobId}`,{status:'Rejected'});
+      getJobRequets();
+    } catch (error) {
+      logoutUser();
+    }
   };
 
   const applyJob = async (applyJobQ) => {
@@ -436,21 +497,21 @@ const AppProvider = ({ children }) => {
   };
 
   const showRecStats = async () => {
-    dispatch({ type: SHOW_REC_STATS_BEGIN })
+    dispatch({ type: SHOW_REC_STATS_BEGIN });
     try {
-      const { data } = await authFetch('/jobs/stats')
+      const { data } = await authFetch("/jobs/stats");
       dispatch({
         type: SHOW_REC_STATS_SUCCESS,
         payload: {
           stats: data.defaultStats,
           monthlyApplications: data.monthlyApplications,
         },
-      })
+      });
     } catch (error) {
-      logoutUser()
+      logoutUser();
     }
-    clearAlert()
-  }
+    clearAlert();
+  };
 
   return (
     <AppContext.Provider
@@ -474,7 +535,12 @@ const AppProvider = ({ children }) => {
         getAppliedJobs,
         clearFilters,
         clearRecFilters,
-        showRecStats
+        showRecStats,
+        setEditJob,
+        deleteJob,
+        editJob,
+        acceptJobRequest,
+        rejectJobRequest
       }}
     >
       {children}

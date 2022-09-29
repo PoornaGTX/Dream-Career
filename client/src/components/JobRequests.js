@@ -20,7 +20,8 @@ const JobRequests = ({
   company,
   createdAt,
 }) => {
-    const { setEdit, deleteJob } = useAppContext();
+    const { acceptJobRequest,
+      rejectJobRequest } = useAppContext();
 
     let date = moment(createdAt);
     date = date.format("MMM Do, YYYY");
@@ -47,17 +48,17 @@ const JobRequests = ({
   
           <footer>
             <div className="actions">
-              <Link
+              <button
                 to="/add-job"
                 className="btn edit-btn"
-                //   onClick={() => setEdit(_id)}
+                onClick={() => acceptJobRequest(_id)}
               >
                 Accept
-              </Link>
+              </button>
               <button
                 type="button"
                 className="btn delete-btn"
-                //   onClick={() => deleteJob(_id)}
+                onClick={() => rejectJobRequest(_id)}
               >
                 Reject
               </button>
