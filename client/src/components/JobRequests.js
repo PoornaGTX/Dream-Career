@@ -49,7 +49,7 @@ const JobRequests = ({
           <footer>
             <div className="actions">
               <button
-                to="/add-job"
+                type="button"
                 className="btn edit-btn"
                 onClick={() => acceptJobRequest(_id)}
               >

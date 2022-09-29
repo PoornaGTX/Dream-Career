@@ -593,7 +593,7 @@ const AppProvider = ({ children }) => {
   const acceptJobRequest = async (jobId) => {
     dispatch({ type: ACCEPT_JOB_REQ_BEGIN });
     try {
-      await authFetch.patch(`/jobs/job-requests/${jobId}`,{status:'Accepted'});
+      await authFetch.patch(`/jobs/job-requests/${jobId}`,{Status:'Accepted'});
       getJobRequets();
     } catch (error) {
       logoutUser();
@@ -603,7 +603,7 @@ const AppProvider = ({ children }) => {
   const rejectJobRequest = async (jobId) => {
     dispatch({ type: REJECT_JOB_REQ_BEGIN });
     try {
-      await authFetch.patch(`/jobs/job-requests/${jobId}`,{status:'Rejected'});
+      await authFetch.patch(`/jobs/job-requests/${jobId}`,{Status:'Rejected'});
       getJobRequets();
     } catch (error) {
       logoutUser();

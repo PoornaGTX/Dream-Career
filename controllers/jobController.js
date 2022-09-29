@@ -75,6 +75,7 @@ const getAllJobRequests = async (req, res) => {
 
   const queryObject = {
     recruiterID: req.user.userId,
+    Status: 'Accepted'
   };
   if (jobType !== "all") {
     queryObject.jobType = jobType;
@@ -108,9 +109,9 @@ const getAllJobRequests = async (req, res) => {
 
 const respondToJobReq = async (req, res) => {
   const { id: jobId } = req.params
-  const { status } = req.body
+  const { Status } = req.body
 
-  if (!status) {
+  if (!Status) {
     throw new BadRequestError('Please provide all values')
   }
   const job = await JobApp.findOne({ _id: jobId })
@@ -120,7 +121,7 @@ const respondToJobReq = async (req, res) => {
   }
   // check permissions
 
-  checkPermissions(req.user, job.createdBy)
+  checkPermissions(req.user, job.recruiterID)
 
   const updatedJob = await JobApp.findOneAndUpdate({ _id: jobId }, req.body, {
     new: true,

@@ -325,6 +325,10 @@ const reducer = (state, action) => {
     return { ...state, isLoading: true };
   }
 
+  if (action.type === REJECT_JOB_REQ_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
   if (action.type === EDIT_JOB_BEGIN) {
     return {
       ...state,
