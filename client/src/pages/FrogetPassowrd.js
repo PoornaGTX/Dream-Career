@@ -33,7 +33,7 @@ const FrogetPassword = () => {
     console.log(email);
 
     setTimeout(() => {
-      alert("Password rest link sent your email, please check your email");
+      alert("Password reset link is sent your email, please check your email");
     }, 2000);
   };
 
@@ -49,7 +49,7 @@ const FrogetPassword = () => {
     <Wrapper className="full-page">
       <form className="form" onSubmit={onSubmit}>
         {showAlert && <Alert />}
-        <h3>{PasswordRestStatus ? "Rest Password" : "Froget Password"}</h3>
+        <h3>{PasswordRestStatus ? "Reset Password" : "Forgot Password"}</h3>
 
         <label>Enter Email Here</label>
         <input
@@ -57,6 +57,7 @@ const FrogetPassword = () => {
           type="email"
           name="email"
           value={email}
+          placeholder="Enter email that you used for sign-up"
           onChange={(e) => setEmail(e.target.value)}
         />
 

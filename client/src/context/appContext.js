@@ -1,6 +1,7 @@
 import React, { useReducer, useContext, useEffect } from "react";
 import reducer from "./reducer";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
@@ -54,6 +55,27 @@ import {
   REJECT_JOB_REQ_BEGIN,
   REJECT_JOB_REQ_SUCCESS,
   REJECT_JOB_REQ_ERROR,
+  SHOW_JOB_APP_STATS_BEGIN,
+  SHOW_JOB_APP_STATS_SUCCESS,
+  DELETE_JOB_APP_BEGIN,
+  SET_EDIT_APP_JOB,
+  EDIT_JOB_APP_BEGIN,
+  EDIT_JOB_APP_ERROR,
+  EDIT_JOB_APP_SUCCESS,
+  GET_ALL_USERS_BEGIN,
+  GET_ALL_USERS_SUCCESS,
+  SET_UPDATE_USER,
+  UPDATE_USER_ADMIN_BEGIN,
+  UPDATE_USER_ADMIN_SUCCESS,
+  UPDATE_USER_ADMIN_ERROR,
+  SET_DELETE_USER,
+  DELETE_USER,
+  SHOW_STATS_BEGIN,
+  SHOW_STATS_SUCCESS,
+  CLEAR_VALUES_ADMIN,
+  CHANGE_VLAUES,
+  GET_ALL_USERS_BEGIN_PDF,
+  GET_ALL_USERS_SUCCESS_PDF,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -102,6 +124,33 @@ const initialState = {
   PasswordRestStatus: false,
   recStats: {},
   recMonthlyApplications: [],
+  jobAppStats: {},
+  jobAppType: "",
+  jobAppLocation: "",
+  jobAppCompany: "",
+  jobAppPosition: "",
+  jobAppEducation: "",
+  monthlyJobAppApplications: [],
+  users: [],
+  totalUsers: 0,
+  numOfPagesAdmin: 1,
+  pageAdmin: 1,
+  numOfPages: 1,
+  page: 1,
+
+  //admin
+  searchAdmin: "",
+  searchTypeAdmin: "all",
+  searchTypeOptionsAdmin: ["Admin", "Applicant", "Recruiter"],
+  sortAdmin: "latest",
+  sortOptionsAdmin: ["latest", "oldest", "a-z", "z-a"],
+  updateUserId: "",
+  deleteUserId: "",
+  isUpdate: false,
+  isDelete: false,
+  adminStats: {},
+  monthelUserCreations: [],
+  allusersAdmin: [],
 };
 
 const AppContext = React.createContext();
@@ -311,6 +360,10 @@ const AppProvider = ({ children }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
   };
 
+  const clearValuesAdmin = () => {
+    dispatch({ type: CLEAR_VALUES_ADMIN });
+  };
+
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
   };
@@ -339,6 +392,119 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  //get all users
+  const getUsers = async () => {
+    const { pageAdmin, sortAdmin, searchAdmin, searchTypeAdmin } = state;
+    let url = `/users?page=${pageAdmin}&sort=${sortAdmin}&type=${searchTypeAdmin}`;
+
+    if (searchAdmin) {
+      url = url + `&search=${searchAdmin}`;
+    }
+
+    dispatch({ type: GET_ALL_USERS_BEGIN });
+    try {
+      const { data } = await authFetch.get(url);
+      const { users, totalUsers, numOfPagesAdmin } = data;
+      dispatch({
+        type: GET_ALL_USERS_SUCCESS,
+        payload: { users, totalUsers, numOfPagesAdmin },
+      });
+    } catch (error) {
+      console.log(error);
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  //set update user
+  const setUpdateUser = (id) => {
+    dispatch({ type: SET_UPDATE_USER, payload: { id } });
+  };
+
+  //delete user
+  const setDeleteUser = (id) => {
+    dispatch({ type: SET_DELETE_USER, payload: { id } });
+  };
+
+  const updateUserAdmin = async ({
+    UPname,
+    UPlname,
+    UPtype,
+    UPemail,
+    UPlocation,
+  }) => {
+    dispatch({ type: UPDATE_USER_ADMIN_BEGIN });
+    try {
+      await authFetch.patch(`/users/${state.updateUserId}`, {
+        email: UPemail,
+        firstName: UPname,
+        type: UPtype,
+        location: UPlocation,
+        lastName: UPlname,
+      });
+      dispatch({ type: UPDATE_USER_ADMIN_SUCCESS });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: UPDATE_USER_ADMIN_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  //delete user
+  const deleteUser = async () => {
+    const id = state.deleteUserId;
+    dispatch({ type: DELETE_USER });
+    try {
+      await authFetch.delete(`/users/${id}`);
+      getUsers();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
+  const adminShowStats = async () => {
+    dispatch({ type: SHOW_STATS_BEGIN });
+
+    try {
+      const { data } = await authFetch("/users/stats");
+
+      dispatch({
+        type: SHOW_STATS_SUCCESS,
+        payload: {
+          adStats: data.defaultStats,
+          admonthelUserCreations: data.monthelUserCreations,
+        },
+      });
+    } catch (error) {}
+  };
+
+  //stats pdf admin
+
+  const getUsersPDF = async () => {
+    dispatch({ type: GET_ALL_USERS_BEGIN_PDF });
+    try {
+      const { data } = await authFetch.get("/users/allusers");
+      const { allusers } = data;
+      console.log(allusers);
+      dispatch({
+        type: GET_ALL_USERS_SUCCESS_PDF,
+        payload: { allusers },
+      });
+    } catch (error) {
+      console.log(error);
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_VLAUES, payload: { page } });
+  };
+
+  ////////////////////////////////////////////////////////////////////////////////
   const getJobs = async () => {
     const { page, recSearch, recSearchType, recSort } = state;
 
@@ -446,9 +612,12 @@ const AppProvider = ({ children }) => {
 
   const applyJob = async (applyJobQ) => {
     dispatch({ type: APPLY_JOB_BEGIN });
+    const { name, email } = state.user;
     try {
       await authFetch.post("/jobApps", {
         ...applyJobQ,
+        name,
+        email,
       });
       dispatch({ type: APPLY_JOB_SUCCESS });
       dispatch({ type: CLEAR_VALUES });
@@ -490,6 +659,66 @@ const AppProvider = ({ children }) => {
   };
   const clearFilters = () => {
     dispatch({ type: CLEAR_FILTERS_APPLIED_JOBS });
+  };
+  const setEdit = (id) => {
+    dispatch({ type: SET_EDIT_JOB, payload: { id } });
+  };
+
+  const showJobAppStats = async () => {
+    dispatch({ type: SHOW_JOB_APP_STATS_BEGIN });
+    try {
+      const { data } = await authFetch("/jobApps/job-App-stats");
+      dispatch({
+        type: SHOW_JOB_APP_STATS_SUCCESS,
+        payload: {
+          jobAppStats: data.stats,
+          monthlyJobAppApplications: data.monthlyApplications,
+        },
+      });
+    } catch (error) {
+      console.log(error.response);
+      // logoutUser()
+    }
+
+    clearAlert();
+  };
+
+  const deleteJobApp = async (jobId) => {
+    console.log(jobId);
+    console.log("delete Job App");
+    dispatch({ type: DELETE_JOB_APP_BEGIN });
+    try {
+      await authFetch.delete(`/jobApps/${jobId}`);
+      getAppliedJobs();
+    } catch (error) {
+      logoutUser();
+    }
+  };
+
+  const setEditJobApp = (id) => {
+    dispatch({ type: SET_EDIT_APP_JOB, payload: { id } });
+  };
+
+  const editJobAPP = async () => {
+    dispatch({ type: EDIT_JOB_APP_BEGIN });
+    try {
+      const { jobAppEducation } = state;
+
+      await authFetch.patch(`/jobApps/${state.editJobId}`, {
+        education: jobAppEducation,
+      });
+      dispatch({
+        type: EDIT_JOB_APP_SUCCESS,
+      });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_JOB_APP_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
   };
 
   const clearRecFilters = () => {
@@ -540,7 +769,21 @@ const AppProvider = ({ children }) => {
         deleteJob,
         editJob,
         acceptJobRequest,
-        rejectJobRequest
+        rejectJobRequest,
+        setEdit,
+        showJobAppStats,
+        deleteJobApp,
+        editJobAPP,
+        setEditJobApp,
+        getUsers,
+        setUpdateUser,
+        setDeleteUser,
+        updateUserAdmin,
+        deleteUser,
+        adminShowStats,
+        clearValuesAdmin,
+        changePage,
+        getUsersPDF,
       }}
     >
       {children}

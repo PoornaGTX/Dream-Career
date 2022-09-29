@@ -1,7 +1,28 @@
-import React from "react";
+import { useEffect } from "react";
+import { useAppContext } from "../../context/appContext";
+import {
+  StatsJobAppContainer,
+  ChartsJobAppContainer,
+  Loading,
+} from "../../components";
 
 const Stats = () => {
-  return <div>Stats</div>;
+  const { showJobAppStats, isLoading, monthlyJobAppApplications } =
+    useAppContext();
+  useEffect(() => {
+    showJobAppStats();
+  }, []);
+
+  if (isLoading) {
+    return <Loading center />;
+  }
+
+  return (
+    <>
+      <StatsJobAppContainer />
+      {monthlyJobAppApplications.length > 0 && <ChartsJobAppContainer />}
+    </>
+  );
 };
 
 export default Stats;

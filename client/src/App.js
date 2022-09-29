@@ -1,4 +1,7 @@
+import e from "cors";
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useAppContext } from "./context/appContext";
 import {
   Landing,
   Error,
@@ -11,15 +14,20 @@ import {
   AddJob,
   AllJobs,
   Profile,
-  Stats,
+  AdminStats,
   SharedLayout,
   ApplyJob,
   AppliedJobs,
   JobRequests,
-  RecStats
+  RecStats,
+  EditJobApp,
+  AllUsers,
+  AdminUpdateUser,
+  Stats,
 } from "./pages/dashboard";
-
 function App() {
+  const { user } = useAppContext();
+
   return (
     <BrowserRouter>
       <Routes>
@@ -31,13 +39,18 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<RecStats />} />
+          {user?.type === "Applicant" && <Route index element={<Stats />} />}
+          {user?.type === "Admin" && <Route index element={<AdminStats />} />}
+          {user?.type === "Recruiter" && (<Route index element={<RecStats />} />)}
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="add-job" element={<AddJob />} />
+          <Route path="/edit-app-job" element={<EditJobApp />} />
           <Route path="profile" element={<Profile />} />
           <Route path="apply-job" element={<ApplyJob />} />
           <Route path="applied-jobs" element={<AppliedJobs />} />
           <Route path="job-requests" element={<JobRequests />} />
+          <Route path="all-users" element={<AllUsers />} />
+          <Route path="admin-update" element={<AdminUpdateUser />} />
         </Route>
 
         <Route path="/landing" element={<Landing />} />

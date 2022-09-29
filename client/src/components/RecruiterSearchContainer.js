@@ -1,6 +1,6 @@
-import { FormRow, FormRowSelect } from '.'
-import { useAppContext } from '../context/appContext'
-import Wrapper from '../assets/wrappers/SearchContainer'
+import { FormRow, FormRowSelect } from ".";
+import { useAppContext } from "../context/appContext";
+import Wrapper from "../assets/wrappers/SearchContainer";
 
 const RecruiterSearchContainer = () => {
   const {
@@ -12,20 +12,20 @@ const RecruiterSearchContainer = () => {
     handleChange,
     clearRecFilters,
     jobTypeOptions,
-  } = useAppContext()
+  } = useAppContext();
   const handleSearch = (e) => {
-    if (isLoading) return
-    handleChange({ name: e.target.name, value: e.target.value })
-  }
+    if (isLoading) return;
+    handleChange({ name: e.target.name, value: e.target.value });
+  };
   const handleSubmit = (e) => {
     e.preventDefault()
     clearRecFilters()
   }
   return (
     <Wrapper>
-      <form className='form'>
+      <form className="form">
         <h4>search form</h4>
-        <div className='form-center'>
+        <div className="form-center">
           {/* search position */}
 
           <FormRow
@@ -34,14 +34,14 @@ const RecruiterSearchContainer = () => {
             labelText='Search Jobs'
             value={recSearch}
             handleChange={handleSearch}
-          />  
+          />
           {/* search by type */}
           <FormRowSelect
             labelText='Job Type'
             name='recSearchType'
             value={recSearchType}
             handleChange={handleSearch}
-            list={['all', ...jobTypeOptions]}
+            list={["all", ...jobTypeOptions]}
           />
           {/* recSort */}
           <FormRowSelect
@@ -52,7 +52,7 @@ const RecruiterSearchContainer = () => {
             list={recSortOptions}
           />
           <button
-            className='btn btn-block btn-danger'
+            className="btn btn-block btn-danger"
             disabled={isLoading}
             onClick={handleSubmit}
           >
@@ -61,7 +61,7 @@ const RecruiterSearchContainer = () => {
         </div>
       </form>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default RecruiterSearchContainer
+export default RecruiterSearchContainer;

@@ -2,11 +2,11 @@ import React from "react";
 import { useAppContext } from "../context/appContext";
 import { useEffect } from "react";
 import Loading from "./Loading";
-import Job from "./Job";
 import Wrapper from "../assets/wrappers/JobsContainer";
+import RecJob from "./RecJob";
 
 const JobsContainer = () => {
-  const {  
+  const {
     getJobs,
     jobs,
     isLoading,
@@ -15,8 +15,8 @@ const JobsContainer = () => {
     recSearch,
     recSearchType,
     recSort,
-    numOfPages, } = useAppContext();
-
+    numOfPages,
+  } = useAppContext();
 
   useEffect(() => {
     getJobs();
@@ -37,11 +37,11 @@ const JobsContainer = () => {
   return (
     <Wrapper>
       <h5>
-        {totalJobs} job{jobs.length > 1 && "s"} found
+        {jobs.length} job{jobs.length > 1 && "s"} found
       </h5>
       <div className="jobs">
         {jobs.map((job) => {
-          return <Job key={job._id} {...job} />;
+          return <RecJob key={job._id} {...job} />;
         })}
       </div>
     </Wrapper>
