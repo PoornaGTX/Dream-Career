@@ -75,7 +75,7 @@ const getAllJobRequests = async (req, res) => {
 
   const queryObject = {
     recruiterID: req.user.userId,
-    Status: 'Accepted'
+    Status: 'Pending'
   };
   if (jobType !== "all") {
     queryObject.jobType = jobType;
