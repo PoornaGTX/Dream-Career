@@ -4,12 +4,10 @@ import { FaSuitcaseRolling, FaCalendarCheck, FaBug } from "react-icons/fa";
 import Wrapper from "../assets/wrappers/StatsContainer";
 const StatsJobAppContainer = () => {
   const { jobAppStats, AppliedJobs } = useAppContext();
-
   const HybridJobs = AppliedJobs.filter((app) => app.jobType === "Hybrid");
   const OnJobs = AppliedJobs.filter((app) => app.jobType === "On-location");
   const RemoteJobs = AppliedJobs.filter((app) => app.jobType === "Remote");
 
-  const { Hybrid, Remote } = jobAppStats;
   const defaultStats = [
     {
       title: "Hybrid",

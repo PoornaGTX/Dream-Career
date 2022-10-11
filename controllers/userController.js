@@ -1,10 +1,6 @@
 import User from "../models/User.js";
 import { StatusCodes } from "http-status-codes";
-import {
-  BadRequestError,
-  UnAuthenticatedError,
-  NotFoundError,
-} from "../errors/index.js";
+import { BadRequestError, NotFoundError } from "../errors/index.js";
 
 import moment from "moment";
 
@@ -18,7 +14,6 @@ const getAllUsers = async (req, res) => {
   }
   if (search) {
     queryObject.firstName = { $regex: search, $options: "i" };
-    console.log(search);
   }
 
   //no await
@@ -58,9 +53,7 @@ const getAllUsersForPDF = async (req, res) => {
 };
 
 const UpdateUser = async (req, res) => {
-  console.log("hello");
   const { id: uId } = req.params;
-  console.log(`${uId} hello`);
 
   const { firstName, email, lastName, location, type } = req.body;
 

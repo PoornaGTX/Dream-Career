@@ -1,7 +1,7 @@
 import React from "react";
 import links from "../utils/links";
 import { useAppContext } from "../context/appContext";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const NavLinks = ({ toggleSidebar }) => {
   const { user } = useAppContext();
@@ -49,9 +49,8 @@ const NavLinks = ({ toggleSidebar }) => {
             to={path}
             key={id}
             onClick={toggleSidebar}
-            className={
-              ({ isActive }) => (isActive ? "nav-link active" : "nav-link")
-              /* arrow function eke isActive true name style tika true da balanwa */
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
             }
           >
             <span className="icon">{icon}</span>

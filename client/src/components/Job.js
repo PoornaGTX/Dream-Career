@@ -15,7 +15,7 @@ const Job = ({
   createdAt,
   status,
 }) => {
-  const { setEdit, deleteJob, user } = useAppContext();
+  const { setEdit, user } = useAppContext();
   let date = moment(createdAt);
   date = date.format("MMM Do, YYYY");
   return (
@@ -37,13 +37,6 @@ const Job = ({
 
         <footer>
           <div className="actions">
-            {/* <Link
-              to="/add-job"
-              className="btn edit-btn"
-              onClick={() => setEdit(_id)}
-            >
-              Edit
-            </Link> */}
             {user?.type === "Applicant" && (
               <Link
                 to="/apply-job"
@@ -53,14 +46,6 @@ const Job = ({
                 Apply
               </Link>
             )}
-
-            {/* <button
-              type="button"
-              className="btn delete-btn"
-              onClick={() => deleteJob(_id)}
-            >
-              Delete
-            </button> */}
           </div>
         </footer>
       </div>

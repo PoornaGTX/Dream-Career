@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import JobAppBarChart from "./JobAppBarChart";
 import JobAppAreaChart from "./JobAppAreaChart";
 import { useAppContext } from "../context/appContext";

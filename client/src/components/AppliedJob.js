@@ -8,8 +8,6 @@ import JobInfo from "./JobInfo";
 
 const AppliedJob = ({
   _id,
-  appliedBy,
-  recruiterID,
   experience,
   jobType,
   education,

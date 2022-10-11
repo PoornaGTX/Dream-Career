@@ -30,7 +30,6 @@ const FrogetPassword = () => {
     }
 
     loginUserPasswordRest(email);
-    console.log(email);
 
     setTimeout(() => {
       alert("Password reset link is sent your email, please check your email");

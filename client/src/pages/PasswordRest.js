@@ -41,14 +41,6 @@ const PasswordRest = () => {
     }, 4000);
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     setTimeout(() => {
-  //       navigate("/");
-  //     }, 3000);
-  //   }
-  // }, [user, navigate]);
-
   return (
     <Wrapper className="full-page">
       <form className="form" onSubmit={onSubmit}>

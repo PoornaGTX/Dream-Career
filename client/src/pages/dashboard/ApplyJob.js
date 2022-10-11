@@ -6,10 +6,8 @@ import Wrapper from "../../assets/wrappers/DashboardFormPage";
 
 const ApplyJob = () => {
   const {
-    user,
     showAlert,
     displayAlert,
-    updateUser,
     isLoading,
     applyJob,
     editJobCreateID,
