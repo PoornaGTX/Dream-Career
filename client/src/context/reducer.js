@@ -22,7 +22,6 @@ import {
   CREATE_JOB_ERROR,
   GET_JOBS_BEGIN,
   GET_JOBS_SUCCESS,
-  GET_JOBS_ERROR,
   SET_EDIT_JOB,
   DELETE_JOB_BEGIN,
   EDIT_JOB_BEGIN,
@@ -47,10 +46,7 @@ import {
   SHOW_REC_STATS_BEGIN,
   ACCEPT_JOB_REQ_BEGIN,
   ACCEPT_JOB_REQ_SUCCESS,
-  ACCEPT_JOB_REQ_ERROR,
   REJECT_JOB_REQ_BEGIN,
-  REJECT_JOB_REQ_SUCCESS,
-  REJECT_JOB_REQ_ERROR,
   SHOW_JOB_APP_STATS_BEGIN,
   SHOW_JOB_APP_STATS_SUCCESS,
   DELETE_JOB_APP_BEGIN,
@@ -735,6 +731,23 @@ const reducer = (state, action) => {
     return {
       ...state,
       pageAdmin: action.payload.page,
+    };
+  }
+
+  if (action.type ===  ACCEPT_JOB_REQ_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === ACCEPT_JOB_REQ_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Job Updated",
     };
   }
 

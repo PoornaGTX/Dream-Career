@@ -71,6 +71,7 @@ import {
   CHANGE_VLAUES,
   GET_ALL_USERS_BEGIN_PDF,
   GET_ALL_USERS_SUCCESS_PDF,
+  ACCEPT_JOB_REQ_SUCCESS,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -589,6 +590,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: ACCEPT_JOB_REQ_BEGIN });
     try {
       await authFetch.patch(`/jobs/job-requests/${jobId}`,{Status:'Accepted'});
+      dispatch({ type: ACCEPT_JOB_REQ_SUCCESS });
       getJobRequets();
     } catch (error) {
       logoutUser();
