@@ -2,15 +2,12 @@ import React from "react";
 import { useAppContext } from "../context/appContext";
 import { useEffect } from "react";
 import Loading from "./Loading";
-
 import Wrapper from "../assets/wrappers/JobsContainer";
 import AppliedJob from "./AppliedJob";
 
 const AppliedJobsContainer = () => {
   const {
     isLoading,
-    page,
-    totalJobs,
     AppliedJobs,
     getAppliedJobs,
     appliedJobsSearch,

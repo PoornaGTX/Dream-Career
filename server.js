@@ -38,7 +38,6 @@ app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use("/api/v1/jobApps", authenticateUser, jobAppRouter);
 app.use("/api/v1/users", userRouter);
 
-//udathiyana route walin ekakwath newei nam notFoundMiddleware eka hit wenawa
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 

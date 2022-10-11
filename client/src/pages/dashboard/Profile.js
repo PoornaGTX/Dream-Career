@@ -6,12 +6,9 @@ import { useAppContext } from "../../context/appContext";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
 
 const Profile = () => {
-  const { user, showAlert, displayAlert, updateUser, isLoading, logoutUser } =
+  const { user, showAlert, updateUser, isLoading, logoutUser } =
     useAppContext();
 
-  console.log(user);
-
-  console.log(user);
   const navigate = useNavigate();
 
   const [firstName, setName] = useState(user?.firstName);
@@ -21,11 +18,6 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (!name || !email || !lastName || !location) {
-    //   displayAlert();
-    //   return;
-    // }
-    console.log(firstName, email, lastName, location);
     updateUser({ firstName, email, lastName, location });
   };
 

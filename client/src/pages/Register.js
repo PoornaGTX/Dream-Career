@@ -19,22 +19,14 @@ const Register = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
 
-  const {
-    user,
-    isLoading,
-    showAlert,
-    displayAlert,
-    registerUser,
-    loginUser,
-    setupUser,
-  } = useAppContext();
+  const { user, isLoading, showAlert, displayAlert, setupUser } =
+    useAppContext();
 
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
   };
 
   const handleChange = (e) => {
-    //e object access the name of the input and value
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
@@ -62,8 +54,6 @@ const Register = () => {
         alertText: "User Created!! Redirecting",
       });
     }
-
-    console.log(values);
   };
 
   const passwordRest = () => {
@@ -83,9 +73,7 @@ const Register = () => {
       <form className="form" onSubmit={onSubmit}>
         <Logo />
         <h3>{values.isMember ? "Login" : "Register"}</h3>
-        {/* values.isMember ? true nam loggin false nam register */}
         {showAlert && <Alert />}
-        {/* name input from component */}
         {!values.isMember && (
           <>
             <FormRow

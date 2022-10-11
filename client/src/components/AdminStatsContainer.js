@@ -1,19 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AdminStatItem from "./AdminStatItem";
-import {
-  FaLocationArrow,
-  FaUserShield,
-  FaUserPlus,
-  FaUserTie,
-} from "react-icons/fa";
-import { GrUserAdmin } from "react-icons/gr";
+import { FaUserShield, FaUserPlus, FaUserTie } from "react-icons/fa";
 import Wrapper from "../assets/wrappers/StatsContainer";
 import { useAppContext } from "../context/appContext";
 
 const AdminStatsContainer = () => {
   const { adminStats, allusersAdmin } = useAppContext();
-
-  console.log(allusersAdmin);
 
   const Applicants = allusersAdmin.filter((user) => user.type === "Applicant");
   const Recruiters = allusersAdmin.filter((user) => user.type === "Recruiter");

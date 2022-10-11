@@ -13,10 +13,8 @@ const start = async () => {
       await readFile(new URL("./MOCK_DATA_USERS.json", import.meta.url))
     );
     await User.create(jsonUsers);
-    console.log("Success");
     process.exit(0);
   } catch (error) {
-    console.log("Error");
     process.exit(1);
   }
 };

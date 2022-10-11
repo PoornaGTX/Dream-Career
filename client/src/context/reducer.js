@@ -22,7 +22,6 @@ import {
   CREATE_JOB_ERROR,
   GET_JOBS_BEGIN,
   GET_JOBS_SUCCESS,
-  GET_JOBS_ERROR,
   SET_EDIT_JOB,
   DELETE_JOB_BEGIN,
   EDIT_JOB_BEGIN,
@@ -686,7 +685,6 @@ const reducer = (state, action) => {
   if (action.type === SET_DELETE_USER) {
     const user = state.users.find((user) => user._id === action.payload.id);
     const { _id, firstName, email, lastName, type, location } = user;
-    console.log(user);
     return {
       ...state,
       isDelete: true,

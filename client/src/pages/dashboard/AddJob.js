@@ -18,6 +18,7 @@ const AddJob = () => {
     createJob,
     isEditing,
     editJob
+
   } = useAppContext();
 
   const handleSubmit = (e) => {
@@ -32,7 +33,6 @@ const AddJob = () => {
       return
     }
     createJob();
-    console.log("create job");
   };
 
   const handleJobInput = (e) => {

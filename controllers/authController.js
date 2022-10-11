@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
   const { firstName, lastName, email, password, type } = req.body;
-  console.log(firstName, lastName, email, password, type);
 
   if (!firstName || !lastName || !email || !password || !type) {
     throw new BadRequestError("please provide all values");
@@ -68,7 +67,6 @@ const login = async (req, res) => {
 
 const frogetPassword = async (req, res) => {
   const { email } = req.body;
-  console.log(email);
 
   //get the user data
   const user = await User.findOne({ email });
@@ -89,7 +87,6 @@ const frogetPassword = async (req, res) => {
   const token = jwt.sign(payload, secret, { expiresIn: "15m" });
 
   //email link
-  console.log(token);
   const link = `http://localhost:3000/reset-password/${user.id}/${token}`;
 
   //email
@@ -155,7 +152,6 @@ const newPassword = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { email, firstName, lastName, location } = req.body;
-  console.log(email, firstName, lastName, location);
   if (!email || !firstName || !lastName || !location) {
     throw new BadRequestError("Please provide all values");
   }

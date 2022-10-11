@@ -9,7 +9,6 @@ const AllUsers = () => {
   const { user } = useAppContext();
 
   useEffect(() => {
-    // console.log(user.type);
     if (user.type !== "Admin") {
       navigator("/");
     }
