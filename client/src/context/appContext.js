@@ -70,6 +70,10 @@ import {
   CHANGE_VLAUES,
   GET_ALL_USERS_BEGIN_PDF,
   GET_ALL_USERS_SUCCESS_PDF,
+  DELETE_JOB_BEGIN,
+  EDIT_JOB_BEGIN,
+  EDIT_JOB_SUCCESS,
+  EDIT_JOB_ERROR
 } from "./action";
 
 const token = localStorage.getItem("token");
