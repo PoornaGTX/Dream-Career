@@ -10,8 +10,6 @@ const AdminPageBtnContainer = () => {
     return index + 1;
   });
 
-  console.log(pages);
-
   const nextPage = () => {
     let newPage = pageAdmin + 1;
     if (newPage > numOfPagesAdmin) {

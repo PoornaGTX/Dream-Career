@@ -30,7 +30,6 @@ export const Navbar = () => {
           >
             <FaUserCircle />
             {user?.firstName}
-            {/*user kenek hitiyoth eyage name eka ganna.  uda thiyana useAppContext() eken user gaththe  */}
             <FaCaretDown />
           </button>
           <div className={showLogout ? "dropdown show-dropdown" : "dropdown"}>

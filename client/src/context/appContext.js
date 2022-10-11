@@ -1,7 +1,6 @@
-import React, { useReducer, useContext, useEffect } from "react";
+import React, { useReducer, useContext } from "react";
 import reducer from "./reducer";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
@@ -27,10 +26,6 @@ import {
   GET_JOBS_BEGIN,
   GET_JOBS_SUCCESS,
   SET_EDIT_JOB,
-  DELETE_JOB_BEGIN,
-  EDIT_JOB_BEGIN,
-  EDIT_JOB_SUCCESS,
-  EDIT_JOB_ERROR,
   APPLY_JOB_BEGIN,
   APPLY_JOB_SUCCESS,
   APPLY_JOB_ERROR,
@@ -72,6 +67,10 @@ import {
   GET_ALL_USERS_BEGIN_PDF,
   GET_ALL_USERS_SUCCESS_PDF,
   ACCEPT_JOB_REQ_SUCCESS,
+  DELETE_JOB_BEGIN,
+  EDIT_JOB_BEGIN,
+  EDIT_JOB_SUCCESS,
+  EDIT_JOB_ERROR
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -131,8 +130,6 @@ const initialState = {
   totalUsers: 0,
   numOfPagesAdmin: 1,
   pageAdmin: 1,
-  numOfPages: 1,
-  page: 1,
 
   //admin
   searchAdmin: "",
@@ -214,7 +211,6 @@ const AppProvider = ({ children }) => {
     dispatch({ type: REGISTER_USER_BEGIN });
     try {
       const response = await axios.post("/api/v1/auth/register", currentUser);
-      //console.log(response);
       const { user, token, location } = response.data;
       dispatch({
         type: REGISTER_USER_SUCCESS,
@@ -223,7 +219,6 @@ const AppProvider = ({ children }) => {
 
       addUserToLocalStorage({ user, token, location });
     } catch (error) {
-      //console.log(error.response);
       dispatch({
         type: REGISTER_USER_ERROR,
         payload: { msg: error.response.data.msg },
@@ -484,7 +479,6 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await authFetch.get("/users/allusers");
       const { allusers } = data;
-      console.log(allusers);
       dispatch({
         type: GET_ALL_USERS_SUCCESS_PDF,
         payload: { allusers },
@@ -635,8 +629,6 @@ const AppProvider = ({ children }) => {
     if (appliedJobsSearch) {
       url = url + `&search=${appliedJobsSearch}`;
     }
-
-    console.log(url);
     try {
       const { data } = await authFetch.get(url);
       const { AppliedJobs, AppliedTotalJobs, AppliedJobsNumOfPages } = data;
@@ -674,15 +666,12 @@ const AppProvider = ({ children }) => {
       });
     } catch (error) {
       console.log(error.response);
-      // logoutUser()
     }
 
     clearAlert();
   };
 
   const deleteJobApp = async (jobId) => {
-    console.log(jobId);
-    console.log("delete Job App");
     dispatch({ type: DELETE_JOB_APP_BEGIN });
     try {
       await authFetch.delete(`/jobApps/${jobId}`);

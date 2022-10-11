@@ -1,5 +1,3 @@
-import e from "cors";
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAppContext } from "./context/appContext";
 import {

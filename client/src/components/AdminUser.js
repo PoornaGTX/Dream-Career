@@ -1,12 +1,10 @@
 import React from "react";
-import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
 import Wrapper from "../assets/wrappers/Job";
 import AdminUserInfo from "./AdminUserInfo";
-import { MdEmail, MdUpdate } from "react-icons/md";
-import { IoPerson, IoTime } from "react-icons/io5";
-import { BsFillBagCheckFill } from "react-icons/bs";
+import { MdEmail } from "react-icons/md";
+import { IoPerson } from "react-icons/io5";
 import { AiTwotoneEnvironment } from "react-icons/ai";
 
 const AdminUser = ({ _id, firstName, email, lastName, type, location }) => {
@@ -28,8 +26,6 @@ const AdminUser = ({ _id, firstName, email, lastName, type, location }) => {
           />
           <AdminUserInfo icon={<AiTwotoneEnvironment />} text={location} />
           <AdminUserInfo icon={<MdEmail />} text={email} />
-
-          {/* <div className={`status ${status}`}>{status}</div> */}
         </div>
 
         <footer>

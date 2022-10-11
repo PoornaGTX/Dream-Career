@@ -54,7 +54,6 @@ const AdminUpdateUser = () => {
   };
   const navigator = useNavigate();
   useEffect(() => {
-    // console.log(user.type);
     if (user.type !== "Admin") {
       navigator("/");
     }

@@ -2,12 +2,7 @@ import JobApp from "../models/JobApplication.js";
 import { StatusCodes } from "http-status-codes";
 import mongoose from "mongoose";
 import moment from "moment";
-import {
-  BadRequestError,
-  UnAuthenticatedError,
-  NotFoundError,
-} from "../errors/index.js";
-import checkPermissions from "../utils/checkPermission.js";
+import { BadRequestError, NotFoundError } from "../errors/index.js";
 
 const applyJob = async (req, res) => {
   const {
@@ -21,7 +16,6 @@ const applyJob = async (req, res) => {
     email,
     name,
   } = req.body;
-  console.log(req.body);
   if (
     !position ||
     !education ||
@@ -54,7 +48,6 @@ const applyJob = async (req, res) => {
 
 const getAllAppliedJobs = async (req, res) => {
   const { search, jobType, sort } = req.query;
-  console.log(jobType, search, sort);
   const queryObject = {
     appliedBy: req.user.userId,
   };

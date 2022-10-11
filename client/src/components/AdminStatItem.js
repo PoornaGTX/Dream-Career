@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Wrapper from "../assets/wrappers/StatItem";
 import JsPDF from "jspdf";
 import "jspdf-autotable";
@@ -13,15 +13,12 @@ const AdminStatItem = ({
   userData,
   dateType,
 }) => {
-  console.log(userData);
   const colums = [
     { title: "First Name", field: "firstName" },
     { title: "Last Name", field: "lastName" },
     { title: "Email", field: "email" },
     { title: "Location", field: "location" },
   ];
-
-  console.log(dateType);
 
   let tableName;
 
