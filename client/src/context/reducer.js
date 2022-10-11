@@ -41,6 +41,15 @@ import {
   LOGIN_NEWPASSWORD_ERROR,
   GET_JOBREQUESTS_SUCCESS,
   GET_JOBREQUESTS_BEGIN,
+  CLEAR_REC_FILTERS,
+  SHOW_REC_STATS_SUCCESS,
+  SHOW_REC_STATS_BEGIN,
+  ACCEPT_JOB_REQ_BEGIN,
+  ACCEPT_JOB_REQ_SUCCESS,
+  ACCEPT_JOB_REQ_ERROR,
+  REJECT_JOB_REQ_BEGIN,
+  REJECT_JOB_REQ_SUCCESS,
+  REJECT_JOB_REQ_ERROR,
   SHOW_JOB_APP_STATS_BEGIN,
   SHOW_JOB_APP_STATS_SUCCESS,
   DELETE_JOB_APP_BEGIN,
@@ -315,6 +324,10 @@ const reducer = (state, action) => {
     return { ...state, isLoading: true };
   }
 
+  if (action.type === REJECT_JOB_REQ_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
   if (action.type === EDIT_JOB_BEGIN) {
     return {
       ...state,
@@ -469,6 +482,25 @@ const reducer = (state, action) => {
     };
   }
 
+  if (action.type === GET_JOBREQUESTS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      jobRequests: action.payload.JobRequests,
+      jobRequestsCount: action.payload.JobRequestsCount,
+      jobRequestsPages: action.payload.JobRequestsNumOfPages,
+    };
+  }
+
+  if (action.type === CLEAR_REC_FILTERS) {
+    return {
+      ...state,
+      recSearch: "",
+      recSearchType: "all",
+      recSort: "latest",
+    };
+  }
+
   /////
   if (action.type === SHOW_JOB_APP_STATS_BEGIN) {
     return { ...state, isLoading: true, showAlert: false };
@@ -522,6 +554,47 @@ const reducer = (state, action) => {
       showAlert: false,
     };
   }
+  if (action.type === SHOW_REC_STATS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    }
+  }
+  if (action.type === SHOW_REC_STATS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      recStats: action.payload.stats,
+      recMonthlyApplications: action.payload.monthlyApplications,
+    };
+  }
+
+  if (action.type === SET_EDIT_JOB) {
+    const job = state.jobs.find((job) => job._id === action.payload.id);
+    const { _id, position, company, jobLocation, jobType, status } = job;
+    return {
+      ...state,
+      isEditing: true,
+      editJobId: _id,
+      position,
+      company,
+      jobLocation,
+      jobType,
+    };
+  }
+  if (action.type === DELETE_JOB_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === EDIT_JOB_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === EDIT_JOB_SUCCESS) {
+  }
+
   if (action.type === GET_ALL_USERS_SUCCESS) {
     return {
       ...state,
@@ -580,6 +653,15 @@ const reducer = (state, action) => {
     };
   }
   if (action.type === EDIT_JOB_APP_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Job Updated!",
+    };
+  }
+  if (action.type === EDIT_JOB_ERROR) {
     return {
       ...state,
       isLoading: false,

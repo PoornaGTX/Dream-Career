@@ -6,11 +6,13 @@ const JobSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide company name"],
       maxlength: 50,
+      minlength:3,
     },
     position: {
       type: String,
       required: [true, "Please provide position"],
       maxlength: 100,
+      minlength:3
     },
     jobType: {
       type: String,
@@ -19,8 +21,9 @@ const JobSchema = new mongoose.Schema(
     },
     jobLocation: {
       type: String,
-      default: "my city",
+      default: "Colombo",
       required: true,
+      minlength:1
     },
     createdBy: {
       type: mongoose.Types.ObjectId,

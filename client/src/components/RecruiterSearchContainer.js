@@ -10,7 +10,7 @@ const RecruiterSearchContainer = () => {
     recSort,
     recSortOptions,
     handleChange,
-    clearFilters,
+    clearRecFilters,
     jobTypeOptions,
   } = useAppContext();
   const handleSearch = (e) => {
@@ -18,9 +18,9 @@ const RecruiterSearchContainer = () => {
     handleChange({ name: e.target.name, value: e.target.value });
   };
   const handleSubmit = (e) => {
-    e.preventDefault();
-    clearFilters();
-  };
+    e.preventDefault()
+    clearRecFilters()
+  }
   return (
     <Wrapper>
       <form className="form">
@@ -29,24 +29,24 @@ const RecruiterSearchContainer = () => {
           {/* search position */}
 
           <FormRow
-            type="text"
-            name="recSearch"
-            labelText="Search"
+            type='text'
+            name='recSearch'
+            labelText='Search Jobs'
             value={recSearch}
             handleChange={handleSearch}
           />
           {/* search by type */}
           <FormRowSelect
-            labelText="type"
-            name="recSearchType"
+            labelText='Job Type'
+            name='recSearchType'
             value={recSearchType}
             handleChange={handleSearch}
             list={["all", ...jobTypeOptions]}
           />
           {/* recSort */}
           <FormRowSelect
-            name="recSort"
-            labelText="Sort"
+            name='recSort'
+            labelText='Sort'
             value={recSort}
             handleChange={handleSearch}
             list={recSortOptions}

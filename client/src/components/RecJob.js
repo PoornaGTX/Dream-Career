@@ -6,7 +6,7 @@ import { useAppContext } from "../context/appContext";
 import Wrapper from "../assets/wrappers/Job";
 import JobInfo from "./JobInfo";
 
-const Job = ({
+const RecJob = ({
   _id,
   position,
   company,
@@ -15,7 +15,9 @@ const Job = ({
   createdAt,
   status,
 }) => {
-  const { setEdit, user } = useAppContext();
+
+  const { user, setEditJob, deleteJob, setEdit } = useAppContext()
+
   let date = moment(createdAt);
   date = date.format("MMM Do, YYYY");
   return (
@@ -29,14 +31,25 @@ const Job = ({
       </header>
       <div className="content">
         <div className="content-center">
-          <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
-          <JobInfo icon={<FaCalendarAlt />} text={date} />
-          <JobInfo icon={<FaBriefcase />} text={jobType} />
+          <JobInfo icon={<FaLocationArrow />} text={jobLocation} title='Job Location' />
+          <JobInfo icon={<FaCalendarAlt />} text={date} title='Date'/>
+          <JobInfo icon={<FaBriefcase />} text={jobType} title='Job Type'/>
           <div className={`status ${status}`}>{status}</div>
         </div>
 
         <footer>
           <div className="actions">
+
+            {user?.type === "Recruiter" && (
+              <Link
+                to="/add-job"
+                className="btn edit-btn"
+                onClick={() => setEditJob(_id)}
+              >
+                Edit
+              </Link> 
+            )}
+
             {user?.type === "Applicant" && (
               <Link
                 to="/apply-job"
@@ -46,6 +59,15 @@ const Job = ({
                 Apply
               </Link>
             )}
+
+            {user?.type === "Recruiter" && (
+            <button
+              type="button"
+              className="btn delete-btn"
+              onClick={() => deleteJob(_id)}
+            >
+              Delete
+            </button> )}
           </div>
         </footer>
       </div>
@@ -53,4 +75,4 @@ const Job = ({
   );
 };
 
-export default Job;
+export default RecJob;
