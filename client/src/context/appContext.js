@@ -70,7 +70,7 @@ import {
   DELETE_JOB_BEGIN,
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
-  EDIT_JOB_ERROR
+  EDIT_JOB_ERROR,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -278,6 +278,8 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR });
   };
 
+  //logOut
+
   const logoutUser = () => {
     dispatch({ type: LOGOUT_USER });
     removeFromTheLocalStorage();
@@ -324,6 +326,7 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  //update user
   const updateUser = async (currentUser) => {
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
@@ -583,7 +586,9 @@ const AppProvider = ({ children }) => {
   const acceptJobRequest = async (jobId) => {
     dispatch({ type: ACCEPT_JOB_REQ_BEGIN });
     try {
-      await authFetch.patch(`/jobs/job-requests/${jobId}`,{Status:'Accepted'});
+      await authFetch.patch(`/jobs/job-requests/${jobId}`, {
+        Status: "Accepted",
+      });
       dispatch({ type: ACCEPT_JOB_REQ_SUCCESS });
       getJobRequets();
     } catch (error) {
@@ -594,7 +599,9 @@ const AppProvider = ({ children }) => {
   const rejectJobRequest = async (jobId) => {
     dispatch({ type: REJECT_JOB_REQ_BEGIN });
     try {
-      await authFetch.patch(`/jobs/job-requests/${jobId}`,{Status:'Rejected'});
+      await authFetch.patch(`/jobs/job-requests/${jobId}`, {
+        Status: "Rejected",
+      });
       getJobRequets();
     } catch (error) {
       logoutUser();
