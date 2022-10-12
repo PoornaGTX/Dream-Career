@@ -15,6 +15,7 @@ const AppliedJob = ({
   location,
   company,
   createdAt,
+  Status,
 }) => {
   const { setEditJobApp, deleteJobApp } = useAppContext();
 
@@ -36,7 +37,7 @@ const AppliedJob = ({
           <JobInfo icon={<FaLocationArrow />} text={education} />
           <JobInfo icon={<FaCalendarAlt />} text={date} />
           <JobInfo icon={<FaBriefcase />} text={jobType} />
-          {/* <div className={`status ${status}`}>{status}</div> */}
+          <JobInfo icon={<FaBriefcase />} text={Status} />
         </div>
 
         <footer>

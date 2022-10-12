@@ -30,7 +30,6 @@ const AppliedJobsContainer = () => {
       </Wrapper>
     );
   }
-
   return (
     <Wrapper>
       <h5>
