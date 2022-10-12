@@ -26,7 +26,6 @@ const AppliedJobsSearchContainer = () => {
     <Wrapper>
       <form className="form">
         <h4>search form</h4>
-        {/* search position */}
         <div className="form-center">
           <FormRow
             labelText="search"
@@ -35,7 +34,6 @@ const AppliedJobsSearchContainer = () => {
             value={appliedJobsSearch}
             handleChange={handleSearch}
           ></FormRow>
-          {/* search by type */}
 
           <FormRowSelect
             labelText="job type"
@@ -44,7 +42,6 @@ const AppliedJobsSearchContainer = () => {
             handleChange={handleSearch}
             list={["all", ...appliedJobsSearchTypePotions]}
           ></FormRowSelect>
-          {/* sort */}
 
           <FormRowSelect
             labelText="sort"
