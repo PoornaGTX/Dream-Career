@@ -183,6 +183,8 @@ const reducer = (state, action) => {
     };
   }
 
+  //logout user
+
   if (action.type === LOGOUT_USER) {
     return {
       ...initialState,
@@ -193,6 +195,8 @@ const reducer = (state, action) => {
       userLocation: "",
     };
   }
+
+  //update user
 
   if (action.type === UPDATE_USER_BEGIN) {
     return { ...state, isLoading: true };
@@ -543,6 +547,7 @@ const reducer = (state, action) => {
       alertText: "Job Updated!",
     };
   }
+
   //admin get all users
   if (action.type === GET_ALL_USERS_BEGIN) {
     return {
@@ -556,7 +561,7 @@ const reducer = (state, action) => {
       ...state,
       isLoading: true,
       showAlert: false,
-    }
+    };
   }
   if (action.type === SHOW_REC_STATS_SUCCESS) {
     return {
@@ -733,7 +738,7 @@ const reducer = (state, action) => {
     };
   }
 
-  if (action.type ===  ACCEPT_JOB_REQ_BEGIN) {
+  if (action.type === ACCEPT_JOB_REQ_BEGIN) {
     return {
       ...state,
       isLoading: true,
