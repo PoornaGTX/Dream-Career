@@ -207,6 +207,8 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem("location");
   };
 
+  //register user
+
   const registerUser = async (currentUser) => {
     dispatch({ type: REGISTER_USER_BEGIN });
     try {

@@ -594,8 +594,6 @@ const reducer = (state, action) => {
       isLoading: true,
     };
   }
-  if (action.type === EDIT_JOB_SUCCESS) {
-  }
 
   if (action.type === GET_ALL_USERS_SUCCESS) {
     return {
