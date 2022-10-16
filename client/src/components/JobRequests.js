@@ -14,6 +14,7 @@ const JobRequests = ({
   position,
   company,
   createdAt,
+  Status
 }) => {
     const { acceptJobRequest,
       rejectJobRequest } = useAppContext();
@@ -36,6 +37,7 @@ const JobRequests = ({
             <JobInfo icon={<FaLocationArrow />} text={experience} title='Experience' />
             <JobInfo icon={<FaUniversity />} text={education} title='Education'/>
             <JobInfo icon={<FaCalendarAlt />} text={date} title='Date'/>
+            <JobInfo icon={<FaCalendarAlt />} text={Status} title='Status'/>
           </div>
   
           <footer>

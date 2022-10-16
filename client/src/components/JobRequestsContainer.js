@@ -12,15 +12,13 @@ const JobRequestsContainer = () => {
         jobRequests,
         recSearch, 
         recSearchType, 
-        recSort
+        recSort,
+        status
      } = useAppContext();
     
-
-     console.log(jobRequests);
-
       useEffect(() => {
         getJobRequets();
-      }, [recSearch, recSearchType, recSort]);
+      }, [recSearch, recSearchType, recSort, status]);
     
       if (isLoading) {
         return <Loading center />;

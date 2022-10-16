@@ -1,8 +1,10 @@
 import { FormRow, FormRowSelect } from ".";
 import { useAppContext } from "../context/appContext";
 import Wrapper from "../assets/wrappers/SearchContainer";
+import { useLocation } from "react-router-dom";
 
 const RecruiterSearchContainer = () => {
+const route = useLocation()
   const {
     isLoading,
     recSearch,
@@ -12,6 +14,8 @@ const RecruiterSearchContainer = () => {
     handleChange,
     clearRecFilters,
     jobTypeOptions,
+    status,
+    statusOptions
   } = useAppContext();
   const handleSearch = (e) => {
     if (isLoading) return;
@@ -36,13 +40,20 @@ const RecruiterSearchContainer = () => {
             handleChange={handleSearch}
           />
           {/* search by type */}
-          <FormRowSelect
+          {route.pathname!=='/job-requests'&&<FormRowSelect
             labelText='Job Type'
             name='recSearchType'
             value={recSearchType}
             handleChange={handleSearch}
             list={["all", ...jobTypeOptions]}
-          />
+          />}
+          {route.pathname==='/job-requests'&&<FormRowSelect
+            labelText='Status'
+            name='status'
+            value={status}
+            handleChange={handleSearch}
+            list={["all", ...statusOptions]}
+          />}
           {/* recSort */}
           <FormRowSelect
             name='recSort'

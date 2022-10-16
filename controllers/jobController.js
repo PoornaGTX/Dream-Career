@@ -71,14 +71,13 @@ const getAllJobs = async (req, res) => {
 };
 
 const getAllJobRequests = async (req, res) => {
-  const { search, jobType, sort } = req.query;
+  const { search, Status, sort } = req.query;
 
   const queryObject = {
-    recruiterID: req.user.userId,
-    Status: 'Pending'
+    recruiterID: req.user.userId
   };
-  if (jobType !== "all") {
-    queryObject.jobType = jobType;
+  if (Status !== "pending") {
+    queryObject.Status = Status;
   }
   if (search) {
     queryObject.position = { $regex: search, $options: "i" };

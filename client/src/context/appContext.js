@@ -94,7 +94,7 @@ const initialState = {
   jobLocation: userlocation || "",
   jobTypeOptions: ["full-time", "part-time", "remote", "internship"],
   jobType: "full-time",
-  statusOptions: ["interview", "declined", "pending"],
+  statusOptions: ["Accepted", "Pending", "Rejected"],
   status: "pending",
   jobs: [],
   jobRequests: [],
@@ -563,8 +563,8 @@ const AppProvider = ({ children }) => {
 
   const getJobRequets = async () => {
     dispatch({ type: GET_JOBREQUESTS_BEGIN });
-    const { page, recSearch, recSearchType, recSort } = state;
-    let url = `/jobs/job-requests?page=${page}&jobType=${recSearchType}&$sort=${recSort}`;
+    const { page, recSearch, recSearchType, recSort, status } = state;
+    let url = `/jobs/job-requests?page=${page}&Status=${status}&$sort=${recSort}`;
     if (recSearch) {
       url = url + `&search=${recSearch}`;
     }
