@@ -7,3 +7,12 @@ Project tools
 • GitHub - For easy branching and merging of the entire codebase of the project (version control management)
 • SonarQube - For continuous inspection of code quality
 • Selenium - For testing the system
+
+## Team
+* [Poorna Ranasinghe](https://github.com/PoornaGTX)
+
+* [Dilupa Gimhan](https://github.com/DilupaG)
+
+* [Thameera Fernando](https://github.com/ThameeraFernando)
+
+
