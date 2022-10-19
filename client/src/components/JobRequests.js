@@ -42,20 +42,20 @@ const JobRequests = ({
   
           <footer>
             <div className="actions">
-              <button
+              {Status==='Accepted'||<button
                 type="button"
                 className="btn edit-btn"
                 onClick={() => acceptJobRequest(_id)}
               >
                 Accept
-              </button>
-              <button
+              </button>}
+              {Status==='Rejected'||<button
                 type="button"
                 className="btn delete-btn"
                 onClick={() => rejectJobRequest(_id)}
               >
                 Reject
-              </button>
+              </button>}
             </div>
           </footer>
         </div>

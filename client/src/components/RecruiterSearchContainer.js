@@ -52,7 +52,7 @@ const route = useLocation()
             name='status'
             value={status}
             handleChange={handleSearch}
-            list={["all", ...statusOptions]}
+            list={[...statusOptions]}
           />}
           {/* recSort */}
           <FormRowSelect
